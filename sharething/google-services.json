@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "141243147234",
+    "firebase_url": "https://sharething-13c61.firebaseio.com",
+    "project_id": "sharething-13c61",
+    "storage_bucket": "sharething-13c61.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:141243147234:android:9887f76cc7c21dee",
+        "android_client_info": {
+          "package_name": "com.av.sharething"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "141243147234-c4g7b8j627kkumbo8s8n2h54161n6u1l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDPjIE9c-QIDbWcWQ9xAh7N6WYm9_USJY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
