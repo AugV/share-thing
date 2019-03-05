@@ -11,7 +11,7 @@ class MainScreen extends Component {
             <Button
                 buttonStyle={{ padding: 0, backgroundColor: 'transparent' }}
                 icon={{ name: 'add-circle', style: { marginRight: 0, fontSize: 28 } }}
-                onPress={() => { /*navigation.push('AddBoard')*/ }}
+                onPress={() => { navigation.push('AddScreen') }}
             />
         ),
     };
@@ -38,8 +38,8 @@ render() {
           this.state.things.map((item, i) => (
               <ListItem
                   key={i}
-                  title={item.TITLE}
-                  leftIcon={{ name: 'book', type: 'font-awesome' }}
+                  title={item.title}
+                  leftIcon={{ name: 'circle', type: 'font-awesome' }}
                   onPress={() => {
                       // this.props.navigation.navigate(/*'BoardDetails', {
                       //     boardkey: `${JSON.stringify(item.key)}`,
@@ -58,12 +58,12 @@ componentDidMount() {
 onCollectionUpdate = (querySnapshot) => {
   const things = [];
   querySnapshot.forEach((doc) => {
-      const { TITLE, DESCRIPTION } = doc.data();
+      const { title, description } = doc.data();
       things.push({
           key: doc.id,
           doc, // DocumentSnapshot
-          TITLE,
-          DESCRIPTION,
+          title,
+          description,
       });
   });
   this.setState({
