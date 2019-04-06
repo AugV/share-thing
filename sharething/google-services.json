@@ -15,8 +15,12 @@
       },
       "oauth_client": [
         {
-          "client_id": "141243147234-c4g7b8j627kkumbo8s8n2h54161n6u1l.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "141243147234-kbbp89ug2d4tjvcm9t827k1rn223nqc2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.av.sharething",
+            "certificate_hash": "f8328c58bd5a88583a6248786e6badfb922052c7"
+          }
         }
       ],
       "api_key": [
@@ -25,15 +29,20 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "141243147234-1ep0j545rang1776vk2uqrsa7itcnvst.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "141243147234-9q7jthjbp891h88udgid7fbnso2pjm81.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.av.sharething"
+              }
+            }
+          ]
         }
       }
     }
