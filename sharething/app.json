@@ -23,7 +23,17 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.av.sharething",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.141243147234-9q7jthjbp891h88udgid7fbnso2pjm81"
+        }
     }
-  }
+  },
+  "android": {
+    "package": "com.av.sharething",
+    "googleServicesFile": "./google-services.json"
+}
+}
 }

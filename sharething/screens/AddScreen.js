@@ -28,10 +28,8 @@ class AddScreen extends Component {
         this.setState({
             isLoading: true,
         });
-        this.ref.add({
-            title: this.state.title,
-            description: this.state.description
-        }).then((docRef) => {
+        this.ref.add({title: this.state.title, description: this.state.description,})
+        .then((docRef) => {
             this.setState({
                 title: '',
                 description: '',
@@ -47,6 +45,7 @@ class AddScreen extends Component {
             });
     }
     render() {
+        
         if (this.state.isLoading) {
             return (
                 <View style={styles.activity}>
