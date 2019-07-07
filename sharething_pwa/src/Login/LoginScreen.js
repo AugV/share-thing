@@ -1,12 +1,15 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+
+import * as ROUTES from '../Constants/Routes';
+
 
 function LoginScreen() {
   return (
     <div className="container">
       <h1>Home Page</h1>
       <p>
-        <Link to="/signup">Sign-Up</Link> BIATCH.
+        <Link to={ROUTES.SIGN_UP}>Sign-Up</Link> BIATCH.
       </p>
     </div>
   )

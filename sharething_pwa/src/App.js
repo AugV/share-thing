@@ -1,10 +1,12 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { Route, Switch } from 'react-router-dom';
+
+import { Route, Switch, BrowserRouter } from 'react-router-dom';
+
 import LoginScreen from './Login/LoginScreen';
 import SignUpScreen from './Login/SignUpScreen';
-import {BrowserRouter} from 'react-router-dom';
+
+
 import * as ROUTES from './Constants/Routes';
 
 function App() {
