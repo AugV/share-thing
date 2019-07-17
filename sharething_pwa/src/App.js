@@ -4,7 +4,8 @@ import './App.css';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
 
 import LoginScreen from './Login/LoginScreen';
-import SignUpScreen from './Login/SignUpScreen';
+import SignUpScreen from './Login/SignUp';
+import SignInScreen from './Login/SignIn';
 import HomeScreen from './Home';
 
 
@@ -15,8 +16,9 @@ function App() {
     <BrowserRouter>
       <Switch>
         <Route exact path={ROUTES.LANDING} component={LoginScreen} />
+        <Route path={ROUTES.SIGN_IN} component={SignInScreen} />
         <Route path={ROUTES.SIGN_UP} component={SignUpScreen} />
-        <Route exact path={ROUTES.HOME} component={HomeScreen} />
+        <Route path={ROUTES.HOME} component={HomeScreen} />
       </Switch>
     </BrowserRouter>
   );
