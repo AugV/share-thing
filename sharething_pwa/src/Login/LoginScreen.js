@@ -9,10 +9,10 @@ function LoginScreen() {
     <div className="container">
       <h1>Home Page</h1>
       <p>
-        <Link to={ROUTES.SIGN_IN}>Sign-In</Link> B.
+        <Link to={ROUTES.SIGN_IN}>Sign-In</Link>
       </p>
       <p>
-        <Link to={ROUTES.SIGN_UP}>Sign-Up</Link> BIATCH.
+        <Link to={ROUTES.SIGN_UP}>Sign-Up</Link>
       </p>
     </div>
   )
