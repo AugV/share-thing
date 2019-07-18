@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import "./App.css";
 
 import { Route, BrowserRouter } from "react-router-dom";
 
-import { withFirebaseProvider, withFirebase } from './Firebase';
+import { withFirebaseProvider } from './Firebase';
 
 import LoginScreen from "./Login/LoginScreen";
 import SignUpScreen from "./Login/SignUp";
