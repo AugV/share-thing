@@ -1,15 +1,16 @@
 import React from 'react';
 import SignOutButton from '../Login/SignOut';
-import {withFirebase} from '../Firebase';
-
+import { withFirebase } from '../Firebase';
+import { AuthUserContext } from '../Session';
 
 function HomeScreen() {
   return (
     <div className="container">
       <h1>Home Screen</h1>
-      <h2>Signed Up Successfully</h2>
-      <h2></h2>
-      <SignOutButton />
+      <h2>Welcome</h2>
+      <AuthUserContext.Consumer>
+        {authUser => authUser ? <SignOutButton /> : <div>You are not logged in</div>}
+      </AuthUserContext.Consumer>
     </div>
   )
 }

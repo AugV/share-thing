@@ -11,41 +11,15 @@ import SignInScreen from "./Login/SignIn";
 import HomeScreen from "./Home";
 import * as ROUTES from "./Constants/Routes";
 
-import { AuthUserContext } from "./Session";
+import { withAuthentication } from "./Session";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
+const App = () => (
+  <BrowserRouter>
+    <Route exact path={ROUTES.LANDING} component={LoginScreen} />
+    <Route path={ROUTES.SIGN_IN} component={SignInScreen} />
+    <Route path={ROUTES.SIGN_UP} component={SignUpScreen} />
+    <Route path={ROUTES.HOME} component={HomeScreen} />
+  </BrowserRouter>
+);
 
-    this.state = {
-      authUser: null,
-    }
-  }
-
-  componentDidMount() {
-    this.listener = this.props.firebase.auth.onAuthStateChanged(authUser => {
-      authUser ?
-        this.setState({ authUser }) :
-        this.setState({ authUser: null })
-    })
-  }
-
-  componentWillUnmount() {
-    this.listener();
-  }
-
-  render() {
-    return (
-      <AuthUserContext.Provider value={this.state.authUser}>
-        <BrowserRouter>
-          <Route exact path={ROUTES.LANDING} component={LoginScreen} />
-          <Route path={ROUTES.SIGN_IN} component={SignInScreen} />
-          <Route path={ROUTES.SIGN_UP} component={SignUpScreen} />
-          <Route path={ROUTES.HOME} component={HomeScreen} />
-        </BrowserRouter>
-      </AuthUserContext.Provider>
-    );
-  }
-}
-
-export default withFirebaseProvider(withFirebase(App));
+export default withFirebaseProvider(withAuthentication(App));
