@@ -11,6 +11,7 @@ import SignInScreen from "./Authentication/SignIn";
 import HomeScreen from "./Home";
 import  PasswordResetScreen  from "./Authentication/PasswordReset";
 import * as ROUTES from "./Constants/Routes";
+import AccountScreen from "./Account";
 
 import { withAuthentication } from "./Session";
 
@@ -21,6 +22,7 @@ const App = () => (
     <Route path={ROUTES.SIGN_UP} component={SignUpScreen} />
     <Route path={ROUTES.HOME} component={HomeScreen} />
     <Route path={ROUTES.PASSWORD_RESET} component={PasswordResetScreen} />
+    <Route path={ROUTES.ACCOUNT} component={AccountScreen} />
   </BrowserRouter>
 );
 
