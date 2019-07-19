@@ -5,10 +5,11 @@ import { Route, BrowserRouter } from "react-router-dom";
 
 import { withFirebaseProvider } from './Firebase';
 
-import LoginScreen from "./Login/LoginScreen";
-import SignUpScreen from "./Login/SignUp";
-import SignInScreen from "./Login/SignIn";
+import LoginScreen from "./Authentication/LoginScreen";
+import SignUpScreen from "./Authentication/SignUp";
+import SignInScreen from "./Authentication/SignIn";
 import HomeScreen from "./Home";
+import  PasswordResetScreen  from "./Authentication/PasswordReset";
 import * as ROUTES from "./Constants/Routes";
 
 import { withAuthentication } from "./Session";
@@ -19,6 +20,7 @@ const App = () => (
     <Route path={ROUTES.SIGN_IN} component={SignInScreen} />
     <Route path={ROUTES.SIGN_UP} component={SignUpScreen} />
     <Route path={ROUTES.HOME} component={HomeScreen} />
+    <Route path={ROUTES.PASSWORD_RESET} component={PasswordResetScreen} />
   </BrowserRouter>
 );
 
