@@ -9,7 +9,7 @@ import LoginScreen from "./Authentication/LoginScreen";
 import SignUpScreen from "./Authentication/SignUp";
 import SignInScreen from "./Authentication/SignIn";
 import HomeScreen from "./Home";
-import  PasswordResetScreen  from "./Authentication/PasswordReset";
+import PasswordResetScreen from "./Authentication/PasswordReset";
 import * as ROUTES from "./Constants/Routes";
 import AccountScreen from "./Account";
 

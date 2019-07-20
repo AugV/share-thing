@@ -19,7 +19,7 @@ class Firebase {
     signInUserWithEmailAndPsw = (email, password) => this.auth.signInWithEmailAndPassword(email, password);
     signOut = () => this.auth.signOut();
     resetPsw = (email) => this.auth.sendPasswordResetEmail(email);
-    udpatePsw = (password) => this.auth.currentUser.updatePassword(password);
+    updatePsw = (password) => this.auth.currentUser.updatePassword(password);
     getEmail = () => this.auth.currentUser.email;
 }
 

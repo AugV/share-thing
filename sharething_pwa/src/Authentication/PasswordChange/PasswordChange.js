@@ -19,7 +19,7 @@ class PasswordChangeForm extends Component {
     const { passwordOne } = this.state;
 
     this.props.firebase
-      .doPasswordUpdate(passwordOne)
+      .updatePsw(passwordOne)
       .then(() => {
         this.setState({ ...INITIAL_STATE });
       })
@@ -41,7 +41,7 @@ class PasswordChangeForm extends Component {
       passwordOne !== passwordTwo || passwordOne === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
+      <form method="POST" onSubmit={this.onSubmit}>
         <input
           name="passwordOne"
           value={passwordOne}
