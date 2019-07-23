@@ -54,4 +54,5 @@ render() {
 }
 }
 
+export {HomeScreen};
 export default withAuthorization(condition)(HomeScreen);
