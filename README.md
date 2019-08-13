@@ -1,5 +1,8 @@
 # share-thing
+
 <h2>Solution for convenient sharing of items</h2>
+<h4>as React PWA</h4>
+
 <p>
   <div>Borrow/lend items between neighbours or a Group of same interests</div></br>
   <div>- Quickly upload a photo, description, and choose a way of contacting you - and you're ready to share</div></br>
