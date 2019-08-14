@@ -16,42 +16,45 @@ class HomeScreen extends React.Component {
   }
 
 
-componentDidMount() {
-  this.setState({ loading: true });
-  let items = []
-  this.props.firebase.items().onSnapshot(snapshot => {
-    snapshot.forEach(doc => {
-      console.log(doc.data());
-      items.push(doc.data());
+  componentDidMount() {
+    this.setState({ loading: true });
+    let items = []
+    this.props.firebase.items().onSnapshot(snapshot => {
+      snapshot.forEach(doc => {
+        console.log(doc.data());
+        items.push(doc.data());
+      });
+      this.setState({
+        items: items,
+        loading: false,
+      });
+      console.log(this.state.items);
     });
-    this.setState({
-      items: items,
-      loading: false,
-    });
-    console.log(this.state.items);
-  });
+  }
 
-}
+  componentWillUnmount() {
+    this.props.firebase.items().off();
+  }
 
-render() {
+  render() {
+    const {items, loading } = this.state;
 
-  return (
-    <div className="container">
-      <h1>Home Screen</h1>
-      <h2>Welcome</h2>
-      <SignOutButton />
-      <ul>
-    {this.state.items.map(item => (
-      <li key={item.name}>
-
-        <div>{item.name}</div>
-      </li>
-    ))}
-  </ul>
-      {/* <div>{this.state.user.uid}</div> */}
-    </div>
-  )
-}
+    return (
+      <div className="container">
+        <h1>Home Screen</h1>
+        <h2>Welcome</h2>
+        <SignOutButton />
+        {loading && <div>Loading ...</div>}
+        <ul>
+          {items.map(item => (
+            <li key={item.name}>
+              <div>{item.name}</div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
 }
 
 export default withAuthorization(condition)(HomeScreen);
