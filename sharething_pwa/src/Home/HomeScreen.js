@@ -11,6 +11,7 @@ class HomeScreen extends React.Component {
 
     this.state = {
       loading: false,
+      unsubscribe: null,
       items: [],
     };
   }
@@ -19,7 +20,7 @@ class HomeScreen extends React.Component {
   componentDidMount() {
     this.setState({ loading: true });
     let items = []
-    this.props.firebase.items().onSnapshot(snapshot => {
+     let listener = this.props.firebase.items().onSnapshot(snapshot => {
       snapshot.forEach(doc => {
         console.log(doc.data());
         items.push(doc.data());
@@ -28,12 +29,13 @@ class HomeScreen extends React.Component {
         items: items,
         loading: false,
       });
+      this.setState({unsubscribe: listener});
       console.log(this.state.items);
     });
   }
 
   componentWillUnmount() {
-    this.props.firebase.items().off();
+    this.state.unsubscribe();
   }
 
   render() {
