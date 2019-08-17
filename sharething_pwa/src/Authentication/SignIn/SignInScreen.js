@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { Form, Button, Container } from 'react-bootstrap';
 
 import { SignUpLink } from '../SignUp';
 import { withFirebase } from '../../Firebase';
@@ -8,7 +9,7 @@ import { PasswordResetLink } from "../PasswordReset";
 
 const SignInScreen = () => (
   <div>
-    <h1>SignIn</h1>
+    <h1>Sign-In</h1>
     <SignInForm />
     <SignUpLink />
     <PasswordResetLink />
@@ -54,27 +55,23 @@ class SignInFormBase extends Component {
     const isInvalid = password === '' || email === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="email"
-          value={email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          name="password"
-          value={password}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Password"
-        />
-        <button disabled={isInvalid} type="submit">
-          Sign In
-        </button>
+      
+        <Form onSubmit={this.onSubmit}>
+          <Form.Group controlId="email">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control name="email" type="email" placeholder="Enter email" onChange={this.onChange} value={email} />
+          </Form.Group>
 
-        {error && <p>{error.message}</p>}
-      </form>
+          <Form.Group controlId="password">
+            <Form.Label>Password</Form.Label>
+            <Form.Control name="password" type="password" placeholder="Password" onChange={this.onChange} value={password} />
+          </Form.Group>
+
+          <Button disabled={isInvalid} variant="primary" type="submit">
+            Submit
+          </Button>
+          {error && <p>{error.message}</p>}
+        </Form>
     );
   }
 }
