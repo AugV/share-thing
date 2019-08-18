@@ -1,27 +1,33 @@
-import React from 'react';
-import './App.css';
+import React from "react";
+import "./App.css";
+import {Container} from 'react-bootstrap';
 
-import { Route, Switch, BrowserRouter } from 'react-router-dom';
+import { Route, BrowserRouter } from "react-router-dom";
 
-import LoginScreen from './Login/LoginScreen';
-import SignUpScreen from './Login/SignUp';
-import SignInScreen from './Login/SignIn';
-import HomeScreen from './Home';
+import { withFirebaseProvider } from './Firebase';
 
+import LoginScreen from "./Authentication/LoginScreen";
+import SignUpScreen from "./Authentication/SignUp";
+import SignInScreen from "./Authentication/SignIn";
+import HomeScreen from "./Home";
+import PasswordResetScreen from "./Authentication/PasswordReset";
+import * as ROUTES from "./Constants/Routes";
+import AccountScreen from "./Account";
 
-import * as ROUTES from './Constants/Routes';
+import { withAuthentication } from "./Session";
 
-function App() {
-  return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path={ROUTES.LANDING} component={LoginScreen} />
-        <Route path={ROUTES.SIGN_IN} component={SignInScreen} />
-        <Route path={ROUTES.SIGN_UP} component={SignUpScreen} />
-        <Route path={ROUTES.HOME} component={HomeScreen} />
-      </Switch>
-    </BrowserRouter>
-  );
-}
+const App = () => (
 
-export default App;
+  <BrowserRouter>
+  <Container>
+    <Route exact path={ROUTES.LANDING} component={LoginScreen} />
+    <Route path={ROUTES.SIGN_IN} component={SignInScreen} />
+    <Route path={ROUTES.SIGN_UP} component={SignUpScreen} />
+    <Route path={ROUTES.HOME} component={HomeScreen} />
+    <Route path={ROUTES.PASSWORD_RESET} component={PasswordResetScreen} />
+    <Route path={ROUTES.ACCOUNT} component={AccountScreen} />
+  </Container>
+  </BrowserRouter>
+);
+
+export default withFirebaseProvider(withAuthentication(App));
