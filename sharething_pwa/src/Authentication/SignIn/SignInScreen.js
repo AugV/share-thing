@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Form, Button, Container } from 'react-bootstrap';
+import { Form, Button} from 'react-bootstrap';
 
 import { SignUpLink } from '../SignUp';
 import { withFirebase } from '../../Firebase';
@@ -9,7 +9,7 @@ import { PasswordResetLink } from "../PasswordReset";
 
 const SignInScreen = () => (
   <div>
-    <h1>Sign-In</h1>
+    <h1>Share </h1>
     <SignInForm />
     <SignUpLink />
     <PasswordResetLink />
@@ -68,7 +68,7 @@ class SignInFormBase extends Component {
           </Form.Group>
 
           <Button disabled={isInvalid} variant="primary" type="submit">
-            Submit
+            Sign-In
           </Button>
           {error && <p>{error.message}</p>}
         </Form>

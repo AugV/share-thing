@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { Form, Button } from 'react-bootstrap';
 
 import * as ROUTES from '../../Constants/Routes';
 
@@ -7,7 +8,7 @@ import { withFirebase } from '../../Firebase';
 
 const SignUpScreen = () => (
     <div>
-        <h1>SignUp</h1>
+        <h1>Sign-Up</h1>
         <SignUpForm />
     </div>
 );
@@ -61,44 +62,33 @@ class SignUpFormBase extends Component {
             || username === '';
 
         return (
-            <div>
-                <form onSubmit={this.onSubmit}>
-                    <input
-                        name="username"
-                        value={username}
-                        onChange={this.onChange}
-                        type="text"
-                        placeholder="Full Name"
-                    />
-                    <input
-                        name="email"
-                        value={email}
-                        onChange={this.onChange}
-                        type="text"
-                        placeholder="Email Address"
-                    />
-                    <input
-                        name="passwordOne"
-                        value={passwordOne}
-                        onChange={this.onChange}
-                        type="password"
-                        placeholder="Password"
-                    />
-                    <input
-                        name="passwordTwo"
-                        value={passwordTwo}
-                        onChange={this.onChange}
-                        type="password"
-                        placeholder="Confirm Password"
-                    />
-                    <button type="submit" disabled={isInvalid} >
-                        Sign Up
-                </button>
+                <Form onSubmit={this.onSubmit}>
+                    
+                    <Form.Group controlId="username">
+                        <Form.Label>Username</Form.Label>
+                        <Form.Control name="username" type="text" placeholder="Enter username" onChange={this.onChange} value={username} />
+                    </Form.Group>
 
+                    <Form.Group controlId="email">
+                        <Form.Label>Email address</Form.Label>
+                        <Form.Control name="email" type="email" placeholder="Enter email" onChange={this.onChange} value={email} />
+                    </Form.Group>
+
+                    <Form.Group controlId="passwordOne">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control name="passwordOne" type="password" placeholder="Password" onChange={this.onChange} value={passwordOne} />
+                    </Form.Group>
+
+                    <Form.Group controlId="passwordTwo">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control name="passwordTwo" type="password" placeholder="Confirm Password" onChange={this.onChange} value={passwordTwo} />
+                    </Form.Group>
+
+                    <Button disabled={isInvalid} variant="primary" type="submit">
+                        Sign-Up
+                     </Button>
                     {error && <p>{error.message}</p>}
-                </form>
-                
-            </div>
+                </Form>
 
         );
     }

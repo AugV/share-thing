@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { Form, Button} from 'react-bootstrap';
 
 import { withFirebase } from '../../Firebase';
 import * as ROUTES from '../../Constants/Routes';
@@ -48,20 +49,18 @@ class PasswordResetFormBase extends Component {
     const isInvalid = email === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="email"
-          value={this.state.email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <button disabled={isInvalid} type="submit">
-          Reset My Password
-        </button>
+      <Form onSubmit={this.onSubmit}>
+        
+        <Form.Group controlId="email">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control name="email" type="email" placeholder="Email Address" onChange={this.onChange} value={this.state.email} />
+        </Form.Group>
 
+        <Button disabled={isInvalid} variant="primary" type="submit">
+          Reset My Password
+          </Button>
         {error && <p>{error.message}</p>}
-      </form>
+      </Form>
     );
   }
 }
@@ -76,4 +75,4 @@ export default PasswordResetScreen;
 
 const PasswordResetForm = withFirebase(PasswordResetFormBase);
 
-export { PasswordResetForm , PasswordResetLink };
+export { PasswordResetForm, PasswordResetLink };
