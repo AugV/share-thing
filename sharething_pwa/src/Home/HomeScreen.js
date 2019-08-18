@@ -59,4 +59,5 @@ class HomeScreen extends React.Component {
   }
 }
 
+export {HomeScreen};
 export default withAuthorization(condition)(HomeScreen);
