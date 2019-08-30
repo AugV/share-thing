@@ -1,0 +1,7 @@
+TO-DO list:
+-HomeScreen
+--strap list to bootstrap
+--modify list/lsitener logic so that duplicates do not appear
+--add username and icon(link to account) in header
+--"Add" button in fixed bottom part
+--list scrolling
