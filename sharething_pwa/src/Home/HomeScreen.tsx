@@ -3,7 +3,9 @@ import SignOutButton from '../Authentication/SignOut';
 import { withAuthorization } from "../Session";
 
 
-const condition = authUser => !!authUser;
+const condition = (authUser: object) => !!authUser;
+
+
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -19,8 +21,9 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     this.setState({ loading: true });
-    let items = []
-     let listener = this.props.firebase.items().onSnapshot(snapshot => {
+    type items = object;
+    let items: object[] = []
+    let listener = this.props.firebase.items().onSnapshot(snapshot => {
       snapshot.forEach(doc => {
         console.log(doc.data());
         items.push(doc.data());
@@ -29,7 +32,7 @@ class HomeScreen extends React.Component {
         items: items,
         loading: false,
       });
-      this.setState({unsubscribe: listener});
+      this.setState({ unsubscribe: listener });
       console.log(this.state.items);
     });
   }
@@ -39,7 +42,7 @@ class HomeScreen extends React.Component {
   }
 
   render() {
-    const {items, loading } = this.state;
+    const { items, loading } = this.state;
 
     return (
       <div className="container">
@@ -59,5 +62,5 @@ class HomeScreen extends React.Component {
   }
 }
 
-export {HomeScreen};
+export { HomeScreen };
 export default withAuthorization(condition)(HomeScreen);
