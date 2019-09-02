@@ -1,48 +1,61 @@
 import React from 'react';
 import SignOutButton from '../Authentication/SignOut';
 import { withAuthorization } from "../Session";
+import { Item } from '../Item/Item';
 
 
 const condition = (authUser: object) => !!authUser;
 
+interface HomeScreen {
+  unsubscribe: () => void;
+}
+
+interface Props {
+  firebase: object;
+}
+
+interface State {
+  loading: boolean;
+  items: Item[];
+}
 
 
-class HomeScreen extends React.Component {
+class HomeScreen extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 
     this.state = {
       loading: false,
-      unsubscribe: null,
       items: [],
     };
   }
 
-
   componentDidMount() {
     this.setState({ loading: true });
-    type items = object;
-    let items: object[] = []
-    let listener = this.props.firebase.items().onSnapshot(snapshot => {
+    let items: Item[];
+    this.unsubscribe = this.props.firebase.getItems().onSnapshot(snapshot => {
       snapshot.forEach(doc => {
         console.log(doc.data());
         items.push(doc.data());
       });
       this.setState({
-        items: items,
         loading: false,
+        items: items,
       });
-      this.setState({ unsubscribe: listener });
-      console.log(this.state.items);
     });
   }
 
   componentWillUnmount() {
-    this.state.unsubscribe();
+    this.unsubscribe();
   }
 
   render() {
+
     const { items, loading } = this.state;
+
+    let items2: Item[];
+    items2 = this.state.items;
+
 
     return (
       <div className="container">
