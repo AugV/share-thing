@@ -2,6 +2,7 @@ import React from 'react';
 import SignOutButton from '../Authentication/SignOut';
 import { withAuthorization } from "../Session";
 import { Item } from '../Item/Item';
+import Firebase from '../Firebase';
 
 
 const condition = (authUser: object) => !!authUser;
@@ -11,7 +12,7 @@ interface HomeScreen {
 }
 
 interface Props {
-  firebase: object;
+  firebase: Firebase;
 }
 
 interface State {
@@ -21,7 +22,7 @@ interface State {
 
 
 class HomeScreen extends React.Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -30,13 +31,19 @@ class HomeScreen extends React.Component<Props, State> {
     };
   }
 
+  documentToItem = (snapshot: firebase.firestore.DocumentData) => {
+    type item = Item;
+    //todo construct Item from DocumentData
+    return item;
+  }
+
   componentDidMount() {
     this.setState({ loading: true });
     let items: Item[];
     this.unsubscribe = this.props.firebase.getItems().onSnapshot(snapshot => {
       snapshot.forEach(doc => {
         console.log(doc.data());
-        items.push(doc.data());
+        items.push(this.documentToItem(doc.data()));
       });
       this.setState({
         loading: false,
