@@ -1,45 +1,68 @@
 import React from 'react';
 import SignOutButton from '../Authentication/SignOut';
 import { withAuthorization } from "../Session";
+import { Item } from '../Item/Item';
+import Firebase from '../Firebase';
 
 
-const condition = authUser => !!authUser;
+const condition = (authUser: object) => !!authUser;
 
-class HomeScreen extends React.Component {
-  constructor(props) {
+interface HomeScreen {
+  unsubscribe: () => void;
+}
+
+interface Props {
+  firebase: Firebase;
+}
+
+interface State {
+  loading: boolean;
+  items: Item[];
+}
+
+
+class HomeScreen extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
       loading: false,
-      unsubscribe: null,
       items: [],
     };
   }
 
+  documentToItem = (snapshot: firebase.firestore.DocumentData) => {
+    type item = Item;
+    //todo construct Item from DocumentData
+    return item;
+  }
 
   componentDidMount() {
     this.setState({ loading: true });
-    let items = []
-     let listener = this.props.firebase.items().onSnapshot(snapshot => {
+    let items: Item[];
+    this.unsubscribe = this.props.firebase.getItems().onSnapshot(snapshot => {
       snapshot.forEach(doc => {
         console.log(doc.data());
-        items.push(doc.data());
+        items.push(this.documentToItem(doc.data()));
       });
       this.setState({
-        items: items,
         loading: false,
+        items: items,
       });
-      this.setState({unsubscribe: listener});
-      console.log(this.state.items);
     });
   }
 
   componentWillUnmount() {
-    this.state.unsubscribe();
+    this.unsubscribe();
   }
 
   render() {
-    const {items, loading } = this.state;
+
+    const { items, loading } = this.state;
+
+    let items2: Item[];
+    items2 = this.state.items;
+
 
     return (
       <div className="container">
@@ -59,5 +82,5 @@ class HomeScreen extends React.Component {
   }
 }
 
-export {HomeScreen};
+export { HomeScreen };
 export default withAuthorization(condition)(HomeScreen);
