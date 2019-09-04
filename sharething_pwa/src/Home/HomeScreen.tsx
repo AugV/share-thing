@@ -1,7 +1,7 @@
 import React from 'react';
 import SignOutButton from '../Authentication/SignOut';
 import { withAuthorization } from "../Session";
-import { Item } from '../Item/Item';
+import Item from '../Item/Item';
 import Firebase from '../Firebase';
 
 
@@ -31,9 +31,8 @@ class HomeScreen extends React.Component<Props, State> {
     };
   }
 
-  documentToItem = (snapshot: firebase.firestore.DocumentData) => {
-    type item = Item;
-    //todo construct Item from DocumentData
+  documentToItem = (document: firebase.firestore.DocumentData) => {
+    let item: Item = new Item(document);
     return item;
   }
 
@@ -59,10 +58,6 @@ class HomeScreen extends React.Component<Props, State> {
   render() {
 
     const { items, loading } = this.state;
-
-    let items2: Item[];
-    items2 = this.state.items;
-
 
     return (
       <div className="container">
