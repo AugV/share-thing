@@ -38,7 +38,7 @@ class HomeScreen extends React.Component<Props, State> {
 
   componentDidMount() {
     this.setState({ loading: true });
-    let items: Item[];
+    let items: Item[] = [];
     this.unsubscribe = this.props.firebase.getItems().onSnapshot(snapshot => {
       snapshot.forEach(doc => {
         console.log(doc.data());
