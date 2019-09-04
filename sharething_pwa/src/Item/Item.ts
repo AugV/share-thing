@@ -1,12 +1,8 @@
-// export interface Item {
-//     groups: string[];
-//     name: string;
-//     owner: string;
-// }
-
 export default class Item {
+    id: string;
     name: string;
-    constructor(document: firebase.firestore.DocumentData) {
-        this.name = document.name;
+    constructor(document: firebase.firestore.QueryDocumentSnapshot) {
+        this.id = document.id;
+        this.name = document.data().name;
     }
 }

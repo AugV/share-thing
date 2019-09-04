@@ -3,6 +3,7 @@ import SignOutButton from '../Authentication/SignOut';
 import { withAuthorization } from "../Session";
 import Item from '../Item/Item';
 import Firebase from '../Firebase';
+import { ListGroup, Spinner } from 'react-bootstrap';
 
 
 const condition = (authUser: object) => !!authUser;
@@ -27,26 +28,28 @@ class HomeScreen extends React.Component<Props, State> {
 
     this.state = {
       loading: false,
-      items: [],
+      items: []
     };
   }
 
-  documentToItem = (document: firebase.firestore.DocumentData) => {
+  documentToItem = (document: firebase.firestore.QueryDocumentSnapshot) => {
     let item: Item = new Item(document);
     return item;
   }
 
   componentDidMount() {
     this.setState({ loading: true });
-    let items: Item[] = [];
+    let items = new Map<string, Item>();
     this.unsubscribe = this.props.firebase.getItems().onSnapshot(snapshot => {
       snapshot.forEach(doc => {
-        console.log(doc.data());
-        items.push(this.documentToItem(doc.data()));
+        console.log(doc);
+        console.log(items.size);
+        items.set(doc.id, this.documentToItem(doc));
+        console.log(items.size);
       });
       this.setState({
         loading: false,
-        items: items,
+        items: Array.from(items.values()),
       });
     });
   }
@@ -64,14 +67,14 @@ class HomeScreen extends React.Component<Props, State> {
         <h1>Home Screen</h1>
         <h2>Welcome</h2>
         <SignOutButton />
-        {loading && <div>Loading ...</div>}
-        <ul>
-          {items.map(item => (
-            <li key={item.name}>
-              <div>{item.name}</div>
-            </li>
-          ))}
-        </ul>
+        <div>
+          {loading && <Spinner animation="border" />}
+          <ListGroup>
+            {items.map(item => (
+              <ListGroup.Item key={item.id}>{item.name}</ListGroup.Item>
+            ))}
+          </ListGroup>
+        </div>
       </div>
     )
   }
