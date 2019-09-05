@@ -2,7 +2,16 @@ TO-DO list:
 -HomeScreen
 ++strap list to bootstrap
 ++modify list/lsitener logic so that duplicates do not appear
-  --change the logic - delete in DB doesnt respond in app
+  ++change the logic - delete in DB doesnt respond in app
 --add username and icon(link to account) in header
 --"Add" button in fixed bottom part
 --list scrolling
+--make redirect button to AddItemScreen
+--allow to remove item.
+
+-AddItemScreen
+--create form
+--redirect back to HomeScreen
+
+-SharedItemScreen
+--display a list of all user shared items
