@@ -7,7 +7,7 @@ TO-DO list:
 --"Add" button in fixed bottom part
 --list scrolling
 --make redirect button to AddItemScreen
---allow to remove item.
+--when item clicked options to: remove item, set sharable/unsharable
 
 -AddItemScreen
 --create form
@@ -15,3 +15,4 @@ TO-DO list:
 
 -SharedItemScreen
 --display a list of all user shared items
+--when item clicked options to: contact owner
