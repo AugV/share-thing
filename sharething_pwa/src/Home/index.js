@@ -1,3 +1,3 @@
-import HomeScreen from './HomeScreen.js';
+import HomeScreen from './HomeScreen.tsx';
 
 export default HomeScreen;
