@@ -30,6 +30,20 @@ class Firebase {
     users = () => this.db.collection('users');
 
     getItems = () => this.db.collection('items');
+    pushItem = (name: string, description: string) => {
+        this.db.collection('items')
+            .doc(Math.random().toString())
+            .set({
+                name: name,
+                description: description
+            })
+            .then(function () {
+                console.log("Document successfully written!");
+            })
+            .catch(function (error) {
+                console.error("Error writing document: ", error);
+            });
+    };
 }
 
 
