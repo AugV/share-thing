@@ -10,8 +10,9 @@ TO-DO list:
 --when item clicked options to: remove item, set sharable/unsharable
 
 -AddItemScreen
---create form
+++create form
 --redirect back to HomeScreen
+--send userID as an Item field
 
 -SharedItemScreen
 --display a list of all user shared items
