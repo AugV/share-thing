@@ -30,12 +30,13 @@ class Firebase {
     users = () => this.db.collection('users');
 
     getItems = () => this.db.collection('items');
-    pushItem = (name: string, description: string) => {
+    pushItem = (name: string, description: string, ) => {
         this.db.collection('items')
             .doc(Math.random().toString())
             .set({
                 name: name,
-                description: description
+                description: description,
+                email: (this.auth.currentUser ? this.auth.currentUser.email:null)
             })
             .then(function () {
                 console.log("Document successfully written!");
