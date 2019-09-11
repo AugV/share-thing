@@ -3,6 +3,11 @@ import { withFirebase } from '../Firebase';
 import { Form, Button, FormControlProps, FormControl } from 'react-bootstrap';
 import Firebase from '../Firebase';
 
+const INITIAL_STATE = {
+  itemName: '' as string,
+  itemDescription: '' as string,
+  error: '' as string
+};
 
 interface Props {
     firebase: Firebase
@@ -11,6 +16,7 @@ interface Props {
 interface State {
     itemName: string,
     itemDescription: string;
+    error: string
 }
 
 class AddItemScreen extends React.Component<Props, State> {
@@ -18,7 +24,8 @@ class AddItemScreen extends React.Component<Props, State> {
         super(props);
         this.state = {
             itemName: '',
-            itemDescription: ''
+            itemDescription: '',
+            error: ''
         }
     }
 
@@ -33,7 +40,10 @@ class AddItemScreen extends React.Component<Props, State> {
     }
 
     onSubmit = (event: FormEvent<HTMLFormElement>) => {
-        this.props.firebase.pushItem(this.state.itemName, this.state.itemDescription);
+        this.props.firebase.pushItem(this.state.itemName, this.state.itemDescription)
+        .then(()=>{
+          this.setState({...INITIAL_STATE});
+        });
         event.preventDefault();
     };
 
@@ -53,7 +63,7 @@ class AddItemScreen extends React.Component<Props, State> {
                 <Button variant="primary" type="submit">
                     Submit
           </Button>
-                {/* {error && <p>{error.message}</p>} */}
+                {this.state.error && <p>{this.state.error.message}</p>}
             </Form>
         )
     }
