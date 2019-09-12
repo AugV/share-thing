@@ -26,6 +26,7 @@ class SignInFormBase extends Component {
   constructor(props) {
     super(props);
 
+
     this.state = { ...INITIAL_STATE };
   }
 
@@ -52,6 +53,8 @@ class SignInFormBase extends Component {
   render() {
     const { email, password, error } = this.state;
 
+
+    console.log(this.props)
     const isInvalid = password === '' || email === '';
 
     return (
@@ -76,6 +79,6 @@ class SignInFormBase extends Component {
   }
 }
 
-const SignInForm = withRouter(withFirebase(SignInFormBase));
+const SignInForm = withFirebase(SignInFormBase);
 
 export default SignInScreen;

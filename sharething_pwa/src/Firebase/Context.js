@@ -10,7 +10,7 @@ export const withFirebase = Component => props => (
 
 export const withFirebaseProvider = Component => props => (
     <FirebaseContext.Provider value = {new Firebase()}>
-       <Component />
+       <Component {...props} />
     </FirebaseContext.Provider>
 )
 
