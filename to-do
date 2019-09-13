@@ -12,8 +12,11 @@ TO-DO list:
 -AddItemScreen
 ++create form
 --redirect back to HomeScreen
---send userID as an Item field
+++send userID as an Item field
 
 -SharedItemScreen
 --display a list of all user shared items
 --when item clicked options to: contact owner
+
+-AppStructure
+--resrtructure into more general folders
