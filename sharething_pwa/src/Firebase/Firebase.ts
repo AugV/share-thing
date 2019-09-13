@@ -25,11 +25,28 @@ class Firebase {
     signOut = () => this.auth.signOut();
     resetPsw = (email: string) => this.auth.sendPasswordResetEmail(email);
     updatePsw = (password: string) => { if (this.auth.currentUser) this.auth.currentUser.updatePassword(password); }
-    getEmail = () => { if (this.auth.currentUser) this.auth.currentUser.email; }
+    getEmail = () => { if (this.auth.currentUser) return this.auth.currentUser.email; }
     user = (uid: string) => this.db.collection('users').doc(uid);
     users = () => this.db.collection('users');
 
     getItems = () => this.db.collection('items');
+    pushItem = (name: string, description: string) => {
+        return this.db.collection('items')
+            .doc(Math.random().toString())
+            .set({
+                name: name,
+                description: description,
+                // TODO: 
+                email: (this.auth.currentUser ? this.auth.currentUser.email : null)
+            })
+            .then(function () {
+                console.log("Document successfully written!");
+            })
+            .catch(function (error) {
+                console.error("Error writing document: ", error);
+                throw error;
+            });
+    };
 }
 
 
