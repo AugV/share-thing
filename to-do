@@ -8,7 +8,7 @@ TO-DO list:
 --list scrolling
 --make redirect button to AddItemScreen
 --when item clicked options to: remove item, set sharable/unsharable
---filter items which belong to user
+++filter items which belong to user
 
 -AddItemScreen
 ++create form
@@ -16,11 +16,11 @@ TO-DO list:
 ++send userID as an Item field
 
 -SharedItemScreen
---display a list of all user shared items
+++display a list of all user shared items
 --when item clicked options to: contact owner
 
 -AppStructure
 --resrtructure into more general folders
 
 -NavBar
---navbar for dev purposes
+++navbar for dev purposes
