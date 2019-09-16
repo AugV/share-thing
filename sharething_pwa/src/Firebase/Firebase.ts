@@ -30,6 +30,7 @@ class Firebase {
     users = () => this.db.collection('users');
 
     getItems = () => this.db.collection('items');
+    getUserItems = () => this.db.collection('items').where("email", "==", (this.auth.currentUser ? this.auth.currentUser.email : "n/a"));
     pushItem = (name: string, description: string) => {
         return this.db.collection('items')
             .doc(Math.random().toString())
