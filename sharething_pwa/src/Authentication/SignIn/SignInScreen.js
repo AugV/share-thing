@@ -25,14 +25,11 @@ const INITIAL_STATE = {
 class SignInFormBase extends Component {
   constructor(props) {
     super(props);
-
-
     this.state = { ...INITIAL_STATE };
   }
 
   onSubmit = event => {
     const { email, password } = this.state;
-
     this.props.firebase
       .signInUserWithEmailAndPsw(email, password)
       .then(() => {
@@ -58,7 +55,6 @@ class SignInFormBase extends Component {
     const isInvalid = password === '' || email === '';
 
     return (
-      
         <Form onSubmit={this.onSubmit}>
           <Form.Group controlId="email">
             <Form.Label>Email address</Form.Label>
@@ -79,6 +75,6 @@ class SignInFormBase extends Component {
   }
 }
 
-const SignInForm = withFirebase(SignInFormBase);
+const SignInForm = withRouter(withFirebase(SignInFormBase));
 
 export default SignInScreen;

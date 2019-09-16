@@ -1,6 +1,6 @@
-import React, { Component, FormEvent } from "react";
+import React, {FormEvent } from "react";
 import { withFirebase } from "../Firebase";
-import { Form, Button, FormControlProps, FormControl } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import Firebase from "../Firebase";
 
 const INITIAL_STATE: State = {

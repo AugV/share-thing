@@ -1,5 +1,3 @@
-import undefined from "firebase/empty-import";
-
 export default class Item {
     id: string;
     name: string;

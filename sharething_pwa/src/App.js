@@ -17,9 +17,12 @@ import AddItemScreen from "./AddItem";
 
 import { withAuthentication } from "./Session";
 
+import Navigator from "./Navigation/Navigator";
+
 const App = () => (
 
   <BrowserRouter>
+  <Navigator />
   <Container>
     <Route exact path={ROUTES.LANDING} component={LoginScreen} />
     <Route path={ROUTES.SIGN_IN} component={SignInScreen} />
