@@ -5,3 +5,4 @@ export const ACCOUNT = '/account'
 export const PASSWORD_RESET = '/resetPassword'
 export const HOME = '/home';
 export const ADD_ITEM = '/addItem';
+export const PUBLIC = '/public';

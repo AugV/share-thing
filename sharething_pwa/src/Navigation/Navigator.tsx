@@ -29,6 +29,9 @@ class Navigator extends React.Component {
         <Nav.Item>
           <Link to={ROUTES.ADD_ITEM}>Add-Item</Link>
         </Nav.Item>
+        <Nav.Item>
+          <Link to={ROUTES.PUBLIC}>Public Screen</Link>
+        </Nav.Item>
       </Nav>
     );
   }

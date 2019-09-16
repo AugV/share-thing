@@ -14,6 +14,7 @@ import PasswordResetScreen from "./Authentication/PasswordReset";
 import * as ROUTES from "./Constants/Routes";
 import AccountScreen from "./Account";
 import AddItemScreen from "./AddItem";
+import PublicScreen from "./PublicScreen/PublicScreen";
 
 import { withAuthentication } from "./Session";
 
@@ -31,6 +32,7 @@ const App = () => (
     <Route path={ROUTES.PASSWORD_RESET} component={PasswordResetScreen} />
     <Route path={ROUTES.ACCOUNT} component={AccountScreen} />
     <Route path={ROUTES.ADD_ITEM} component={AddItemScreen} />
+    <Route path={ROUTES.PUBLIC} component={PublicScreen} />
   </Container>
   </BrowserRouter>
 );
