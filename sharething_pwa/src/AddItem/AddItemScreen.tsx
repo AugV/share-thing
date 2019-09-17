@@ -1,7 +1,10 @@
 import React, {FormEvent } from "react";
 import { withFirebase } from "../Firebase";
+import { withRouter } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import Firebase from "../Firebase";
+import history from 'history';
+import * as ROUTES from '../Constants/Routes';
 
 const INITIAL_STATE: State = {
     itemName: '',
@@ -10,6 +13,7 @@ const INITIAL_STATE: State = {
 
 interface Props {
     firebase: Firebase;
+    history: history.History;
 }
 
 interface State {
@@ -36,6 +40,7 @@ class AddItemScreen extends React.Component<Props, State> {
             .pushItem(this.state.itemName, this.state.itemDescription)
             .then(() => {
                 this.setState({ ...INITIAL_STATE });
+                this.props.history.push(ROUTES.HOME);
             })
         event.preventDefault();
     };
@@ -69,4 +74,4 @@ class AddItemScreen extends React.Component<Props, State> {
     }
 }
 
-export default withFirebase(AddItemScreen);
+export default withRouter(withFirebase(AddItemScreen));
