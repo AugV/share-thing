@@ -5,14 +5,13 @@ TO-DO list:
   ++change the logic - delete in DB doesnt respond in app
 --add username and icon(link to account) in header
 --"Add" button in fixed bottom part
---list scrolling
 --make redirect button to AddItemScreen
 --when item clicked options to: remove item, set sharable/unsharable
 ++filter items which belong to user
 
 -AddItemScreen
 ++create form
---redirect back to HomeScreen
+++redirect back to HomeScreen
 ++send userID as an Item field
 
 -SharedItemScreen
