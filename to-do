@@ -4,8 +4,8 @@ TO-DO list:
 ++modify list/lsitener logic so that duplicates do not appear
   ++change the logic - delete in DB doesnt respond in app
 --add username and icon(link to account) in header
---"Add" button in fixed bottom part
---make redirect button to AddItemScreen
+++"Add" button in fixed bottom part
+++make redirect button to AddItemScreen
 --when item clicked options to: remove item, set sharable/unsharable
 ++filter items which belong to user
 
@@ -13,6 +13,7 @@ TO-DO list:
 ++create form
 ++redirect back to HomeScreen
 ++send userID as an Item field
+--prevent adding null
 
 -SharedItemScreen
 ++display a list of all user shared items
