@@ -23,8 +23,8 @@ import Navigator from "./Navigation/Navigator";
 const App = () => (
 
   <BrowserRouter>
-  <Navigator />
   <Container>
+  <Navigator />
     <Route exact path={ROUTES.LANDING} component={LoginScreen} />
     <Route path={ROUTES.SIGN_IN} component={SignInScreen} />
     <Route path={ROUTES.SIGN_UP} component={SignUpScreen} />
