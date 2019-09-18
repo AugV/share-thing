@@ -13,7 +13,7 @@ TO-DO list:
 ++create form
 ++redirect back to HomeScreen
 ++send userID as an Item field
---prevent adding null
+++prevent adding null
 
 -SharedItemScreen
 ++display a list of all user shared items
