@@ -1,10 +1,11 @@
-import React from 'react';
-import SignOutButton from '../Authentication/SignOut';
+import React from "react";
+import SignOutButton from "../Authentication/SignOut";
 import { withAuthorization } from "../Session";
-import Item from '../Item/Item';
-import Firebase from '../Firebase';
-import { ListGroup, Spinner } from 'react-bootstrap';
-
+import Item from "../Item/Item";
+import Firebase from "../Firebase";
+import { ListGroup, Spinner, Button } from "react-bootstrap";
+import * as ROUTES from "../Constants/Routes";
+import history from "history";
 
 const condition = (authUser: object) => !!authUser;
 
@@ -14,6 +15,7 @@ interface HomeScreen {
 
 interface Props {
   firebase: Firebase;
+  history: history.History;
 }
 
 interface State {
@@ -21,11 +23,10 @@ interface State {
   items: Item[];
 }
 
-
 class HomeScreen extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-
+    console.log(this.props);
     this.state = {
       loading: false,
       items: []
@@ -35,27 +36,37 @@ class HomeScreen extends React.Component<Props, State> {
   documentToItem = (document: firebase.firestore.QueryDocumentSnapshot) => {
     let item: Item = new Item(document);
     return item;
-  }
+  };
 
   componentDidMount() {
     this.setState({ loading: true });
 
-    this.unsubscribe = this.props.firebase.getUserItems().onSnapshot(snapshot => {
-      this.setState({
-        loading: false,
-        items: snapshot.docs.map(this.documentToItem),
-      }, () => { console.log('new state', this.state) });
+    this.unsubscribe = this.props.firebase
+      .getUserItems()
+      .onSnapshot(snapshot => {
+        this.setState(
+          {
+            loading: false,
+            items: snapshot.docs.map(this.documentToItem)
+          },
+          () => {
+            console.log("new state", this.state);
+          }
+        );
 
-      console.log('old state', this.state)
-    });
+        console.log("old state", this.state);
+      });
   }
 
   componentWillUnmount() {
     this.unsubscribe();
   }
 
-  render() {
+  routeChange = () => {
+    this.props.history.push(ROUTES.ADD_ITEM);
+  };
 
+  render() {
     const { items, loading } = this.state;
 
     return (
@@ -71,8 +82,9 @@ class HomeScreen extends React.Component<Props, State> {
             ))}
           </ListGroup>
         </div>
+        <Button onClick={this.routeChange}>Add Item</Button>
       </div>
-    )
+    );
   }
 }
 
