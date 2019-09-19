@@ -68,7 +68,7 @@ class HomeScreen extends React.Component<Props, State> {
       <div className="container">
         <SignOutButton />
         <h1>Home Screen</h1>
-        <h2>Welcome</h2>
+        <h2>Welcome </h2>
         <div>
           {loading && <Spinner animation="border" />}
           <ListGroup>

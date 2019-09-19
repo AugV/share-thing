@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 import * as ROUTES from "../Constants/Routes";
 
+//todo remane navigator
 class Navigator extends React.Component {
   render() {
     return (
