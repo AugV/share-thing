@@ -1,5 +1,4 @@
 import React from "react";
-import SignOutButton from "../Authentication/SignOut";
 import { withAuthorization } from "../Session";
 import Item from "../Item/Item";
 import Firebase from "../Firebase";
@@ -66,7 +65,11 @@ class HomeScreen extends React.Component<Props, State> {
 
     return (
       <div className="container">
-        <SignOutButton />
+        <div style={{ float: "right" }}>
+          <Button type="button" onClick={this.props.firebase.signOut}>
+            Sign Out
+          </Button>
+        </div>
         <h1>Home Screen</h1>
         <h2>Welcome </h2>
         <div>

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import * as ROUTES from "../Constants/Routes";
 
 //todo remane navigator
-class Navigator extends React.Component {
+class NaviBar extends React.Component {
   render() {
     return (
       <Nav fill variant="tabs" defaultActiveKey="/home">
@@ -38,4 +38,4 @@ class Navigator extends React.Component {
   }
 }
 
-export default Navigator;
+export default NaviBar;

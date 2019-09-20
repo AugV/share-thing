@@ -18,21 +18,25 @@ import PublicScreen from "./PublicScreen/PublicScreen";
 
 import { withAuthentication } from "./Session";
 
-import Navigator from "./Navigation/Navigator";
+import NavBar from "./Navigation/NaviBar";
 
 //TODO: make router hierarchy
 const App = () => (
   <BrowserRouter>
     <Container>
-      <Navigator />
+      <NavBar />
+      <Switch>
+        {/* public */}
         <Route exact path={ROUTES.LANDING} component={LoginScreen} />
         <Route path={ROUTES.SIGN_IN} component={SignInScreen} />
         <Route path={ROUTES.SIGN_UP} component={SignUpScreen} />
+        {/* user */}
+        <Route path={ROUTES.ACCOUNT} component={AccountScreen} />
         <Route path={ROUTES.HOME} component={HomeScreen} />
         <Route path={ROUTES.PASSWORD_RESET} component={PasswordResetScreen} />
-        <Route path={ROUTES.ACCOUNT} component={AccountScreen} />
         <Route path={ROUTES.ADD_ITEM} component={AddItemScreen} />
         <Route path={ROUTES.PUBLIC} component={PublicScreen} />
+      </Switch>
     </Container>
   </BrowserRouter>
 );

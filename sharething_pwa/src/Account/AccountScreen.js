@@ -5,12 +5,6 @@ import { PasswordResetForm } from '../Authentication/PasswordReset';
 import PasswordChangeForm from '../Authentication/PasswordChange';
 
 const AccountScreen = () => (
-<div>
-  <Route path={'profile'} component={HomeScreen} />
-  <Route path={'preferences'} component={PasswordResetScreen} />
-  <Route path={'security'} component={AccountScreen} />
-</div>
-
   <AuthUserContext.Consumer>
     {authUser => (
       <div>

@@ -1,5 +1,4 @@
 import React from 'react';
-import SignOutButton from '../Authentication/SignOut';
 import { withAuthorization } from "../Session";
 import Item from '../Item/Item';
 import Firebase from '../Firebase';
@@ -61,7 +60,6 @@ class PublicScreen extends React.Component<Props, State> {
         return (
             <div className="container">
                 <h1>Public Screen</h1>
-                <SignOutButton />
                 <div>
                     {loading && <Spinner animation="border" />}
                     <ListGroup>
