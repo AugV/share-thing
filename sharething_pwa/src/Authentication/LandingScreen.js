@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import * as ROUTES from '../Constants/Routes';
 
 
-function LoginScreen() {
+function LandingScreen() {
   return (
     <div className="container">
       <h1>ShareThing</h1>
@@ -18,4 +18,4 @@ function LoginScreen() {
   )
 }
 
-export default LoginScreen;
+export default LandingScreen;

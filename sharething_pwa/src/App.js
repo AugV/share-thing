@@ -6,15 +6,14 @@ import { Route, BrowserRouter, Switch } from "react-router-dom";
 
 import { withFirebaseProvider } from "./Firebase";
 
-import LoginScreen from "./Authentication/LoginScreen";
-import SignUpScreen from "./Authentication/SignUp";
-import SignInScreen from "./Authentication/SignIn";
+import LandingScreen from "./Authentication/LandingScreen";
 import HomeScreen from "./Home";
 import PasswordResetScreen from "./Authentication/PasswordReset";
 import * as ROUTES from "./Constants/Routes";
 import AccountScreen from "./Account";
 import AddItemScreen from "./AddItem";
 import PublicScreen from "./PublicScreen/PublicScreen";
+import { PrivatePage } from "./Navigation/PrivatePage";
 
 import { withAuthentication } from "./Session";
 
@@ -26,16 +25,8 @@ const App = () => (
     <Container>
       <NavBar />
       <Switch>
-        {/* public */}
-        <Route exact path={ROUTES.LANDING} component={LoginScreen} />
-        <Route path={ROUTES.SIGN_IN} component={SignInScreen} />
-        <Route path={ROUTES.SIGN_UP} component={SignUpScreen} />
-        {/* user */}
-        <Route path={ROUTES.ACCOUNT} component={AccountScreen} />
-        <Route path={ROUTES.HOME} component={HomeScreen} />
-        <Route path={ROUTES.PASSWORD_RESET} component={PasswordResetScreen} />
-        <Route path={ROUTES.ADD_ITEM} component={AddItemScreen} />
-        <Route path={ROUTES.PUBLIC} component={PublicScreen} />
+        <Route path={ROUTES.PRIVATE_PAGE} component={PrivatePage} />
+        <Route path={ROUTES.LANDING} component={LandingScreen} />
       </Switch>
     </Container>
   </BrowserRouter>
