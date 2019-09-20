@@ -1,4 +1,8 @@
 TO-DO list:
+-General
+--resrtructure into more general folders
+--make routing hierarchical
+
 -HomeScreen
 ++strap list to bootstrap
 ++modify list/lsitener logic so that duplicates do not appear
@@ -18,9 +22,6 @@ TO-DO list:
 -SharedItemScreen
 ++display a list of all user shared items
 --when item clicked options to: contact owner
-
--AppStructure
---resrtructure into more general folders
 
 -NavBar
 ++navbar for dev purposes
