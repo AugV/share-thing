@@ -6,14 +6,9 @@ import { Route, BrowserRouter, Switch } from "react-router-dom";
 
 import { withFirebaseProvider } from "./Firebase";
 
-import LandingScreen from "./Authentication/LandingScreen";
-import HomeScreen from "./Home";
-import PasswordResetScreen from "./Authentication/PasswordReset";
+import LandingScreen from "./Account/LandingScreen";
 import * as ROUTES from "./Constants/Routes";
-import AccountScreen from "./Account";
-import AddItemScreen from "./AddItem";
-import PublicScreen from "./PublicScreen/PublicScreen";
-import { PrivatePage } from "./Navigation/PrivatePage";
+import { PrivatePage } from "./Navigation/PrivateNav";
 
 import { withAuthentication } from "./Session";
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { withAuthorization } from "../Session";
-import Item from '../Item/Item';
+import Item from '../Entities/Item';
 import Firebase from '../Firebase';
 import { ListGroup, Spinner } from 'react-bootstrap';
 

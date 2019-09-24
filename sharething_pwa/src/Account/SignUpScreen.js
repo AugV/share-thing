@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 
-import * as ROUTES from '../../Constants/Routes';
+import * as ROUTES from '../Constants/Routes';
 
-import { withFirebase } from '../../Firebase';
+import { withFirebase } from '../Firebase';
 
 const SignUpScreen = () => (
     <div>
