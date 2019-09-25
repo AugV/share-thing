@@ -7,7 +7,7 @@ import PasswordResetScreen from "../Account/PasswordResetScreen";
 import AddItemScreen from "../Sharing/AddItemScreen";
 import PublicScreen from "../Sharing/PublicScreen";
 
-export const PrivatePage = () =>(
+const PrivatePage = () =>(
     <Switch>
         <Route path={ROUTES.ACCOUNT} component={AccountScreen} />
         <Route path={ROUTES.HOME} component={HomeScreen} />
@@ -16,3 +16,5 @@ export const PrivatePage = () =>(
         <Route path={ROUTES.PUBLIC} component={PublicScreen} /> 
       </Switch>
 );
+
+export default PrivatePage;
