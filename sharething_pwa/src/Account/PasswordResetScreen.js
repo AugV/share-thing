@@ -20,7 +20,7 @@ const INITIAL_STATE = {
 class PasswordResetFormBase extends Component {
   constructor(props) {
     super(props);
-
+console.log(props.firebase.getEmail);
     this.state = { ...INITIAL_STATE };
   }
 
