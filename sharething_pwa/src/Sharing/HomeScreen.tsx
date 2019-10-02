@@ -2,7 +2,17 @@ import React from "react";
 import { withAuthorization } from "../Session";
 import Item from "../Entities/Item";
 import Firebase from "../Firebase";
-import { ListGroup, Spinner, Button } from "react-bootstrap";
+import {
+  ListGroup,
+  Spinner,
+  Button,
+  Accordion,
+  Card,
+  Image,
+  Container,
+  Col,
+  Row
+} from "react-bootstrap";
 import * as ROUTES from "../Constants/Routes";
 import history from "history";
 
@@ -43,12 +53,10 @@ class HomeScreen extends React.Component<Props, State> {
     this.unsubscribe = this.props.firebase
       .getUserItems()
       .onSnapshot(snapshot => {
-        this.setState(
-          {
-            loading: false,
-            items: snapshot.docs.map(this.documentToItem)
-          },
-        );
+        this.setState({
+          loading: false,
+          items: snapshot.docs.map(this.documentToItem)
+        });
       });
   }
 
@@ -71,14 +79,31 @@ class HomeScreen extends React.Component<Props, State> {
           </Button>
         </div>
         <h1>Home Screen</h1>
-        <h2>Welcome </h2>
         <div>
           {loading && <Spinner animation="border" />}
-          <ListGroup>
-            {items.map(item => (
-              <ListGroup.Item key={item.id}>{item.name}</ListGroup.Item>
+          <Accordion>
+            {items.map((item, index) => (
+              <Card>
+                <Card.Header>
+                  <Accordion.Toggle as={Card.Body} eventKey={index.toString()}>
+                    <Container>
+                      <Row>
+                        <Col>
+                          <Image src={require("../test-img.png")} />
+                        </Col>
+                        <Col>
+                          <Card.Text>{item.name}</Card.Text>
+                        </Col>
+                      </Row>
+                    </Container>
+                  </Accordion.Toggle>
+                </Card.Header>
+                <Accordion.Collapse eventKey={index.toString()}>
+                  <Card.Body>Hello! I'm the body</Card.Body>
+                </Accordion.Collapse>
+              </Card>
             ))}
-          </ListGroup>
+          </Accordion>
         </div>
         <Button onClick={this.routeChange}>Add Item</Button>
       </div>
