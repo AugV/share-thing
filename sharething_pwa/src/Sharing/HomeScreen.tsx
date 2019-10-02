@@ -99,7 +99,18 @@ class HomeScreen extends React.Component<Props, State> {
                   </Accordion.Toggle>
                 </Card.Header>
                 <Accordion.Collapse eventKey={index.toString()}>
-                  <Card.Body>Hello! I'm the body</Card.Body>
+                  <Card.Body>
+                    <Container>
+                      <Row>
+                        <Col>
+                          <Button variant="primary">Edit</Button>
+                        </Col>
+                        <Col>
+                          <Button variant="primary">Delete</Button>
+                        </Col>
+                      </Row>
+                    </Container>
+                  </Card.Body>
                 </Accordion.Collapse>
               </Card>
             ))}
