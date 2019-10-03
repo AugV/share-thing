@@ -18,7 +18,7 @@ const PrivatePage = (props: Props) => {
       <Route path={ROUTES.ACCOUNT} component={AccountScreen} />
       <Route path={ROUTES.HOME} component={HomeScreen} />
       <Route path={ROUTES.PUBLIC} component={PublicScreen} />
-      <Route path={ROUTES.ADD_ITEM} component={AddItemScreen} />
+      <Route path={ROUTES.ITEM} component={AddItemScreen} />
       <Route path={ROUTES.PASSWORD_RESET} component={PasswordResetScreen} />
     </Switch>)
   }

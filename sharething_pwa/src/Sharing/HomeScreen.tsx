@@ -15,6 +15,7 @@ import {
 } from "react-bootstrap";
 import * as ROUTES from "../Constants/Routes";
 import history from "history";
+import { Link } from "react-bootstrap/lib/Navbar";
 
 const condition = (authUser: object) => !!authUser;
 
@@ -64,9 +65,14 @@ class HomeScreen extends React.Component<Props, State> {
     this.unsubscribe();
   }
 
-  routeChange = () => {
+  addItem = () => {
     this.props.history.push(ROUTES.ADD_ITEM);
   };
+
+
+  onClickEdit = (itemId:string) => {
+    this.props.history.push(ROUTES.EDIT_ITEM, itemId);
+  }
 
   render() {
     const { items, loading } = this.state;
@@ -103,7 +109,7 @@ class HomeScreen extends React.Component<Props, State> {
                     <Container>
                       <Row>
                         <Col>
-                          <Button variant="primary">Edit</Button>
+                          <Button variant="primary" onClick = {()=>this.onClickEdit(item.id)} >Edit</Button>
                         </Col>
                         <Col>
                           <Button variant="primary">Delete</Button>
@@ -116,7 +122,7 @@ class HomeScreen extends React.Component<Props, State> {
             ))}
           </Accordion>
         </div>
-        <Button onClick={this.routeChange}>Add Item</Button>
+        <Button onClick={this.addItem}>Add Item</Button>
       </div>
     );
   }

@@ -6,49 +6,17 @@ import Firebase from "../Firebase";
 import history from "history";
 import * as ROUTES from "../Constants/Routes";
 
-const INITIAL_STATE: State = {
-  itemName: "",
-  itemDescription: ""
-};
-
 interface Props {
-  firebase: Firebase;
-  history: history.History;
+    onSubmit():void
 }
 
-interface State {
-  itemName: string;
-  itemDescription: string;
-  [key: string]: any;
-}
-
-class AddItemScreen extends React.Component<Props, State> {
-  constructor(props: Props) {
+class ItemForm extends React.Component<Props, State>{
+constructor(props:Props) {
     super(props);
-    this.state = INITIAL_STATE;
-  }
-
-  onChange = (event: any) => {
-    const name = event.target.name as string;
-    this.setState({
-      [name]: event.target.value
-    });
-  };
-
-  onSubmit = (event: FormEvent<HTMLFormElement>) => {
-    this.props.firebase
-      .pushItem(this.state.itemName, this.state.itemDescription)
-      .then(() => {
-        this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.HOME);
-      });
-    event.preventDefault();
-  };
-
-  render() {
+    
+}
+render() {
     return (
-
-
       <Form onSubmit={this.onSubmit}>
         <Form.Group controlId="itemName">
           <Form.Label>Item name</Form.Label>
@@ -78,6 +46,5 @@ class AddItemScreen extends React.Component<Props, State> {
       </Form>
     );
   }
-}
 
-export default withRouter(withFirebase(AddItemScreen));
+  export default ItemForm;
