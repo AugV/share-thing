@@ -6,18 +6,40 @@ import Firebase from "../Firebase";
 import history from "history";
 import * as ROUTES from "../Constants/Routes";
 
-interface Props {
-    onSubmit():void
+interface ItemInfo {
+  itemId: string;
+  itemName: string;
+  itemDescription: string;
 }
 
-class ItemForm extends React.Component<Props, State>{
-constructor(props:Props) {
-    super(props);
-    
+interface Props {
+  onSubmit(event:FormEvent<HTMLFormElement>): void;
+  item: ItemInfo;
 }
-render() {
+
+interface State {
+  itemName: string;
+  itemDescription: string;
+  [key: string]: any;
+}
+
+class ItemForm extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {...props.item};
+    console.log("ItemForm LOADED");
+  }
+
+  onChange = (event: any) => {
+    const name = event.target.name as string;
+    this.setState({
+      [name]: event.target.value
+    });
+  };
+
+  render() {
     return (
-      <Form onSubmit={this.onSubmit}>
+      <Form onSubmit={this.props.onSubmit}>
         <Form.Group controlId="itemName">
           <Form.Label>Item name</Form.Label>
           <Form.Control
@@ -46,5 +68,6 @@ render() {
       </Form>
     );
   }
+}
 
-  export default ItemForm;
+export default ItemForm;

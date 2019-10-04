@@ -71,7 +71,7 @@ class HomeScreen extends React.Component<Props, State> {
 
 
   onClickEdit = (itemId:string) => {
-    this.props.history.push(ROUTES.EDIT_ITEM, itemId);
+    this.props.history.push(ROUTES.EDIT_ITEM, {itemId:itemId});
   }
 
   render() {

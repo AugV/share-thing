@@ -29,6 +29,15 @@ class Firebase {
     user = (uid: string) => this.db.collection('users').doc(uid);
     users = () => this.db.collection('users');
 
+    getItem = (itemId: string) => this.db.collection('items').doc(itemId).get().then(function (doc) {
+        if (doc.exists) {
+            console.log("Document data:", doc.data());
+        } else {
+            console.log("No such document!");
+        }
+    }).catch(function (error) {
+        console.log("Error getting document:", error);
+    });
     getItems = () => this.db.collection('items');
     getUserItems = () => this.db.collection('items').where("email", "==", (this.auth.currentUser ? this.auth.currentUser.email : "n/a"));
     pushItem = (name: string, description: string) => {
@@ -37,7 +46,6 @@ class Firebase {
             .set({
                 name: name,
                 description: description,
-                // TODO: 
                 email: (this.auth.currentUser ? this.auth.currentUser.email : null)
             })
             .then(function () {
