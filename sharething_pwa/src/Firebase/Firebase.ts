@@ -29,11 +29,24 @@ class Firebase {
     user = (uid: string) => this.db.collection('users').doc(uid);
     users = () => this.db.collection('users');
 
-    getItem = (itemId: string) => this.db.collection('items').doc(itemId).get().then(function (doc) {
+    getItemREAL = (itemId: string) => this.db.collection('items').doc(itemId).get().then(function (doc) {
         if (doc.exists) {
             console.log("Document data:", doc.data());
         } else {
             console.log("No such document!");
+        }
+    }).catch(function (error) {
+        console.log("Error getting document:", error);
+    });
+    getItem = (itemId: string) => this.db.collection('items').doc(itemId).get().then(function (doc) {
+        if (doc.exists) {
+            console.log("Document data:", doc.data());
+            let obj = doc?doc.data:null;
+            // console.log(obj.name);
+            return {itemName:obj?obj.name:null};
+        } else {
+            console.log("No such document!");
+            return doc.data();
         }
     }).catch(function (error) {
         console.log("Error getting document:", error);

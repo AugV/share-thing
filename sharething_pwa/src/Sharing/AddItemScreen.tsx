@@ -40,8 +40,11 @@ class AddItemScreen extends React.Component<Props, State> {
   };
 
   fetchItem = () => {
-    let docSnap = this.props.firebase.getItem(this.props.location.state.itemId);
-    return { itemId: "yes", itemName: "nameYes", itemDescription: "yesdDEsc" };
+    let itemId:string =this.props.location.state.itemId;
+    let item = this.props.firebase.getItem(itemId);
+    console.log(item.itemName)
+
+    return { itemId: "", itemName: "", itemDescription: "" };
   };
 
   onSubmit = (event: FormEvent<HTMLFormElement>) => {
