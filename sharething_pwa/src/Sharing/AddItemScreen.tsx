@@ -6,11 +6,12 @@ import Firebase from "../Firebase";
 import history from "history";
 import * as ROUTES from "../Constants/Routes";
 import ItemForm from "./ItemForm";
-import { Item } from "react-bootstrap/lib/Carousel";
+import { Item } from "../Entities/Iterfaces";
 
 const INITIAL_STATE: State = {
   itemName: "",
-  itemDescription: ""
+  itemDescription: "",
+  item: { id: "NA", name: "NA", description: "NA" }
 };
 
 interface Props {
@@ -24,6 +25,7 @@ interface State {
   itemName: string;
   itemDescription: string;
   [key: string]: any;
+  item: Item;
 }
 
 class AddItemScreen extends React.Component<Props, State> {
@@ -31,6 +33,11 @@ class AddItemScreen extends React.Component<Props, State> {
     super(props);
     this.state = INITIAL_STATE;
   }
+
+  componentDidMount(){
+    this.setState({item:this.fetchItem()})
+  }
+
 
   onChange = (event: any) => {
     const name = event.target.name as string;
@@ -40,11 +47,10 @@ class AddItemScreen extends React.Component<Props, State> {
   };
 
   fetchItem = () => {
-    let itemId:string =this.props.location.state.itemId;
-    let item = this.props.firebase.getItem(itemId);
-    console.log(item.itemName)
-
-    return { itemId: "", itemName: "", itemDescription: "" };
+    let itemId: string = this.props.location.state.itemId;
+    let item: Item = this.props.firebase.getItem(itemId);
+    console.log(item.name + "TESTETSTST" + item.description);
+    return { id: "", name: "", description: "" };
   };
 
   onSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -64,7 +70,7 @@ class AddItemScreen extends React.Component<Props, State> {
         <Route
           path={ROUTES.EDIT_ITEM}
           component={() => (
-            <ItemForm onSubmit={this.onSubmit} item={this.fetchItem()} />
+            <ItemForm onSubmit={this.onSubmit} item={this.state} />
           )}
         />
       </Switch>
