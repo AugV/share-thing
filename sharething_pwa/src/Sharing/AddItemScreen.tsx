@@ -1,7 +1,7 @@
 import React, { FormEvent } from "react";
 import { withFirebase } from "../Firebase";
 import { withRouter, Switch, Route } from "react-router-dom";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Spinner } from "react-bootstrap";
 import Firebase from "../Firebase";
 import history from "history";
 import * as ROUTES from "../Constants/Routes";
@@ -11,98 +11,91 @@ import { Item } from "../Entities/Iterfaces";
 const INITIAL_STATE: State = {
   itemName: "",
   itemDescription: "",
-  item: { id: "NA", name: "NA", description: "NA" }
+  item: null
 };
 
 interface Props {
   firebase: Firebase;
   location: any;
   history: history.History;
-  itemId: string;
+  itemId: string | null;
 }
 
 interface State {
   itemName: string;
   itemDescription: string;
   [key: string]: any;
-  item: Item;
+  item: Item | null;
 }
 
 class AddItemScreen extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = INITIAL_STATE;
+    // this.loadItem();
   }
 
-  componentDidMount(){
-    this.setState({item:this.fetchItem()})
+  componentDidMount() {
+    if (this.props.location.state) this.loadItem();
   }
 
-
-  onChange = (event: any) => {
-    const name = event.target.name as string;
-    this.setState({
-      [name]: event.target.value
-    });
-  };
-
-  fetchItem = () => {
+  loadItem = () => {
     let itemId: string = this.props.location.state.itemId;
-    let item: Item = this.props.firebase.getItem(itemId);
-    console.log(item.name + "TESTETSTST" + item.description);
-    return { id: "", name: "", description: "" };
+    this.props.firebase
+      .getItem(itemId)
+      .then(item => {
+        this.setState({ item: item });
+      })
+      .catch(error => console.log(error));
   };
 
-  onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  onSubmit(/* event: FormEvent<HTMLFormElement> */) {
+    console.log(
+      this.props.itemId,
+      this.state.itemName,
+      this.state.itemDescription
+    );
     this.props.firebase
-      .pushItem(this.state.itemName, this.state.itemDescription)
+      .pushItem(
+        this.props.itemId,
+        this.state.itemName,
+        this.state.itemDescription
+      )
       .then(() => {
         this.setState({ ...INITIAL_STATE });
         this.props.history.push(ROUTES.HOME);
       });
-    event.preventDefault();
-  };
+    // event.preventDefault();
+  }
 
   render() {
     return (
       <Switch>
-        <Route path={ROUTES.ADD_ITEM} component={ItemForm} />
         <Route
-          path={ROUTES.EDIT_ITEM}
+          path={ROUTES.ADD_ITEM}
           component={() => (
-            <ItemForm onSubmit={this.onSubmit} item={this.state} />
+            <ItemForm
+              onSubmit={() => {
+                this.onSubmit();
+              }}
+              item={{ id: "", name: "", description: "" }}
+            />
           )}
         />
+        {this.state.item && (
+          <Route
+            path={ROUTES.EDIT_ITEM}
+            component={() => (
+              <ItemForm
+                onSubmit={() => {
+                  this.onSubmit();
+                }}
+                item={this.state.item!}
+              />
+            )}
+          />
+        )}
       </Switch>
-
-      // <ItemForm onSubmit={this.onSubmit} item={}></ItemForm>
-      // <Form onSubmit={this.onSubmit}>
-      //   <Form.Group controlId="itemName">
-      //     <Form.Label>Item name</Form.Label>
-      //     <Form.Control
-      //       placeholder="Enter Item name"
-      //       name="itemName"
-      //       onChange={this.onChange}
-      //     />
-      //   </Form.Group>
-
-      //   <Form.Group controlId="itemDescription">
-      //     <Form.Label>Item description</Form.Label>
-      //     <Form.Control
-      //       placeholder="Enter Item description"
-      //       name="itemDescription"
-      //       onChange={this.onChange}
-      //     />
-      //   </Form.Group>
-
-      //   <Button
-      //     variant="primary"
-      //     disabled={this.state.itemName ? false : true}
-      //     type="submit"
-      //   >
-      //     Submit
-      //   </Button>
-      // </Form>
     );
   }
 }

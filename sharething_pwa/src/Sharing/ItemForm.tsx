@@ -5,21 +5,17 @@ import { Form, Button } from "react-bootstrap";
 import Firebase from "../Firebase";
 import history from "history";
 import * as ROUTES from "../Constants/Routes";
+import {Item} from "../Entities/Iterfaces"
 
-interface ItemInfo {
-  itemId: string;
-  itemName: string;
-  itemDescription: string;
-}
 
 interface Props {
-  onSubmit(event:FormEvent<HTMLFormElement>): void;
-  item: ItemInfo;
+  onSubmit(/* event:FormEvent<HTMLFormElement> */): void;
+  item: Item;
 }
 
 interface State {
-  itemName: string;
-  itemDescription: string;
+  name: string;
+  description: string;
   [key: string]: any;
 }
 
@@ -28,6 +24,7 @@ class ItemForm extends React.Component<Props, State> {
     super(props);
     this.state = {...props.item};
     console.log("ItemForm LOADED");
+    console.log(props.onSubmit)
   }
 
   onChange = (event: any) => {
@@ -39,7 +36,7 @@ class ItemForm extends React.Component<Props, State> {
 
   render() {
     return (
-      <Form onSubmit={this.props.onSubmit}>
+    <Form onSubmit={this.props.onSubmit}>
         <Form.Group controlId="itemName">
           <Form.Label>Item name</Form.Label>
           <Form.Control
