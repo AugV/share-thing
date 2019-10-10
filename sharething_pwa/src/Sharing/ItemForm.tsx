@@ -38,11 +38,7 @@ class ItemForm extends React.Component<Props, State> {
 
   onSubmit = (event: FormEvent<HTMLFormElement>) => {
     this.props.firebase
-      .pushItem(
-        this.state.item.id,
-        this.state.item.name,
-        this.state.item.description
-      )
+      .pushItem(this.state.item)
       .then(() => {
         this.setState({ ...INITIAL_STATE });
         this.props.history.push(ROUTES.HOME);

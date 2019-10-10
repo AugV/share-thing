@@ -61,13 +61,14 @@ class Firebase {
 
     getItems = () => this.db.collection('items');
     getUserItems = () => this.db.collection('items').where("email", "==", (this.auth.currentUser ? this.auth.currentUser.email : "n/a"));
-    pushItem = (id: string|null, name: string, description: string) => {
+    pushItem = (item: Item) => {
         console.log("executing push")
         return this.db.collection('items')
-            .doc(id ? id : Math.random().toString(36).substring(7))
+            .doc(item.id ? item.id : Math.random().toString(36).substring(7))
             .set({
-                name: name,
-                description: description,
+                // name: item.name,
+                // description: item.description,
+                ...item,
                 email: (this.auth.currentUser ? this.auth.currentUser.email : null)
             })
             .then(function () {
