@@ -9,7 +9,6 @@ import PrivateNav from "./Navigation/PrivateNav";
 import LandingNav from "./Navigation/LandingNav";
 
 
-//TODO: make router hierarchy
 const App = () => (
   <BrowserRouter>
     <Container>

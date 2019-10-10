@@ -18,12 +18,9 @@ interface Props {
   firebase: Firebase;
   location: any;
   history: history.History;
-  itemId: string | null;
 }
 
 interface State {
-  itemName: string;
-  itemDescription: string;
   [key: string]: any;
   item: Item | null;
 }
@@ -32,9 +29,8 @@ class AddItemScreen extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = INITIAL_STATE;
-    // this.loadItem();
   }
-
+  
   componentDidMount() {
     if (this.props.location.state) this.loadItem();
   }
@@ -44,29 +40,26 @@ class AddItemScreen extends React.Component<Props, State> {
     this.props.firebase
       .getItem(itemId)
       .then(item => {
+        item.id = itemId;
         this.setState({ item: item });
       })
       .catch(error => console.log(error));
   };
 
-  onSubmit(/* event: FormEvent<HTMLFormElement> */) {
-    console.log(
-      this.props.itemId,
-      this.state.itemName,
-      this.state.itemDescription
-    );
-    this.props.firebase
-      .pushItem(
-        this.props.itemId,
-        this.state.itemName,
-        this.state.itemDescription
-      )
-      .then(() => {
-        this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.HOME);
-      });
-    // event.preventDefault();
-  }
+  // onSubmit(event: FormEvent<HTMLFormElement>) {
+  //   console.log("DATA: " + this.state.item!.name + this.state.item!.description);
+  //   this.props.firebase
+  //     .pushItem(
+  //       this.props.location.state.itemId,
+  //       this.state.item!.name,
+  //       this.state.item!.description
+  //     )
+  //     .then(() => {
+  //       this.setState({ ...INITIAL_STATE });
+  //       this.props.history.push(ROUTES.HOME);
+  //     });
+  //   event.preventDefault();
+  // }
 
   render() {
     return (
@@ -74,10 +67,7 @@ class AddItemScreen extends React.Component<Props, State> {
         <Route
           path={ROUTES.ADD_ITEM}
           component={() => (
-            <ItemForm
-              onSubmit={() => {
-                this.onSubmit();
-              }}
+            <ItemForm firebase={this.props.firebase} history={this.props.history}
               item={{ id: "", name: "", description: "" }}
             />
           )}
@@ -86,10 +76,7 @@ class AddItemScreen extends React.Component<Props, State> {
           <Route
             path={ROUTES.EDIT_ITEM}
             component={() => (
-              <ItemForm
-                onSubmit={() => {
-                  this.onSubmit();
-                }}
+              <ItemForm firebase={this.props.firebase} history={this.props.history}
                 item={this.state.item!}
               />
             )}

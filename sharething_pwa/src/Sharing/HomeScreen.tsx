@@ -3,7 +3,6 @@ import { withAuthorization } from "../Session";
 import Item from "../Entities/Item";
 import Firebase from "../Firebase";
 import {
-  ListGroup,
   Spinner,
   Button,
   Accordion,
@@ -15,7 +14,6 @@ import {
 } from "react-bootstrap";
 import * as ROUTES from "../Constants/Routes";
 import history from "history";
-import { Link } from "react-bootstrap/lib/Navbar";
 
 const condition = (authUser: object) => !!authUser;
 
