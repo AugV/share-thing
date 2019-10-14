@@ -11,9 +11,8 @@ TO-DO list:
 
 ++"Add" button in fixed bottom part
 ++make redirect button to AddItemScreen
---when item clicked options to: remove item, set sharable/unsharable
 ++filter items which belong to user
---on item click open pop-up (or give options) to delete or edit
+++on item click give option to delete or edit
 
 -AddItemScreen
 ++create form
