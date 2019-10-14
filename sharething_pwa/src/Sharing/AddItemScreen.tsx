@@ -1,7 +1,6 @@
-import React, { FormEvent } from "react";
+import React from "react";
 import { withFirebase } from "../Firebase";
 import { withRouter, Switch, Route } from "react-router-dom";
-import { Form, Button, Spinner } from "react-bootstrap";
 import Firebase from "../Firebase";
 import history from "history";
 import * as ROUTES from "../Constants/Routes";
@@ -46,20 +45,14 @@ class AddItemScreen extends React.Component<Props, State> {
       .catch(error => console.log(error));
   };
 
-  // onSubmit(formValues) {
-  //   console.log("DATA: " + this.state.item!.name + this.state.item!.description);
-  //   this.props.firebase
-  //     .pushItem(
-  //       this.props.location.state.itemId,
-  //       this.state.item!.name,
-  //       this.state.item!.description
-  //     )
-  //     .then(() => {
-  //       this.setState({ ...INITIAL_STATE });
-  //       this.props.history.push(ROUTES.HOME);
-  //     });
-  //   event.preventDefault();
-  // }
+  onSubmit=(item:Item)=> {
+    this.props.firebase
+      .pushItem(item)
+      .then(() => {
+        this.setState({ ...INITIAL_STATE });
+        this.props.history.push(ROUTES.HOME);
+      });
+  }
 
   render() {
     return (
@@ -68,7 +61,7 @@ class AddItemScreen extends React.Component<Props, State> {
           path={ROUTES.ADD_ITEM}
           component={() => (
             <ItemForm firebase={this.props.firebase} history={this.props.history}
-              item={{ id: "", name: "", description: "" }}
+              item={{ id: "", name: "", description: "" }} onSubmit={this.onSubmit}
             />
           )}
         />
@@ -77,7 +70,7 @@ class AddItemScreen extends React.Component<Props, State> {
             path={ROUTES.EDIT_ITEM}
             component={() => (
               <ItemForm firebase={this.props.firebase} history={this.props.history}
-                item={this.state.item!}
+                item={this.state.item!} onSubmit={this.onSubmit}
               />
             )}
           />

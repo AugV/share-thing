@@ -1,6 +1,4 @@
 import React, { FormEvent } from "react";
-import { withFirebase } from "../Firebase";
-import { withRouter } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import Firebase from "../Firebase";
 import history from "history";
@@ -15,41 +13,31 @@ interface Props {
   firebase: Firebase;
   item: Item;
   history: history.History;
+  onSubmit(item: Item): void;
 }
 
 interface State {
   item: Item;
-  // [key: string]: any;
+  [key: string]: any;
 }
 
 class ItemForm extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    
     this.state = { item: props.item };
-    console.log("ItemForm LOADED");
-    console.log(props.history);
   }
 
   onChange = (event: any) => {
     const name = event.target.name as string;
-    console.log(name + event.target.value);
     this.setState({ item: { ...this.state.item, [name]: event.target.value } });
   };
 
   onSubmit = (event: FormEvent<HTMLFormElement>) => {
-    this.props.firebase
-      .pushItem(this.state.item)
-      .then(() => {
-        this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.HOME);
-      });
+    this.props.onSubmit(this.state.item);
     event.preventDefault();
-    // this.props.onsumt(thid.dtate)
   };
 
   render() {
-      console.log(this.state.item.name);
     return (
       <Form onSubmit={this.onSubmit}>
         <Form.Group controlId="name">

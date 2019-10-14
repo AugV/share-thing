@@ -90,7 +90,7 @@ class HomeScreen extends React.Component<Props, State> {
           {loading && <Spinner animation="border" />}
           <Accordion>
             {items.map((item, index) => (
-              <Card>
+              <Card key={item.id}>
                 <Card.Header>
                   <Accordion.Toggle as={Card.Body} eventKey={index.toString()}>
                     <Container>

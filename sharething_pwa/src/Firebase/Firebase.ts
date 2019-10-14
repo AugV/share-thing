@@ -2,7 +2,6 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import { Item } from "../Entities/Iterfaces"
-import { resolve } from 'q';
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -13,11 +12,6 @@ const firebaseConfig = {
     messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
 };
 
-// interface Item {
-//     id: string;
-//     name: string;
-//     description: string;
-// };
 
 class Firebase {
     auth: app.auth.Auth;
