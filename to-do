@@ -7,12 +7,13 @@ TO-DO list:
 ++strap list to bootstrap
 ++modify list/lsitener logic so that duplicates do not appear
   ++change the logic - delete in DB doesnt respond in app
---add username and icon(link to account) in header
-
 ++"Add" button in fixed bottom part
 ++make redirect button to AddItemScreen
 ++filter items which belong to user
 ++on item click give option to delete or edit
+--Create fixed footer for add item
+--Move sign-out to Account screen
+--Rewrite routing with itemId in URL
 
 -AddItemScreen
 ++create form
