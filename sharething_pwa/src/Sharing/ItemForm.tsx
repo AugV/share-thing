@@ -2,38 +2,50 @@ import React, { FormEvent } from "react";
 import { Form, Button } from "react-bootstrap";
 import Firebase from "../Firebase";
 import history from "history";
-import * as ROUTES from "../Constants/Routes";
 import { Item } from "../Entities/Iterfaces";
+import { match, withRouter } from "react-router-dom";
 
 const INITIAL_STATE: State = {
-  item: { id: "", name: "", description: "" }
+  item: null
 };
 
+//TODO: pass loadItem() here
 interface Props {
-  firebase: Firebase;
-  item: Item;
-  history: history.History;
   onSubmit(item: Item): void;
+  match:match;
+  loadItem(itemId:string):Promise<string>;
 }
 
 interface State {
-  item: Item;
+  item: Item|null;
   [key: string]: any;
 }
 
 class ItemForm extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { item: props.item };
+    // this.state = { item: props.item };
+    this.state=INITIAL_STATE;
+    console.log("LOADED ItemForm")
+  }
+
+  componentDidMount() {
+    console.log(this.props);
+    //  if (this.props.match.params.id.exists) this.loadItem();
+  }
+  
+  loadItem() {
+    //@ts-ignore
+    this.props.loadItem(this.props.match.params.id);
   }
 
   onChange = (event: any) => {
     const name = event.target.name as string;
-    this.setState({ item: { ...this.state.item, [name]: event.target.value } });
+    // this.setState({ item: { ...this.state.item, [name]: event.target.value } });
   };
 
   onSubmit = (event: FormEvent<HTMLFormElement>) => {
-    this.props.onSubmit(this.state.item);
+    // this.props.onSubmit(this.state.item);
     event.preventDefault();
   };
 
@@ -46,7 +58,7 @@ class ItemForm extends React.Component<Props, State> {
             placeholder="Enter Item name"
             name="name"
             onChange={this.onChange}
-            value={this.state.item.name}
+            // value={this.state.item.name}
           />
         </Form.Group>
 
@@ -56,12 +68,13 @@ class ItemForm extends React.Component<Props, State> {
             placeholder="Enter Item description"
             name="description"
             onChange={this.onChange}
+            // value={this.state.item.description}
           />
         </Form.Group>
 
         <Button
           variant="primary"
-          disabled={this.state.item.name ? false : true}
+          // disabled={this.state.item.name ? false : true}
           type="submit"
         >
           Submit
@@ -70,5 +83,5 @@ class ItemForm extends React.Component<Props, State> {
     );
   }
 }
-
-export default ItemForm;
+//@ts-ignore
+export default withRouter(ItemForm);

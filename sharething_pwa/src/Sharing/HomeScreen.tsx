@@ -14,6 +14,7 @@ import {
 } from "react-bootstrap";
 import * as ROUTES from "../Constants/Routes";
 import history from "history";
+import { Link } from "react-router-dom";
 
 const condition = (authUser: object) => !!authUser;
 
@@ -67,9 +68,9 @@ class HomeScreen extends React.Component<Props, State> {
     this.props.history.push(ROUTES.ADD_ITEM);
   };
 
-  onClickEdit = (itemId: string) => {
-    this.props.history.push(ROUTES.EDIT_ITEM, { itemId: itemId });
-  };
+  // onClickEdit = (itemId: string) => {
+  //   this.props.history.push(ROUTES.EDIT_ITEM, { itemId: itemId });
+  // };
 
   onClickDelete = (itemId: string) => {
     this.props.firebase.deleteItem(itemId);
@@ -110,14 +111,14 @@ class HomeScreen extends React.Component<Props, State> {
                     <Container>
                       <Row>
                         <Col>
-                          {/* <Link to={`item/${}`}> */}
+                          <Link to={`item/id:${item.id}/edit`}>
                           <Button
                             variant="primary"
-                            onClick={() => this.onClickEdit(item.id)}
+                            // onClick={() => this.onClickEdit(item.id)}
                           >
                             Edit
                           </Button>
-                          {/* </Link> */}
+                          </Link>
                         </Col>
                         <Col>
                           <Button

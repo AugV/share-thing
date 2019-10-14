@@ -42,6 +42,7 @@ class Firebase {
                 console.log("Document data:", doc.data());
                 let itemData = doc.data() ? doc.data() : null;
                 if (itemData) {
+                    item.id=itemId;
                     item.name = itemData.name;
                     item.description = itemData.description;
                 }

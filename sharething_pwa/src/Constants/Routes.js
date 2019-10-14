@@ -6,6 +6,6 @@ export const PASSWORD_RESET = '/private/resetPassword'
 export const HOME = '/private/home';
 export const ITEM = '/private/item';
 export const ADD_ITEM = '/private/item/add';
-export const EDIT_ITEM = '/private/item/edit';
+export const EDIT_ITEM = "/private/item/:id/edit";
 export const PUBLIC = '/private/public';
 export const PRIVATE_PAGE = '/private';
