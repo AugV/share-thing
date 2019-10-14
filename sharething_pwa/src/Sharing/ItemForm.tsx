@@ -25,7 +25,8 @@ interface State {
 class ItemForm extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { ...props };
+    
+    this.state = { item: props.item };
     console.log("ItemForm LOADED");
     console.log(props.history);
   }
@@ -44,6 +45,7 @@ class ItemForm extends React.Component<Props, State> {
         this.props.history.push(ROUTES.HOME);
       });
     event.preventDefault();
+    // this.props.onsumt(thid.dtate)
   };
 
   render() {
@@ -56,6 +58,7 @@ class ItemForm extends React.Component<Props, State> {
             placeholder="Enter Item name"
             name="name"
             onChange={this.onChange}
+            value={this.state.item.name}
           />
         </Form.Group>
 

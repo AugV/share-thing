@@ -39,19 +39,20 @@ class Firebase {
     getItem = (itemId: string) => {
         return new Promise<Item>((resolve) => {
             this.db.collection('items').doc(itemId).get().then(function (doc) {
-                if (doc.exists) {
-                    let item: Item = { id: itemId, name: "NA", description: "NA" };
-                    console.log("Document data:", doc.data());
-                    let itemData = doc.data() ? doc.data() : null;
-                    if (itemData) {
-                        item.name = itemData.name;
-                        item.description = itemData.description;
-                    }
-                    console.log(item)
-                    resolve(item);
-                } else {
+                if (!doc.exists) {
                     console.log("No such document!");
+                    return;
                 }
+                
+                let item: Item = { id: itemId, name: "NA", description: "NA" };
+                console.log("Document data:", doc.data());
+                let itemData = doc.data() ? doc.data() : null;
+                if (itemData) {
+                    item.name = itemData.name;
+                    item.description = itemData.description;
+                }
+                console.log(item)
+                resolve(item);
             }).catch(function (error) {
                 console.log("Error getting document:", error);
             })
@@ -79,6 +80,12 @@ class Firebase {
                 throw error;
             });
     };
+
+    deleteItem=(itemId:string)=>{this.db.collection("items").doc(itemId).delete().then(function() {
+        console.log(`Document: ${itemId} successfully deleted!`);
+    }).catch(function(error) {
+        console.error(`Error removing document ${itemId} : `, error);
+    });}
 }
 
 

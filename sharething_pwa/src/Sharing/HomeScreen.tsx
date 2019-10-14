@@ -67,10 +67,13 @@ class HomeScreen extends React.Component<Props, State> {
     this.props.history.push(ROUTES.ADD_ITEM);
   };
 
+  onClickEdit = (itemId: string) => {
+    this.props.history.push(ROUTES.EDIT_ITEM, { itemId: itemId });
+  };
 
-  onClickEdit = (itemId:string) => {
-    this.props.history.push(ROUTES.EDIT_ITEM, {itemId:itemId});
-  }
+  onClickDelete = (itemId: string) => {
+    this.props.firebase.deleteItem(itemId);
+  };
 
   render() {
     const { items, loading } = this.state;
@@ -107,10 +110,22 @@ class HomeScreen extends React.Component<Props, State> {
                     <Container>
                       <Row>
                         <Col>
-                          <Button variant="primary" onClick = {()=>this.onClickEdit(item.id)} >Edit</Button>
+                          {/* <Link to={`item/${}`}> */}
+                          <Button
+                            variant="primary"
+                            onClick={() => this.onClickEdit(item.id)}
+                          >
+                            Edit
+                          </Button>
+                          {/* </Link> */}
                         </Col>
                         <Col>
-                          <Button variant="primary">Delete</Button>
+                          <Button
+                            variant="primary"
+                            onClick={() => this.onClickDelete(item.id)}
+                          >
+                            Delete
+                          </Button>
                         </Col>
                       </Row>
                     </Container>

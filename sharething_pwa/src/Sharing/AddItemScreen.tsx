@@ -46,7 +46,7 @@ class AddItemScreen extends React.Component<Props, State> {
       .catch(error => console.log(error));
   };
 
-  // onSubmit(event: FormEvent<HTMLFormElement>) {
+  // onSubmit(formValues) {
   //   console.log("DATA: " + this.state.item!.name + this.state.item!.description);
   //   this.props.firebase
   //     .pushItem(
