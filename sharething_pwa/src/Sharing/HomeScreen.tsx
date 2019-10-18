@@ -35,7 +35,6 @@ interface State {
 class HomeScreen extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    console.log(this.props);
     this.state = {
       loading: false,
       items: []
@@ -67,10 +66,6 @@ class HomeScreen extends React.Component<Props, State> {
   addItem = () => {
     this.props.history.push(ROUTES.ADD_ITEM);
   };
-
-  // onClickEdit = (itemId: string) => {
-  //   this.props.history.push(ROUTES.EDIT_ITEM, { itemId: itemId });
-  // };
 
   onClickDelete = (itemId: string) => {
     this.props.firebase.deleteItem(itemId);
@@ -111,13 +106,8 @@ class HomeScreen extends React.Component<Props, State> {
                     <Container>
                       <Row>
                         <Col>
-                          <Link to={`item/id:${item.id}/edit`}>
-                          <Button
-                            variant="primary"
-                            // onClick={() => this.onClickEdit(item.id)}
-                          >
-                            Edit
-                          </Button>
+                          <Link to={`item/${item.id}/edit`}>
+                            <Button variant="primary">Edit</Button>
                           </Link>
                         </Col>
                         <Col>

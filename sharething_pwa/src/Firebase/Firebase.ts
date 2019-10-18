@@ -37,7 +37,6 @@ class Firebase {
                     console.log("No such document!");
                     return;
                 }
-                
                 let item: Item = { id: itemId, name: "NA", description: "NA" };
                 console.log("Document data:", doc.data());
                 let itemData = doc.data() ? doc.data() : null;
@@ -46,7 +45,6 @@ class Firebase {
                     item.name = itemData.name;
                     item.description = itemData.description;
                 }
-                console.log(item)
                 resolve(item);
             }).catch(function (error) {
                 console.log("Error getting document:", error);
@@ -57,13 +55,10 @@ class Firebase {
 
     getItems = () => this.db.collection('items');
     getUserItems = () => this.db.collection('items').where("email", "==", (this.auth.currentUser ? this.auth.currentUser.email : "n/a"));
-    pushItem = (item: Item) => {
-        console.log("executing push")
+    setItem = (item: Item) => {
         return this.db.collection('items')
             .doc(item.id ? item.id : Math.random().toString(36).substring(7))
             .set({
-                // name: item.name,
-                // description: item.description,
                 ...item,
                 email: (this.auth.currentUser ? this.auth.currentUser.email : null)
             })

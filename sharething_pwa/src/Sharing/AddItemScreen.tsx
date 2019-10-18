@@ -1,6 +1,6 @@
 import React from "react";
 import { withFirebase } from "../Firebase";
-import { withRouter, Switch, Route, match } from "react-router-dom";
+import { withRouter, Switch, Route } from "react-router-dom";
 import Firebase from "../Firebase";
 import history from "history";
 import * as ROUTES from "../Constants/Routes";
@@ -25,20 +25,14 @@ class AddItemScreen extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = INITIAL_STATE;
-    console.log("LOADED");
   }
 
-  componentDidMount() {
-    console.log(this.props);
-    // if (true) this.loadItem();
-  }
 
   loadItem = (itemId: string) => {
-    new Promise(resolve => {
+   return new Promise<Item>(resolve => {
       this.props.firebase
         .getItem(itemId)
         .then(item => {
-          // this.setState({ item: item });
           resolve(item);
         })
         .catch(error => console.log(error));
@@ -46,7 +40,7 @@ class AddItemScreen extends React.Component<Props, State> {
   };
 
   onSubmit = (item: Item) => {
-    this.props.firebase.pushItem(item).then(() => {
+    this.props.firebase.setItem(item).then(() => {
       this.setState({ ...INITIAL_STATE });
       this.props.history.push(ROUTES.HOME);
     });
