@@ -4,7 +4,7 @@ import * as ROUTES from "../Constants/Routes";
 import AccountScreen from "../Account/AccountScreen";
 import HomeScreen from "../Sharing/HomeScreen";
 import PasswordResetScreen from "../Account/PasswordResetScreen";
-import AddItemScreen from "../Sharing/AddItemScreen";
+import ItemController from "../Sharing/ItemController";
 import PublicScreen from "../Sharing/PublicScreen";
 import Firebase, { withFirebase } from "../Firebase";
 
@@ -18,7 +18,7 @@ const PrivatePage = (props: Props) => {
       <Route path={ROUTES.ACCOUNT} component={AccountScreen} />
       <Route path={ROUTES.HOME} component={HomeScreen} />
       <Route path={ROUTES.PUBLIC} component={PublicScreen} />
-      <Route path={ROUTES.ITEM} component={AddItemScreen} />
+      <Route path={ROUTES.ITEM} component={ItemController} />
       <Route path={ROUTES.PASSWORD_RESET} component={PasswordResetScreen} />
     </Switch>)
   }

@@ -9,3 +9,4 @@ export const ADD_ITEM = '/private/item/add';
 export const EDIT_ITEM = "/private/item/:id/edit";
 export const PUBLIC = '/private/public';
 export const PRIVATE_PAGE = '/private';
+export const ITEM_DETAILS = '/private/item/:id/details';

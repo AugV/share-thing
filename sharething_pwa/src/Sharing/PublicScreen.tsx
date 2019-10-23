@@ -3,7 +3,6 @@ import { withAuthorization } from "../Session";
 import Item from "../Entities/Item";
 import Firebase from "../Firebase";
 import {
-  ListGroup,
   Spinner,
   Accordion,
   Card,
@@ -12,6 +11,7 @@ import {
   Col,
   Image
 } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const condition = (authUser: object) => !!authUser;
 
@@ -78,7 +78,9 @@ class PublicScreen extends React.Component<Props, State> {
                 <Container>
                   <Row>
                     <Col>
-                      <Image src={require("../test-img.png")} />
+                      <Link to={`item/${item.id}/details`}>
+                        <Image src={require("../test-img.png")} />
+                      </Link>
                     </Col>
                     <Col>
                       <Card.Text>{item.name}</Card.Text>

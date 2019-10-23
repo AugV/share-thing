@@ -6,6 +6,7 @@ import history from "history";
 import * as ROUTES from "../Constants/Routes";
 import ItemForm from "./ItemForm";
 import { Item } from "../Entities/Iterfaces";
+import ItemDetails from "./ItemDetails";
 
 const INITIAL_STATE: State = {
   item: null
@@ -21,15 +22,14 @@ interface State {
   item: Item | null;
 }
 
-class AddItemScreen extends React.Component<Props, State> {
+class ItemController extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = INITIAL_STATE;
   }
 
-
   loadItem = (itemId: string) => {
-   return new Promise<Item>(resolve => {
+    return new Promise<Item>(resolve => {
       this.props.firebase
         .getItem(itemId)
         .then(item => {
@@ -55,17 +55,21 @@ class AddItemScreen extends React.Component<Props, State> {
             <ItemForm onSubmit={this.onSubmit} loadItem={this.loadItem} />
           )}
         />
-        {!this.state.item && (
-          <Route
-            path={ROUTES.EDIT_ITEM}
-            component={() => (
-              <ItemForm onSubmit={this.onSubmit} loadItem={this.loadItem} />
-            )}
-          />
-        )}
+        <Route
+          path={ROUTES.EDIT_ITEM}
+          component={() => (
+            <ItemForm onSubmit={this.onSubmit} loadItem={this.loadItem} />
+          )}
+        />
+        <Route
+          path={ROUTES.ITEM_DETAILS}
+          component={() => (
+            <ItemDetails loadItem={this.loadItem} />
+          )}
+        />
       </Switch>
     );
   }
 }
 
-export default withRouter(withFirebase(AddItemScreen));
+export default withRouter(withFirebase(ItemController));
