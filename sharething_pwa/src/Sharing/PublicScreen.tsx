@@ -1,76 +1,97 @@
-import React from 'react';
+import React from "react";
 import { withAuthorization } from "../Session";
-import Item from '../Entities/Item';
-import Firebase from '../Firebase';
-import { ListGroup, Spinner } from 'react-bootstrap';
-
+import Item from "../Entities/Item";
+import Firebase from "../Firebase";
+import {
+  ListGroup,
+  Spinner,
+  Accordion,
+  Card,
+  Container,
+  Row,
+  Col,
+  Image
+} from "react-bootstrap";
 
 const condition = (authUser: object) => !!authUser;
 
 interface PublicScreen {
-    unsubscribe: () => void;
+  unsubscribe: () => void;
 }
 
 interface Props {
-    firebase: Firebase;
+  firebase: Firebase;
 }
 
 interface State {
-    loading: boolean;
-    items: Item[];
+  loading: boolean;
+  items: Item[];
 }
 
-
 class PublicScreen extends React.Component<Props, State> {
-    constructor(props: Props) {
-        super(props);
+  constructor(props: Props) {
+    super(props);
 
-        this.state = {
-            loading: false,
-            items: []
-        };
-    }
+    this.state = {
+      loading: false,
+      items: []
+    };
+  }
 
-    documentToItem = (document: firebase.firestore.QueryDocumentSnapshot) => {
-        let item: Item = new Item(document);
-        return item;
-    }
+  documentToItem = (document: firebase.firestore.QueryDocumentSnapshot) => {
+    let item: Item = new Item(document);
+    return item;
+  };
 
-    componentDidMount() {
-        this.setState({ loading: true });
+  componentDidMount() {
+    this.setState({ loading: true });
 
-        this.unsubscribe = this.props.firebase.getItems().onSnapshot(snapshot => {
-            this.setState({
-                loading: false,
-                items: snapshot.docs.map(this.documentToItem),
-            }, () => { console.log('new state', this.state) });
+    this.unsubscribe = this.props.firebase.getItems().onSnapshot(snapshot => {
+      this.setState(
+        {
+          loading: false,
+          items: snapshot.docs.map(this.documentToItem)
+        },
+        () => {
+          console.log("new state", this.state);
+        }
+      );
 
-            console.log('old state', this.state)
-        });
-    }
+      console.log("old state", this.state);
+    });
+  }
 
-    componentWillUnmount() {
-        this.unsubscribe();
-    }
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
 
-    render() {
+  render() {
+    const { items, loading } = this.state;
 
-        const { items, loading } = this.state;
-
-        return (
-            <div className="container">
-                <h1>Public Screen</h1>
-                <div>
-                    {loading && <Spinner animation="border" />}
-                    <ListGroup>
-                        {items.map(item => (
-                            <ListGroup.Item key={item.id}>{item.name}</ListGroup.Item>
-                        ))}
-                    </ListGroup>
-                </div>
-            </div>
-        )
-    }
+    return (
+      <div>
+        {loading && <Spinner animation="border" />}
+        <Accordion>
+          {items.map((item, index) => (
+            <Card key={item.id}>
+              <Card.Header>
+                <Container>
+                  <Row>
+                    <Col>
+                      <Image src={require("../test-img.png")} />
+                    </Col>
+                    <Col>
+                      <Card.Text>{item.name}</Card.Text>
+                    </Col>
+                  </Row>
+                </Container>
+              </Card.Header>
+            </Card>
+          ))}
+        </Accordion>
+      </div>
+    );
+  }
 }
 
 export { PublicScreen };

@@ -77,6 +77,5 @@ class ItemForm extends React.Component<Props, State> {
     );
   }
 }
-
 //@ts-ignore
 export default withRouter(ItemForm);
