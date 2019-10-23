@@ -2,6 +2,8 @@ TO-DO list:
 -General
 ++resrtructure into more general folders
 ++make routing hierarchical
+--make header(account link in right)
+--Create fixed footer for navigation
 
 -HomeScreen
 ++strap list to bootstrap
@@ -11,9 +13,10 @@ TO-DO list:
 ++make redirect button to AddItemScreen
 ++filter items which belong to user
 ++on item click give option to delete or edit
---Create fixed footer for add item
+++Rewrite routing with itemId in URL
 --Move sign-out to Account screen
---Rewrite routing with itemId in URL
+--make header(account link in right)
+--first row as an add Item link
 
 -AddItemScreen
 ++create form
@@ -27,3 +30,7 @@ TO-DO list:
 
 -NavBar
 ++navbar for dev purposes
+
+-Account
+--redirect from login if already logged in
+
