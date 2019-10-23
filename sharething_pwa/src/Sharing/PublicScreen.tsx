@@ -52,12 +52,7 @@ class PublicScreen extends React.Component<Props, State> {
           loading: false,
           items: snapshot.docs.map(this.documentToItem)
         },
-        () => {
-          console.log("new state", this.state);
-        }
       );
-
-      console.log("old state", this.state);
     });
   }
 

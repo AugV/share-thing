@@ -4,15 +4,14 @@ import { Route, BrowserRouter, Switch } from "react-router-dom";
 import { withFirebaseProvider } from "./Firebase";
 import * as ROUTES from "./Constants/Routes";
 import { withAuthentication } from "./Session";
-import NavBar from "./Navigation/NaviBar";
+import NaviBar from "./Navigation/NaviBar";
 import PrivateNav from "./Navigation/PrivateNav";
 import LandingNav from "./Navigation/LandingNav";
-
 
 const App = () => (
   <BrowserRouter>
     <Container>
-      <NavBar />
+      <NaviBar />
       <Switch>
         <Route path={ROUTES.PRIVATE_PAGE} component={PrivateNav} />
         <Route path={ROUTES.LANDING} component={LandingNav} />
