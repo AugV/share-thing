@@ -19,5 +19,5 @@ const App = () => (
     </Container>
   </BrowserRouter>
 );
-
+//TODO: on refresh to landing page FIX IT & TS LINT install
 export default withFirebaseProvider(withAuthentication(App));

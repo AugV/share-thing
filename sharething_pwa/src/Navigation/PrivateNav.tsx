@@ -8,7 +8,6 @@ import ItemController from "../Sharing/ItemController";
 import PublicScreen from "../Sharing/PublicScreen";
 import Firebase, { withFirebase } from "../Firebase";
 import { Navbar, Nav, NavItem } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 
 interface Props {
@@ -29,10 +28,11 @@ const PrivatePage = (props: Props) => {
         <Route path={ROUTES.ITEM} component={ItemController} />
         <Route path={ROUTES.PASSWORD_RESET} component={PasswordResetScreen} />
       </Switch>
-      <Navbar fixed="bottom" variant="dark">
+      <Navbar fixed="bottom"  variant="dark">
         <Nav>
           <LinkContainer to={ROUTES.HOME}>
-            <Nav.Link>Home</Nav.Link>
+            {/* <Nav.Link>Home</Nav.Link> */}
+            <NavItem>Public</NavItem>
           </LinkContainer>
           <LinkContainer to={ROUTES.PUBLIC}>
             <NavItem>Public</NavItem>

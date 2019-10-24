@@ -7,6 +7,7 @@ const INITIAL_STATE: State = {
   item: {id:"",name:"",description:""}
 };
 
+// TODO: fix typing
 interface Props {
   onSubmit(item: Item): void;
   match: { params: { id: string } };
@@ -62,13 +63,13 @@ class ItemForm extends React.Component<Props, State> {
             placeholder="Enter Item description"
             name="description"
             onChange={this.onChange}
-            value={this.state.item.description}
+            value={this.state.item.description || ''}
           />
         </Form.Group>
 
         <Button
           variant="primary"
-          disabled={this.state.item ? false : true}
+          disabled={!this.state.item}
           type="submit"
         >
           Submit
@@ -77,5 +78,6 @@ class ItemForm extends React.Component<Props, State> {
     );
   }
 }
+
 //@ts-ignore
 export default withRouter(ItemForm);

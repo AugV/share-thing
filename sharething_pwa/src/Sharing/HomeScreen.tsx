@@ -30,6 +30,7 @@ interface Props {
 interface State {
   loading: boolean;
   items: Item[];
+  url: string;
 }
 
 class HomeScreen extends React.Component<Props, State> {
@@ -37,7 +38,8 @@ class HomeScreen extends React.Component<Props, State> {
     super(props);
     this.state = {
       loading: false,
-      items: []
+      items: [],
+      url: ""
     };
   }
 
@@ -57,6 +59,10 @@ class HomeScreen extends React.Component<Props, State> {
           items: snapshot.docs.map(this.documentToItem)
         });
       });
+
+    this.props.firebase.getItemImg().then(url => {
+      this.setState({ url: url });
+    });
   }
 
   componentWillUnmount() {
@@ -92,7 +98,7 @@ class HomeScreen extends React.Component<Props, State> {
                     <Container>
                       <Row>
                         <Col>
-                          <Image src={require("../test-img.png")} />
+                          <Image src={this.state.url} fluid />
                         </Col>
                         <Col>
                           <Card.Text>{item.name}</Card.Text>

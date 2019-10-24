@@ -1,16 +1,17 @@
 import React from "react";
 import { Button, Card } from "react-bootstrap";
-import { Item } from "../Entities/Iterfaces";
-import { withRouter } from "react-router-dom";
+import  Item  from "../Entities/Item";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
 const INITIAL_STATE: State = {
   item: {id:"",name:"",description:""}
 };
 
-interface Props {
-  match: { params: { id: string } };
+interface OwnProps {
   loadItem(itemId: string): Promise<Item>;
 }
+
+type Props = OwnProps & RouteComponentProps<any>;
 
 interface State {
   item: Item;
@@ -23,7 +24,9 @@ class ItemDetails extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    if (this.props.match.params.id) this.loadItem();
+    if (this.props.match.params.id) {
+      this.loadItem();
+    }
   }
 
   loadItem() {
@@ -52,6 +55,5 @@ class ItemDetails extends React.Component<Props, State> {
     );
   }
 }
-//TODO: Paklaust Domo dėl erroro
-// @ts-ignore
+
 export default withRouter(ItemDetails);

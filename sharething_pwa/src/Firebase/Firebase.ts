@@ -1,7 +1,8 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
-import { Item } from "../Entities/Iterfaces"
+import 'firebase/storage';
+import  Item  from "../Entities/Item"
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -16,10 +17,12 @@ const firebaseConfig = {
 class Firebase {
     auth: app.auth.Auth;
     db: app.firestore.Firestore;
+    storage: app.storage.Storage;
     constructor() {
         app.initializeApp(firebaseConfig);
         this.auth = app.auth();
         this.db = app.firestore();
+        this.storage = app.storage();
     }
 
     createUserWithEmailAndPsw = (email: string, password: string) => this.auth.createUserWithEmailAndPassword(email, password);
@@ -41,7 +44,7 @@ class Firebase {
                 console.log("Document data:", doc.data());
                 let itemData = doc.data() ? doc.data() : null;
                 if (itemData) {
-                    item.id=itemId;
+                    item.id = itemId;
                     item.name = itemData.name;
                     item.description = itemData.description;
                 }
@@ -71,11 +74,23 @@ class Firebase {
             });
     };
 
-    deleteItem=(itemId:string)=>{this.db.collection("items").doc(itemId).delete().then(function() {
-        console.log(`Document: ${itemId} successfully deleted!`);
-    }).catch(function(error) {
-        console.error(`Error removing document ${itemId} : `, error);
-    });}
+    deleteItem = (itemId: string) => {
+        this.db.collection("items").doc(itemId).delete().then(function () {
+            console.log(`Document: ${itemId} successfully deleted!`);
+        }).catch(function (error) {
+            console.error(`Error removing document ${itemId} : `, error);
+        });
+    }
+
+    getItemImg = () => {
+        return new Promise<string>((resolve) => {
+            let ref = this.storage.ref('ItemImages/use_case_naudos_01.jpg');
+            ref.getDownloadURL().then(url => {
+                console.log(url);
+                resolve(url);
+            })
+        });
+    }
 }
 
 

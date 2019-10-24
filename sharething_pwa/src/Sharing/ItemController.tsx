@@ -5,7 +5,7 @@ import Firebase from "../Firebase";
 import history from "history";
 import * as ROUTES from "../Constants/Routes";
 import ItemForm from "./ItemForm";
-import { Item } from "../Entities/Iterfaces";
+import Item from "../Entities/Item";
 import ItemDetails from "./ItemDetails";
 
 const INITIAL_STATE: State = {
@@ -39,7 +39,7 @@ class ItemController extends React.Component<Props, State> {
     });
   };
 
-  onSubmit = (item: Item) => {
+  saveItem = (item: Item) => {
     this.props.firebase.setItem(item).then(() => {
       this.setState({ ...INITIAL_STATE });
       this.props.history.push(ROUTES.HOME);
@@ -52,13 +52,13 @@ class ItemController extends React.Component<Props, State> {
         <Route
           path={ROUTES.ADD_ITEM}
           component={() => (
-            <ItemForm onSubmit={this.onSubmit} loadItem={this.loadItem} />
+            <ItemForm onSubmit={this.saveItem} loadItem={this.loadItem} />
           )}
         />
         <Route
           path={ROUTES.EDIT_ITEM}
           component={() => (
-            <ItemForm onSubmit={this.onSubmit} loadItem={this.loadItem} />
+            <ItemForm onSubmit={this.saveItem} loadItem={this.loadItem} />
           )}
         />
         <Route
