@@ -4,6 +4,8 @@ TO-DO list:
 ++make routing hierarchical
 --make header(account link in right)
 --Create fixed footer for navigation
+--FIX:when refreshed - goes to landing page
+--INSTALL: TS-Lint
 
 -HomeScreen
 ++strap list to bootstrap
@@ -18,11 +20,14 @@ TO-DO list:
 --make header(account link in right)
 --first row as an add Item link
 
--AddItemScreen
+-ItemController
 ++create form
 ++redirect back to HomeScreen
 ++send userID as an Item field
 ++prevent adding null
+
+-ItemForm
+--fix Props interface with router props
 
 -SharedItemScreen
 ++display a list of all user shared items
@@ -33,4 +38,3 @@ TO-DO list:
 
 -Account
 --redirect from login if already logged in
-
