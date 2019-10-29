@@ -2,5 +2,6 @@ export interface Item {
     id: string;
     name: string;
     description: string;
+    imageUrl?:string;
     [key: string]: any;
 };

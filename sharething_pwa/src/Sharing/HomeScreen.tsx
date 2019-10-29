@@ -44,7 +44,8 @@ class HomeScreen extends React.Component<Props, State> {
   }
 
   documentToItem = (document: firebase.firestore.QueryDocumentSnapshot) => {
-    let item: Item = new Item(document);
+    let item: Item = new Item();
+    item.setValuesFromDoc(document);
     return item;
   };
 
