@@ -11,7 +11,7 @@ const INITIAL_STATE: State = {
 };
 
 interface OwnProps {
-  onSubmit(item: Item): void;
+  onSubmit(item: Item, file: File): void;
   loadItem(itemId: string): Promise<Item>;
 }
 
@@ -34,19 +34,19 @@ class ItemForm extends React.Component<Props, State> {
   componentDidMount() {
     if (this.props.match.params.id) {
       this.loadItem();
-    }
-    else {
-        this.setState({render:true});
+    } else {
+      this.setState({ render: true });
     }
   }
 
   loadItem() {
     this.props.loadItem(this.props.match.params.id).then(item => {
-      this.setState({ ...item, render:true });
+      this.setState({ ...item, render: true });
     });
   }
 
   onChange = (event: any) => {
+    console.log(event.target.value);
     const name = event.target.name as string;
     this.setState({ ...this.state, [name]: event.target.value });
   };
@@ -57,7 +57,8 @@ class ItemForm extends React.Component<Props, State> {
       name: this.state.name,
       description: this.state.description
     };
-    this.props.onSubmit(item);
+    this.props.onSubmit(item, this.state.image!);
+
     event.preventDefault();
   };
 
@@ -88,14 +89,13 @@ class ItemForm extends React.Component<Props, State> {
           <Form.Group controlId="image">
             <Form.Label>Item image</Form.Label>
             <Form.Control
+              name="image"
               type="file"
-              onChange={(event: any) => {
-                console.log(event.target.files);
-              }}
+              onChange={this.onChange}
             />
           </Form.Group>
 
-          <Button variant="primary" disabled={!this.state.id} type="submit">
+          <Button variant="primary" disabled={!this.state.name} type="submit">
             Submit
           </Button>
         </Form>
