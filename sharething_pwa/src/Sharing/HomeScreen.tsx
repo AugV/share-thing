@@ -1,5 +1,5 @@
-import React from "react";
-import Firebase, { withFirebase } from "../Firebase";
+import React from 'react';
+import Firebase, { withFirebase } from '../Firebase';
 import {
   Spinner,
   Button,
@@ -8,74 +8,52 @@ import {
   Image,
   Container,
   Col,
-  Row
-} from "react-bootstrap";
-import * as ROUTES from "../Constants/Routes";
-import history from "history";
-import { Link } from "react-router-dom";
-import { Item, docToItem } from "../Entities/Iterfaces";
-
+  Row,
+} from 'react-bootstrap';
+import * as ROUTES from '../Constants/Routes';
+import history from 'history';
+import { Link } from 'react-router-dom';
+import { Item, docToItem } from '../Entities/Iterfaces';
 
 interface HomeScreen {
-  unsubscribe: () => void;
+    unsubscribe: () => void;
 }
 
 interface Props {
-  firebase: Firebase;
-  history: history.History;
+    firebase: Firebase;
+    history: history.History;
 }
 
 interface State {
-  loading: boolean;
-  items: Item[];
-  url: string;
+    loading: boolean;
+    items: Item[];
+    url: string;
 }
 
 class HomeScreen extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      loading: false,
-      items: [],
-      url: ""
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+            loading: false,
+            items: [],
+            url: '',
+        };
+    }
+
+    public addItem = () => {
+        this.props.history.push(ROUTES.ADD_ITEM);
     };
-  }
 
-  componentDidMount() {
-    this.setState({ loading: true });
+    public onClickDelete = (itemId: string) => {
+        this.props.firebase.deleteItem(itemId);
+    };
 
-    this.unsubscribe = this.props.firebase
-      .getUserItems()
-      .onSnapshot(snapshot => {
-        this.setState({
-          loading: false,
-          items: snapshot.docs.map(docToItem)
-        });
-      });
+    public render(): JSX.Element {
+        const { items, loading } = this.state;
 
-    this.props.firebase.getItemImg().then(url => {
-      this.setState({ url: url });
-    });
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  addItem = () => {
-    this.props.history.push(ROUTES.ADD_ITEM);
-  };
-
-  onClickDelete = (itemId: string) => {
-    this.props.firebase.deleteItem(itemId);
-  };
-
-  render() {
-    const { items, loading } = this.state;
-
-    return (
+        return (
       <div className="container">
-        <div style={{ float: "right" }}>
+        <div style={{ float: 'right' }}>
           <Button type="button" onClick={this.props.firebase.signOut}>
             Sign Out
           </Button>
@@ -91,7 +69,7 @@ class HomeScreen extends React.Component<Props, State> {
                     <Container>
                       <Row>
                         <Col>
-                          <Image src={this.state.url} fluid />
+                          <Image src={this.state.url} fluid={true} />
                         </Col>
                         <Col>
                           <Card.Text>{item.name}</Card.Text>
@@ -127,9 +105,27 @@ class HomeScreen extends React.Component<Props, State> {
         </div>
         <Button onClick={this.addItem}>Add Item</Button>
       </div>
-    );
-  }
+        );
+    }
+
+    public componentDidMount(): void {
+        this.setState({ loading: true });
+        this.unsubscribe = this.props.firebase
+      .getUserItems()
+      .onSnapshot(snapshot => {
+          this.setState({
+              loading: false,
+              items: snapshot.docs.map(docToItem),
+          });
+      });
+        this.props.firebase.getItemImg().then(url => {
+            this.setState({ url });
+        });
+    }
+
+    public componentWillUnmount(): void {
+        this.unsubscribe();
+    }
 }
 
-export { HomeScreen };
-export default withFirebase(HomeScreen);
+export const Home = withFirebase(HomeScreen);
