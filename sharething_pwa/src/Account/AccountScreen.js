@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AuthUserContext, withAuthorization } from '../Session';
+import { AuthUserContext } from '../Session';
 import { PasswordResetForm } from './PasswordResetScreen';
 import PasswordChangeForm from './PasswordChange';
 
@@ -16,6 +16,6 @@ const AccountScreen = () => (
   </AuthUserContext.Consumer>
 );
 
-const condition = authUser => !!authUser;
 
-export default withAuthorization(condition)(AccountScreen);
+
+export default AccountScreen;

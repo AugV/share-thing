@@ -1,6 +1,5 @@
 import React from "react";
-import { withAuthorization } from "../Session";
-import Firebase from "../Firebase";
+import Firebase, { withFirebase } from "../Firebase";
 import {
   Spinner,
   Button,
@@ -16,7 +15,6 @@ import history from "history";
 import { Link } from "react-router-dom";
 import { Item, docToItem } from "../Entities/Iterfaces";
 
-const condition = (authUser: object) => !!authUser;
 
 interface HomeScreen {
   unsubscribe: () => void;
@@ -134,4 +132,4 @@ class HomeScreen extends React.Component<Props, State> {
 }
 
 export { HomeScreen };
-export default withAuthorization(condition)(HomeScreen);
+export default withFirebase(HomeScreen);

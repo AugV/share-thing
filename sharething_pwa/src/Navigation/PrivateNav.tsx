@@ -1,24 +1,18 @@
 import React from "react";
-import { Switch, Route, Redirect } from "react-router";
+import { Switch, Route} from "react-router";
 import * as ROUTES from "../Constants/Routes";
 import AccountScreen from "../Account/AccountScreen";
 import HomeScreen from "../Sharing/HomeScreen";
 import PasswordResetScreen from "../Account/PasswordResetScreen";
 import ItemController from "../Sharing/ItemController";
 import PublicScreen from "../Sharing/PublicScreen";
-import Firebase, { withFirebase } from "../Firebase";
 import { Navbar, Nav, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
+import withAuthorization from "../Session/WithAuthorization";
 
-interface Props {
-  firebase: Firebase;
-}
+const condition = (authUser: object) => !!authUser;
 
-const PrivatePage = (props: Props) => {
-  if (!props.firebase.getEmail()) {
-    console.log("no EMAIL");
-    return <Redirect to={ROUTES.LANDING} />;
-  }
+const PrivatePage = () => {
   return (
     <div>
       <Switch>
@@ -31,7 +25,6 @@ const PrivatePage = (props: Props) => {
       <Navbar fixed="bottom"  variant="dark">
         <Nav>
           <LinkContainer to={ROUTES.HOME}>
-            {/* <Nav.Link>Home</Nav.Link> */}
             <NavItem>Public</NavItem>
           </LinkContainer>
           <LinkContainer to={ROUTES.PUBLIC}>
@@ -43,4 +36,4 @@ const PrivatePage = (props: Props) => {
   );
 };
 
-export default withFirebase(PrivatePage);
+export default withAuthorization(condition)(PrivatePage);
