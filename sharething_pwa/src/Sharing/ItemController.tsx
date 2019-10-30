@@ -5,8 +5,8 @@ import Firebase from "../Firebase";
 import history from "history";
 import * as ROUTES from "../Constants/Routes";
 import ItemForm from "./ItemForm";
-import Item from "../Entities/Item";
 import ItemDetails from "./ItemDetails";
+import { Item } from "../Entities/Iterfaces";
 
 const INITIAL_STATE: State = {
   item: null

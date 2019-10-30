@@ -1,7 +1,7 @@
 import React, { FormEvent } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Item } from "../Entities/Iterfaces";
-import { withRouter } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
 const INITIAL_STATE: State = {
   id: "",
@@ -10,12 +10,12 @@ const INITIAL_STATE: State = {
   render: false
 };
 
-// TODO: fix typing
-interface Props {
+interface OwnProps {
   onSubmit(item: Item): void;
-  match: { params: { id: string } };
   loadItem(itemId: string): Promise<Item>;
 }
+
+type Props = OwnProps & RouteComponentProps<any>;
 
 interface State {
   id: string;
@@ -104,5 +104,4 @@ class ItemForm extends React.Component<Props, State> {
   }
 }
 
-//@ts-ignore
 export default withRouter(ItemForm);

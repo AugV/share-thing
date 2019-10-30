@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Card } from "react-bootstrap";
-import  Item  from "../Entities/Item";
 import { withRouter, RouteComponentProps } from "react-router-dom";
+import { Item } from "../Entities/Iterfaces";
 
 const INITIAL_STATE: State = {
   item: {id:"",name:"",description:""}
