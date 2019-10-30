@@ -1,6 +1,6 @@
 import React from "react";
 import { withAuthorization } from "../Session";
-import Item from "../Entities/Item";
+// import Item from "../Entities/Item";
 import Firebase from "../Firebase";
 import {
   Spinner,
@@ -15,6 +15,7 @@ import {
 import * as ROUTES from "../Constants/Routes";
 import history from "history";
 import { Link } from "react-router-dom";
+import { Item } from "../Entities/Iterfaces";
 
 const condition = (authUser: object) => !!authUser;
 
@@ -44,8 +45,11 @@ class HomeScreen extends React.Component<Props, State> {
   }
 
   documentToItem = (document: firebase.firestore.QueryDocumentSnapshot) => {
-    let item: Item = new Item();
-    item.setValuesFromDoc(document);
+    const item: Item = {
+      id: document.id,
+      name: document.data().name,
+      description: document.data().description,
+    };
     return item;
   };
 
