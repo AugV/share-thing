@@ -1,6 +1,5 @@
 import React from "react";
 import { withAuthorization } from "../Session";
-import Item from "../Entities/Item";
 import Firebase from "../Firebase";
 import {
   Spinner,
@@ -12,6 +11,7 @@ import {
   Image
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { Item, docToItem } from "../Entities/Iterfaces";
 
 const condition = (authUser: object) => !!authUser;
 
@@ -38,11 +38,6 @@ class PublicScreen extends React.Component<Props, State> {
     };
   }
 
-  documentToItem = (document: firebase.firestore.QueryDocumentSnapshot) => {
-    let item: Item = new Item(document);
-    return item;
-  };
-
   componentDidMount() {
     this.setState({ loading: true });
 
@@ -50,7 +45,7 @@ class PublicScreen extends React.Component<Props, State> {
       this.setState(
         {
           loading: false,
-          items: snapshot.docs.map(this.documentToItem)
+          items: snapshot.docs.map(docToItem)
         },
       );
     });

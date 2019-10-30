@@ -2,13 +2,12 @@ import React, { FormEvent } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Item } from "../Entities/Iterfaces";
 import { withRouter } from "react-router-dom";
-// import Item from "../Entities/Item";
-import { CarouselItem } from "react-bootstrap";
 
 const INITIAL_STATE: State = {
   id: "",
   name: "",
-  description: ""
+  description: "",
+  render: false
 };
 
 // TODO: fix typing
@@ -23,6 +22,7 @@ interface State {
   name: string;
   description: string;
   image?: File;
+  render: boolean;
 }
 
 class ItemForm extends React.Component<Props, State> {
@@ -32,12 +32,17 @@ class ItemForm extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    if (this.props.match.params.id) this.loadItem();
+    if (this.props.match.params.id) {
+      this.loadItem();
+    }
+    else {
+        this.setState({render:true});
+    }
   }
 
   loadItem() {
     this.props.loadItem(this.props.match.params.id).then(item => {
-      this.setState({ ...item });
+      this.setState({ ...item, render:true });
     });
   }
 
@@ -58,7 +63,7 @@ class ItemForm extends React.Component<Props, State> {
 
   render() {
     return (
-      this.state.id && (
+      this.state.render && (
         <Form onSubmit={this.onSubmit}>
           <Form.Group controlId="name">
             <Form.Label>Item name</Form.Label>

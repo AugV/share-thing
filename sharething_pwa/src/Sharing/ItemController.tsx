@@ -39,12 +39,12 @@ class ItemController extends React.Component<Props, State> {
     });
   };
 
-  saveItem = (item: Item, file:File) => {
-    this.props.firebase.setItem(item).then(() => {
+  saveItem = (item: Item/* , file:File */) => {
+    this.props.firebase.saveItem(item).then(() => {
       this.setState({ ...INITIAL_STATE });
       this.props.history.push(ROUTES.HOME);
     });
-    this.props.firebase.uploadItemImg(file);
+    // this.props.firebase.uploadItemImg(file);
   };
 
   render() {

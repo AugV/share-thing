@@ -58,7 +58,7 @@ class Firebase {
 
     getItems = () => this.db.collection('items');
     getUserItems = () => this.db.collection('items').where("email", "==", (this.auth.currentUser ? this.auth.currentUser.email : "n/a"));
-    setItem = (item: Item) => {
+    saveItem = (item: Item) => {
         return this.db.collection('items')
             .doc(item.id ? item.id : Math.random().toString(36).substring(7))
             .set({
