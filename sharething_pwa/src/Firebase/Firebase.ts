@@ -93,7 +93,6 @@ class Firebase {
     }
 
     uploadItemImg = (file: File) => {
-        // const fileConv = new File(file, file.name);
         this.storage.ref('ItemImages/' + file.name).put(file);
     }
 }

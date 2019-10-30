@@ -7,6 +7,7 @@ const INITIAL_STATE: State = {
   id: "",
   name: "",
   description: "",
+  image: null,
   render: false
 };
 
@@ -21,7 +22,7 @@ interface State {
   id: string;
   name: string;
   description: string;
-  image?: File;
+  image?: File | null;
   render: boolean;
 }
 
@@ -46,9 +47,12 @@ class ItemForm extends React.Component<Props, State> {
   }
 
   onChange = (event: any) => {
-    console.log(event.target.value);
     const name = event.target.name as string;
     this.setState({ ...this.state, [name]: event.target.value });
+  };
+
+  onFileChange = (event: any) => {
+    this.setState({ image: event.target.files[0] });
   };
 
   onSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -91,7 +95,8 @@ class ItemForm extends React.Component<Props, State> {
             <Form.Control
               name="image"
               type="file"
-              onChange={this.onChange}
+              onChange={this.onFileChange}
+              // value={this.state.image}
             />
           </Form.Group>
 
