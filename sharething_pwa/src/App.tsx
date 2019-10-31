@@ -8,6 +8,9 @@ import NaviBar from './Navigation/NaviBar';
 import { Private } from './Navigation/PrivateNav';
 import LandingNav from './Navigation/LandingNav';
 
+
+// TODO:JSX Formatavimas 
+
 const App = () => (
   <BrowserRouter>
     <Container>

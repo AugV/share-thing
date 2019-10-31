@@ -14,7 +14,7 @@ const condition = (authUser: object) => !!authUser;
 
 const PrivatePage = () => {
     return (
-    <div>
+      <div>
       <Switch>
         <Route path={ROUTES.ACCOUNT} component={AccountScreen} />
         <Route path={ROUTES.HOME} component={Home} />

@@ -27,7 +27,7 @@
         "no-default-export": true,
         "no-empty-interface": false,
         "no-string-literal": false,
-        "no-submodule-imports": [true, "app", "i18n", "@material-ui/icons", "react-quill/dist", "react-select/lib"],
+        "no-submodule-imports": false,
         "typedef": [true, "call-signature", "parameter", "property-declaration", "member-variable-declaration"],
         "jsx-no-lambda": false,
         "semicolon": [true, "always", "strict-bound-class-methods"],

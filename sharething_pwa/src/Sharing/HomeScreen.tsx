@@ -40,13 +40,24 @@ class HomeScreen extends React.Component<Props, State> {
         };
     }
 
-    public addItem = () => {
-        this.props.history.push(ROUTES.ADD_ITEM);
-    };
+    public componentDidMount(): void {
+        this.setState({ loading: true });
+        this.unsubscribe = this.props.firebase
+      .getUserItems()
+      .onSnapshot(snapshot => {
+          this.setState({
+              loading: false,
+              items: snapshot.docs.map(docToItem),
+          });
+      });
+        this.props.firebase.getItemImg().then(url => {
+            this.setState({ url });
+        });
+    }
 
-    public onClickDelete = (itemId: string) => {
-        this.props.firebase.deleteItem(itemId);
-    };
+    public componentWillUnmount(): void {
+        this.unsubscribe();
+    }
 
     public render(): JSX.Element {
         const { items, loading } = this.state;
@@ -108,24 +119,13 @@ class HomeScreen extends React.Component<Props, State> {
         );
     }
 
-    public componentDidMount(): void {
-        this.setState({ loading: true });
-        this.unsubscribe = this.props.firebase
-      .getUserItems()
-      .onSnapshot(snapshot => {
-          this.setState({
-              loading: false,
-              items: snapshot.docs.map(docToItem),
-          });
-      });
-        this.props.firebase.getItemImg().then(url => {
-            this.setState({ url });
-        });
-    }
+    public addItem = () => {
+        this.props.history.push(ROUTES.ADD_ITEM);
+    };
 
-    public componentWillUnmount(): void {
-        this.unsubscribe();
-    }
+    public onClickDelete = (itemId: string) => {
+        this.props.firebase.deleteItem(itemId);
+    };
 }
 
 export const Home = withFirebase(HomeScreen);
