@@ -43,7 +43,6 @@ class ItemController extends React.Component<Props, State> {
             this.setState({ ...INITIAL_STATE });
             this.props.history.push(ROUTES.HOME);
         });
-        this.props.firebase.saveImageToStorage(file);
     };
 
     public render(): React.ReactNode {

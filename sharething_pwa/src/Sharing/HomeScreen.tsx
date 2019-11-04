@@ -110,7 +110,6 @@ class HomeScreen extends React.Component<Props, State> {
             ))}
           </Accordion>
         </div>
-        
       </div>
         );
     }

@@ -67,16 +67,16 @@ class Firebase {
     public getUserItems = () => this.db.collection('items').where('email', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
 
     public saveItem = (item: Item, image: File) => {
-        return this.saveImageToStorage(image)
+        return this.saveImageToStorage(image, item.id)
         .then(url => {
             item.imageUrl = url;
             return this.saveItemToFirestore(item); },
         );
     };
 
-    public saveImageToStorage = (file: File) => {
+    public saveImageToStorage = (file: File, fileName: string) => {
         return new Promise<string>((resolve) => {
-            const upload = this.storage.ref('ItemImages/' + file.name).put(file);
+            const upload = this.storage.ref('ItemImages/' + fileName).put(file);
 
             upload.on('state_changed', (snapshot) => {
                 // Observe state change events such as progress, pause, and resume

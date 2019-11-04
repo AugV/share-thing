@@ -92,7 +92,6 @@ class ItemFormTemplate extends React.Component<Props, State> {
               name="image"
               type="file"
               onChange={this.onFileChange}
-              // value={this.state.image}
             />
           </Form.Group>
 
