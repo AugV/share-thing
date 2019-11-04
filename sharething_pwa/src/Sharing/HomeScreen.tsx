@@ -27,7 +27,6 @@ interface Props {
 interface State {
     loading: boolean;
     items: Item[];
-    url: string;
 }
 
 class HomeScreen extends React.Component<Props, State> {
@@ -36,7 +35,6 @@ class HomeScreen extends React.Component<Props, State> {
         this.state = {
             loading: false,
             items: [],
-            url: '',
         };
     }
 
@@ -50,20 +48,17 @@ class HomeScreen extends React.Component<Props, State> {
               items: snapshot.docs.map(docToItem),
           });
       });
-        this.props.firebase.getItemImg().then(url => {
-            this.setState({ url });
-        });
     }
 
     public componentWillUnmount(): void {
         this.unsubscribe();
     }
 
-    public render(): JSX.Element {
+    public render(): React.ReactNode {
         const { items, loading } = this.state;
 
         return (
-      <div className="container">
+          <div className="container">
         <div style={{ float: 'right' }}>
           <Button type="button" onClick={this.props.firebase.signOut}>
             Sign Out
@@ -80,7 +75,7 @@ class HomeScreen extends React.Component<Props, State> {
                     <Container>
                       <Row>
                         <Col>
-                          <Image src={this.state.url} fluid={true} />
+                          <Image src={item.imageUrl} fluid={true} />
                         </Col>
                         <Col>
                           <Card.Text>{item.name}</Card.Text>

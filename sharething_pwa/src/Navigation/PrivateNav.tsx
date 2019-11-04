@@ -5,10 +5,10 @@ import AccountScreen from '../Account/AccountScreen';
 import { Home } from '../Sharing/HomeScreen';
 import PasswordResetScreen from '../Account/PasswordResetScreen';
 import ItemController from '../Sharing/ItemController';
-import PublicScreen from '../Sharing/PublicScreen';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import withAuthorization from '../Session/WithAuthorization';
+import { PublicScreen } from '../Sharing/PublicScreen';
 
 const condition = (authUser: object) => !!authUser;
 

@@ -15,7 +15,7 @@ import { Item, docToItem } from '../Entities/Iterfaces';
 
 const condition = (authUser: object) => !!authUser;
 
-interface PublicScreen {
+interface PublicScreenTemplate {
     unsubscribe: () => void;
 }
 
@@ -28,7 +28,7 @@ interface State {
     items: Item[];
 }
 
-class PublicScreen extends React.Component<Props, State> {
+class PublicScreenTemplate extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
@@ -38,7 +38,7 @@ class PublicScreen extends React.Component<Props, State> {
         };
     }
 
-    componentDidMount() {
+    public componentDidMount(): void {
         this.setState({ loading: true });
 
         this.unsubscribe = this.props.firebase.getItems().onSnapshot(snapshot => {
@@ -51,11 +51,11 @@ class PublicScreen extends React.Component<Props, State> {
         });
     }
 
-    componentWillUnmount() {
+    public componentWillUnmount(): void {
         this.unsubscribe();
     }
 
-    render() {
+    public render(): React.ReactNode {
         const { items, loading } = this.state;
 
         return (
@@ -69,7 +69,7 @@ class PublicScreen extends React.Component<Props, State> {
                     <Row>
                       <Col>
                         <Link to={`item/${item.id}/details`}>
-                          <Image src={require('../test-img.png')} />
+                          <Image src={item.imageUrl} thumbnail={true} fluid={true}/>
                         </Link>
                       </Col>
                       <Col>
@@ -86,5 +86,5 @@ class PublicScreen extends React.Component<Props, State> {
     }
 }
 
-export { PublicScreen };
-export default withAuthorization(condition)(PublicScreen);
+// export { PublicScreen };
+export const PublicScreen = withAuthorization(condition)(PublicScreenTemplate);
