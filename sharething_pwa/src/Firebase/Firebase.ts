@@ -114,6 +114,13 @@ class Firebase {
         }).catch(function(error) {
             console.error(`Error removing document ${itemId} : `, error);
         });
+        const ref = this.storage.ref(`ItemImages/${itemId}`);
+
+        ref.delete().then(() => {
+            console.log('Image deleted succesfully');
+        }).catch((error) => {
+            console.log('Error when deleting Image');
+        });
     };
 
     public getItemImg = () => {
