@@ -128,7 +128,6 @@ class Firebase {
             const ref = this.storage.ref('ItemImages/use_case_naudos_01.jpg');
 
             ref.getDownloadURL().then(url => {
-                console.log(url);
                 resolve(url);
             });
         });

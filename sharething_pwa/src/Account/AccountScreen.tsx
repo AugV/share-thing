@@ -4,7 +4,7 @@ import { AuthUserContext } from '../Session';
 import { PasswordResetForm } from './PasswordResetScreen';
 import PasswordChangeForm from './PasswordChange';
 
-const AccountScreen = () => (
+export const AccountScreen = () => (
   <AuthUserContext.Consumer>
     {authUser => (
       <div>
@@ -16,6 +16,3 @@ const AccountScreen = () => (
   </AuthUserContext.Consumer>
 );
 
-
-
-export default AccountScreen;

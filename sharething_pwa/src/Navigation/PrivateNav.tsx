@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router';
 import * as ROUTES from '../Constants/Routes';
-import AccountScreen from '../Account/AccountScreen';
+import Account from '../Account/AccountScreen';
 import { Home } from '../Sharing/HomeScreen';
 import PasswordResetScreen from '../Account/PasswordResetScreen';
 import ItemController from '../Sharing/ItemController';
@@ -16,7 +16,7 @@ const PrivatePage = () => {
     return (
       <div>
       <Switch>
-        <Route path={ROUTES.ACCOUNT} component={AccountScreen} />
+        <Route path={ROUTES.ACCOUNT} component={Account} />
         <Route path={ROUTES.HOME} component={Home} />
         <Route path={ROUTES.PUBLIC} component={PublicScreen} />
         <Route path={ROUTES.ITEM} component={ItemController} />
