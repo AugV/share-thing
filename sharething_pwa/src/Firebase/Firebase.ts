@@ -24,11 +24,16 @@ class Firebase {
         this.storage = app.storage();
     }
 
-    public createUserWithEmailAndPsw = (email: string, password: string) => this.auth.createUserWithEmailAndPassword(email, password);
-    public signInUserWithEmailAndPsw = (email: string, password: string) => this.auth.signInWithEmailAndPassword(email, password);
+    public createUserWithEmailAndPsw = (email: string, password: string) => {
+        this.auth.createUserWithEmailAndPassword(email, password);
+    };
+    public signInUserWithEmailAndPsw = (email: string, password: string) => {
+        this.auth.signInWithEmailAndPassword(email, password);
+    };
     public signOut = () => this.auth.signOut();
     public resetPsw = (email: string) => this.auth.sendPasswordResetEmail(email);
-    public updatePsw = (password: string) => { if (this.auth.currentUser) { this.auth.currentUser.updatePassword(password); } };
+    public updatePsw = (password: string) => {
+        if (this.auth.currentUser) { this.auth.currentUser.updatePassword(password); } };
     public getEmail = () => { if (this.auth.currentUser) { return this.auth.currentUser.email; } };
     public user = (uid: string) => this.db.collection('users').doc(uid);
     public users = () => this.db.collection('users');
@@ -59,7 +64,34 @@ class Firebase {
 
     public getItems = () => this.db.collection('items');
     public getUserItems = () => this.db.collection('items').where('email', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
-    public saveItem = (item: Item) => {
+
+    public saveItem = (item: Item, image: File) => {
+        return this.saveImageToStorage(image)
+        .then(url => {
+            item.imageUrl = url;
+            return this.saveItemToFirestore(item); },
+        );
+    };
+
+    public saveImageToStorage = (file: File) => {
+        return new Promise<string>((resolve) => {
+            const upload = this.storage.ref('ItemImages/' + file.name).put(file);
+
+            upload.on('state_changed', (snapshot) => {
+                // Observe state change events such as progress, pause, and resume
+            }, (error) => {
+                // Handle unsuccessful uploads
+            },
+            () => {
+                upload.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                    resolve(downloadURL);
+                });
+            });
+
+        });
+    };
+
+    public saveItemToFirestore = (item: Item) => {
         return this.db.collection('items')
             .doc(item.id ? item.id : Math.random().toString(36).substring(7))
             .set({
@@ -94,9 +126,6 @@ class Firebase {
         });
     };
 
-    public uploadItemImg = (file: File) => {
-        this.storage.ref('ItemImages/' + file.name).put(file);
-    };
 }
 
 export default Firebase;

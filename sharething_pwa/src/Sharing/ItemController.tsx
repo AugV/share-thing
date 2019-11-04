@@ -1,54 +1,53 @@
-import React from "react";
-import { withFirebase } from "../Firebase";
-import { withRouter, Switch, Route } from "react-router-dom";
-import Firebase from "../Firebase";
-import history from "history";
-import * as ROUTES from "../Constants/Routes";
-import ItemForm from "./ItemForm";
-import ItemDetails from "./ItemDetails";
-import { Item } from "../Entities/Iterfaces";
+import React from 'react';
+import { withRouter, Switch, Route } from 'react-router-dom';
+import Firebase, { withFirebase } from '../Firebase';
+import history from 'history';
+import * as ROUTES from '../Constants/Routes';
+import { ItemForm } from './ItemForm';
+import ItemDetails from './ItemDetails';
+import { Item } from '../Entities/Iterfaces';
 
 const INITIAL_STATE: State = {
-  item: null
+    item: null,
 };
 
 interface Props {
-  firebase: Firebase;
-  location: any;
-  history: history.History;
+    firebase: Firebase;
+    location: any;
+    history: history.History;
 }
 
 interface State {
-  item: Item | null;
+    item: Item | null;
 }
 
 class ItemController extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = INITIAL_STATE;
-  }
+    constructor(props: Props) {
+        super(props);
+        this.state = INITIAL_STATE;
+    }
 
-  loadItem = (itemId: string) => {
-    return new Promise<Item>(resolve => {
-      this.props.firebase
+    public loadItem = (itemId: string) => {
+        return new Promise<Item>(resolve => {
+            this.props.firebase
         .getItem(itemId)
         .then(item => {
-          resolve(item);
+            resolve(item);
         })
         .catch(error => console.log(error));
-    });
-  };
+        });
+    };
 
-  saveItem = (item: Item, file:File) => {
-    this.props.firebase.saveItem(item).then(() => {
-      this.setState({ ...INITIAL_STATE });
-      this.props.history.push(ROUTES.HOME);
-    });
-    this.props.firebase.uploadItemImg(file);
-  };
+    public saveItem = (item: Item, file: File) => {
+        this.props.firebase.saveItem(item, file).then(() => {
+            this.setState({ ...INITIAL_STATE });
+            this.props.history.push(ROUTES.HOME);
+        });
+        this.props.firebase.saveImageToStorage(file);
+    };
 
-  render() {
-    return (
+    public render(): React.ReactNode {
+        return (
       <Switch>
         <Route
           path={ROUTES.ADD_ITEM}
@@ -69,8 +68,8 @@ class ItemController extends React.Component<Props, State> {
           )}
         />
       </Switch>
-    );
-  }
+        );
+    }
 }
 
 export default withRouter(withFirebase(ItemController));

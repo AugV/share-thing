@@ -26,7 +26,7 @@ interface State {
     render: boolean;
 }
 
-class ItemForm extends React.Component<Props, State> {
+class ItemFormTemplate extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = INITIAL_STATE;
@@ -38,12 +38,6 @@ class ItemForm extends React.Component<Props, State> {
         } else {
             this.setState({ render: true });
         }
-    }
-
-    loadItem() {
-        this.props.loadItem(this.props.match.params.id).then(item => {
-            this.setState({ ...item, render: true });
-        });
     }
 
     public onChange = (event: any) => {
@@ -109,6 +103,12 @@ class ItemForm extends React.Component<Props, State> {
       )
         );
     }
+
+    private loadItem(): void {
+        this.props.loadItem(this.props.match.params.id).then(item => {
+            this.setState({ ...item, render: true });
+        });
+    }
 }
 
-export default withRouter(ItemForm);
+export const ItemForm = withRouter(ItemFormTemplate);
