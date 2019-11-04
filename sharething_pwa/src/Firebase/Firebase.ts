@@ -53,6 +53,7 @@ class Firebase {
                     item.id = itemId;
                     item.name = itemData.name;
                     item.description = itemData.description;
+                    item.imageUrl = itemData.imageUrl;
                 }
                 resolve(item);
             }).catch(function(error) {

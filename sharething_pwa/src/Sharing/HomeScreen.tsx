@@ -67,6 +67,7 @@ class HomeScreen extends React.Component<Props, State> {
         <h1>Home Screen</h1>
         <div>
           {loading && <Spinner animation="border" />}
+          <Button onClick={this.addItem}>Add Item</Button>
           <Accordion>
             {items.map((item, index) => (
               <Card key={item.id}>
@@ -109,7 +110,7 @@ class HomeScreen extends React.Component<Props, State> {
             ))}
           </Accordion>
         </div>
-        <Button onClick={this.addItem}>Add Item</Button>
+        
       </div>
         );
     }

@@ -69,7 +69,7 @@ class PublicScreenTemplate extends React.Component<Props, State> {
                     <Row>
                       <Col>
                         <Link to={`item/${item.id}/details`}>
-                          <Image src={item.imageUrl} thumbnail={true} fluid={true}/>
+                          <Image src={item.imageUrl} thumbnail={true}/>
                         </Link>
                       </Col>
                       <Col>
@@ -86,5 +86,4 @@ class PublicScreenTemplate extends React.Component<Props, State> {
     }
 }
 
-// export { PublicScreen };
 export const PublicScreen = withAuthorization(condition)(PublicScreenTemplate);

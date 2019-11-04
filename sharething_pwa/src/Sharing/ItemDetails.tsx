@@ -47,7 +47,7 @@ class ItemDetails extends React.Component<Props, State> {
     public render(): React.ReactNode {
         return (this.state.item &&
         <Card>
-          <Card.Img variant="top" src={require('../test-img.png')} />
+          <Card.Img variant="top" src={this.state.item.imageUrl} />
           <Card.Body>
             <Card.Title>{this.state.item.name}</Card.Title>
             <Card.Text>
@@ -61,55 +61,3 @@ class ItemDetails extends React.Component<Props, State> {
 }
 
 export default withRouter(ItemDetails);
-
-// <comp1 children={(stringas)=>{<div>{stringas}</div>}}> // return this.props.children("strng")
-
-//   {/* {(stringas)=>{<div>{stringas}</div>}} */}
-
-// </comp1>
-
-// <comp1 prop1="abc" children={<comp2 children={<comp3 children={<comp4 />}/>}/>}</div>}}> // return this.props.children("strng")
-
-// <comp1 prop1="abc" func={(a, b, c)=> console.log(a + b + c)}>
-//   {(a, b, c)=> console.log(a + b + c)}
-//   {/* <div></div>
-//   <div></div>
-//   <div></div> */}
-// </comp1>
-
-// const comp1 = props => {
-//   // props.prop1
-//   // props.children
-//   // props.children(1, 2, 3)
-//   // return this.props.children(1, 2, 3)
-//   // return "labas"
-// }
-
-//   // props.children();
-
-//   // console.log(props.children)
-//   // return 'abc';
-// }
-
-// this.props.children.props.children
-
-// // <comp1>
-// //   <comp2>
-// //     <comp3>
-// //       <comp4/>
-// //     </comp3>
-// //   </comp2>
-// // </comp1>
-
-// const Comp1 = props => {
-
-//   console.log(props.children)
-//   return 'abc';
-// }
-
-// return <Comp1 a={1}/>;
-
-// return (props)=> {
-//   console.log(props.children)
-//   return 'abc';
-// }()
