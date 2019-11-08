@@ -67,6 +67,8 @@ class Firebase {
     public getUserItems = () => this.db.collection('items').where('email', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
 
     public saveItem = (item: Item, image: File) => {
+        item.id = item.id ? item.id : Math.random().toString(36).substring(7);
+
         return this.saveImageToStorage(image, item.id)
         .then(url => {
             item.imageUrl = url;
@@ -94,7 +96,7 @@ class Firebase {
 
     public saveItemToFirestore = (item: Item) => {
         return this.db.collection('items')
-            .doc(item.id ? item.id : Math.random().toString(36).substring(7))
+            .doc(item.id)
             .set({
                 ...item,
                 email: (this.auth.currentUser ? this.auth.currentUser.email : null),
