@@ -29,10 +29,12 @@ class SignInFormBase extends Component {
   }
 
   onSubmit = event => {
+    console.log("signInFormBase - OnSubmit()")
     const { email, password } = this.state;
     this.props.firebase
       .signInUserWithEmailAndPsw(email, password)
       .then(() => {
+        console.log("SignInFormBase signin callback")
         this.setState({ ...INITIAL_STATE });
         this.props.history.push(ROUTES.HOME);
       })
@@ -50,8 +52,6 @@ class SignInFormBase extends Component {
   render() {
     const { email, password, error } = this.state;
 
-
-    console.log(this.props)
     const isInvalid = password === '' || email === '';
 
     return (

@@ -25,10 +25,10 @@ class Firebase {
     }
 
     public createUserWithEmailAndPsw = (email: string, password: string) => {
-        this.auth.createUserWithEmailAndPassword(email, password);
+        return this.auth.createUserWithEmailAndPassword(email, password);
     };
     public signInUserWithEmailAndPsw = (email: string, password: string) => {
-        this.auth.signInWithEmailAndPassword(email, password);
+        return this.auth.signInWithEmailAndPassword(email, password)
     };
     public signOut = () => this.auth.signOut();
     public resetPsw = (email: string) => this.auth.sendPasswordResetEmail(email);
