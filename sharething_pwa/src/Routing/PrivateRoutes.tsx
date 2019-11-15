@@ -4,7 +4,7 @@ import * as ROUTES from '../Constants/Routes';
 import Account from '../Account/AccountScreen';
 import { Home } from '../Sharing/HomeScreen';
 import PasswordResetScreen from '../Account/PasswordResetScreen';
-import ItemController from '../Sharing/ItemController';
+import ItemController from './ItemRoutes';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import withAuthorization from '../Session/WithAuthorization';
@@ -12,7 +12,7 @@ import { PublicScreen } from '../Sharing/PublicScreen';
 
 const condition = (authUser: object) => !!authUser;
 
-const PrivatePage = () => {
+const PrivateRoutes = () => {
     return (
       <div>
       <Switch>
@@ -36,4 +36,4 @@ const PrivatePage = () => {
     );
 };
 
-export const Private = withAuthorization(condition)(PrivatePage);
+export const Private = withAuthorization(condition)(PrivateRoutes);

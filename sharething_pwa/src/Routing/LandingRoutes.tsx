@@ -6,7 +6,7 @@ import LandingScreen from '../Account/LandingScreen';
 import SignInScreen from '../Account/SignInScreen';
 import SignUpScreen from '../Account/SignUpScreen';
 
-const LandingNav = () => (
+const LandingRoutes = () => (
     <div>
     <Switch>
        <Route path={ROUTES.ACCOUNT} component={Account} />
@@ -17,4 +17,4 @@ const LandingNav = () => (
     </div>
 );
 
-export default LandingNav;
+export default LandingRoutes;

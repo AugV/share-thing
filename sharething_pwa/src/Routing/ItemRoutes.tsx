@@ -3,8 +3,8 @@ import { withRouter, Switch, Route } from 'react-router-dom';
 import Firebase, { withFirebase } from '../Firebase';
 import history from 'history';
 import * as ROUTES from '../Constants/Routes';
-import { ItemForm } from './ItemForm';
-import ItemDetails from './ItemDetails';
+import { ItemForm } from '../Sharing/ItemForm';
+import ItemDetails from '../Sharing/ItemDetails';
 import { Item } from '../Entities/Iterfaces';
 
 const INITIAL_STATE: State = {

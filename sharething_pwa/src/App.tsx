@@ -4,9 +4,9 @@ import { Route, BrowserRouter, Switch } from 'react-router-dom';
 import { withFirebaseProvider } from './Firebase';
 import * as ROUTES from './Constants/Routes';
 import { withAuthentication } from './Session';
-import NaviBar from './Navigation/NaviBar';
-import { Private } from './Navigation/PrivateNav';
-import LandingNav from './Navigation/LandingNav';
+import NaviBar from './Routing/NaviBar';
+import { Private } from './Routing/PrivateRoutes';
+import LandingRoutes from './Routing/LandingRoutes';
 
 
 // TODO:JSX Formatavimas 
@@ -17,7 +17,7 @@ const App = () => (
       <NaviBar />
       <Switch>
         <Route path={ROUTES.PRIVATE_PAGE} component={Private} />
-        <Route path={ROUTES.LANDING} component={LandingNav} />
+        <Route path={ROUTES.LANDING} component={LandingRoutes} />
       </Switch>
     </Container>
   </BrowserRouter>
