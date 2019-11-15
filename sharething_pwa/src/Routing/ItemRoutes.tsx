@@ -5,7 +5,7 @@ import history from 'history';
 import * as ROUTES from '../Constants/Routes';
 import { ItemForm } from '../Sharing/ItemForm';
 import ItemDetails from '../Sharing/ItemDetails';
-import { Item } from '../Entities/Iterfaces';
+import { Item } from '../Entities/Interfaces';
 
 const INITIAL_STATE: State = {
     item: null,

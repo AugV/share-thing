@@ -2,7 +2,7 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import { Item } from '../Entities/Iterfaces';
+import { Item } from '../Entities/Interfaces';
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -64,7 +64,10 @@ class Firebase {
     };
 
     public getItems = () => this.db.collection('items');
-    public getUserItems = () => this.db.collection('items').where('email', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
+
+    public getUserItems = () => {
+        return this.db.collection('items').where('email', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
+    };
 
     public saveItem = (item: Item, image: File) => {
         item.id = item.id ? item.id : Math.random().toString(36).substring(7);

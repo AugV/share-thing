@@ -8,8 +8,7 @@ import NaviBar from './Routing/NaviBar';
 import { Private } from './Routing/PrivateRoutes';
 import LandingRoutes from './Routing/LandingRoutes';
 
-
-// TODO:JSX Formatavimas 
+// TODO:JSX Formatavimas
 
 const App = () => (
   <BrowserRouter>

@@ -1,5 +1,4 @@
 import React from 'react';
-import { withAuthorization } from '../Session';
 import Firebase from '../Firebase';
 import {
   Spinner,
@@ -8,14 +7,18 @@ import {
   Container,
   Row,
   Col,
-  Image,
 } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { Item, docToItem } from '../Entities/Interfaces';
+import { docToItem } from '../Entities/Interfaces';
 
-const condition = (authUser: object) => !!authUser;
+interface Conversation {
+    id: string;
+    itemId: string;
+    itemImg: string;
+    ownerId: string;
+    seekerId: string;
+}
 
-interface PublicScreenTemplate {
+interface MessagesScreen {
     unsubscribe: () => void;
 }
 
@@ -25,16 +28,16 @@ interface Props {
 
 interface State {
     loading: boolean;
-    items: Item[];
+    conversations: Conversation[];
 }
 
-class PublicScreenTemplate extends React.Component<Props, State> {
+export class ConversationList extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
         this.state = {
             loading: false,
-            items: [],
+            conversations: [],
         };
     }
 
@@ -45,7 +48,7 @@ class PublicScreenTemplate extends React.Component<Props, State> {
             this.setState(
                 {
                     loading: false,
-                    items: snapshot.docs.map(docToItem),
+                    conversations: snapshot.docs.map(docToItem),
                 },
       );
         });
@@ -56,25 +59,18 @@ class PublicScreenTemplate extends React.Component<Props, State> {
     }
 
     public render(): React.ReactNode {
-        const { items, loading } = this.state;
+        const { conversations, loading } = this.state;
 
         return (
         <div>
           {loading && <Spinner animation="border" />}
           <Accordion>
-            {items.map((item, index) => (
-              <Card key={item.id}>
+            {converstations.map((conversation, index) => (
+              <Card key={conversation.id}>
                 <Card.Header>
                   <Container>
                     <Row>
-                      <Col>
-                        <Link to={`item/${item.id}/details`}>
-                          <Image src={item.imageUrl} thumbnail={true}/>
-                        </Link>
-                      </Col>
-                      <Col>
-                        <Card.Text>{item.name}</Card.Text>
-                      </Col>
+                      <Col/>
                     </Row>
                   </Container>
                 </Card.Header>
@@ -86,4 +82,4 @@ class PublicScreenTemplate extends React.Component<Props, State> {
     }
 }
 
-export const PublicScreen = withAuthorization(condition)(PublicScreenTemplate);
+export const ConversationsScreen = ConversationList;
