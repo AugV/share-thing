@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Firebase from '../Firebase';
 import {
   Spinner,
@@ -30,6 +30,46 @@ interface State {
     loading: boolean;
     conversations: Conversation[];
 }
+
+const ConversationListF = (props: Props) => {
+    const [loading, setLoading] = useState<boolean>(true);
+    const [conversations, setConversations] = useState<Conversation[] | null>(null);
+
+    useEffect(() => {
+        this.unsubscribe = props.firebase.getItems().onSnapshot(snapshot => {
+            setConversations(snapshot.docs.map(docToItem));
+
+          //         this.setState(
+  //           {
+  //               loading: false,
+  //               conversations: snapshot.docs.map(docToItem),
+  //           },
+  // );
+        });
+        return () => {
+            cleanup;
+        };
+    }, [input]);
+
+    return(
+    <div>
+          {loading && <Spinner animation="border" />}
+          <Accordion>
+            {conversations.map((conversation, index) => (
+              <Card key={conversation.id}>
+                <Card.Header>
+                  <Container>
+                    <Row>
+                      <Col/>
+                    </Row>
+                  </Container>
+                </Card.Header>
+              </Card>
+            ))}
+          </Accordion>
+        </div>
+    );
+};
 
 export class ConversationList extends React.Component<Props, State> {
     constructor(props: Props) {
