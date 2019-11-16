@@ -7,7 +7,7 @@ import * as ROUTES from '../Constants/Routes';
 // todo remane navigator
 class NaviBar extends React.Component {
     render() {
-      return (
+        return (
       <Nav fill={true} variant="tabs" defaultActiveKey="/home">
         <Nav.Item>
           <Link to={ROUTES.LANDING}>Landing</Link>
@@ -37,8 +37,8 @@ class NaviBar extends React.Component {
           <Link to={ROUTES.CONVERSATIONS}>CONVERSATIONS</Link>
         </Nav.Item>
       </Nav>
-    );
-  }
+        );
+    }
 }
 
 export default NaviBar;

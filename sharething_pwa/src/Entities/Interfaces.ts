@@ -6,10 +6,11 @@ export interface Item {
     [key: string]: any;
 }
 
-interface Conversation {
+export interface Conversation {
     id: string;
     itemId: string;
     itemImg: string;
+    itemName: string;
     ownerId: string;
     seekerId: string;
 }
@@ -30,9 +31,12 @@ export function docToConvo(document: firebase.firestore.QueryDocumentSnapshot): 
         id: document.id,
         itemId: document.data().itemId,
         itemImg: document.data().itemImg,
+        itemName: document.data().itemName,
         ownerId: document.data().ownerId,
         seekerId: document.data().seekerId,
     };
 
+    console.log('docToCONVO');
+    console.log(convo);
     return convo;
 }

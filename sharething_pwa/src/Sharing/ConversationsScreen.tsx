@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Firebase from '../Firebase';
+import Firebase, { withFirebase } from '../Firebase';
 import {
   Spinner,
   Accordion,
@@ -8,112 +8,43 @@ import {
   Row,
   Col,
 } from 'react-bootstrap';
-import { docToItem, docToConvo } from '../Entities/Interfaces';
-
-interface Conversation {
-    id: string;
-    itemId: string;
-    itemImg: string;
-    ownerId: string;
-    seekerId: string;
-}
-
-// interface MessagesScreen {
-//     unsubscribe: () => void;
-// }
+import { docToConvo, Conversation } from '../Entities/Interfaces';
 
 interface Props {
     firebase: Firebase;
 }
-
-// interface State {
-//     loading: boolean;
-//     conversations: Conversation[];
-// }
 
 const ConversationListF = (props: Props) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [conversations, setConversations] = useState<Conversation[] | null>(null);
 
     useEffect(() => {
-
         const unsubscribe = props.firebase.getUserConversations().onSnapshot(snapshot => {
-            setConversations(snapshot.docs.map(docToConvo));
-        });
+            setConversations(snapshot.docs.map(docToConvo)); });
         setLoading(false);
-
         return unsubscribe;
-    });
+    }, [props.firebase]);
 
     return(
-    <div>
+      <div>
           {loading && <Spinner animation="border" />}
+          {conversations && (
           <Accordion>
             {conversations!.map((conversation, index) => (
               <Card key={conversation.id}>
                 <Card.Header>
                   <Container>
                     <Row>
-                      <Col/>
+                      <Col>{conversation.itemName}</Col>
                     </Row>
                   </Container>
                 </Card.Header>
               </Card>
             ))}
           </Accordion>
+          )}
         </div>
     );
 };
 
-// export class ConversationList extends React.Component<Props, State> {
-//     constructor(props: Props) {
-//         super(props);
-
-//         this.state = {
-//             loading: false,
-//             conversations: [],
-//         };
-//     }
-
-//     public componentDidMount(): void {
-//         this.setState({ loading: true });
-
-//         this.unsubscribe = this.props.firebase.getItems().onSnapshot(snapshot => {
-//             this.setState(
-//                 {
-//                     loading: false,
-//                     conversations: snapshot.docs.map(docToItem),
-//                 },
-//       );
-//         });
-//     }
-
-//     public componentWillUnmount(): void {
-//         this.unsubscribe();
-//     }
-
-//     public render(): React.ReactNode {
-//         const { conversations, loading } = this.state;
-
-//         return (
-//         <div>
-//           {loading && <Spinner animation="border" />}
-//           <Accordion>
-//             {converstations.map((conversation, index) => (
-//               <Card key={conversation.id}>
-//                 <Card.Header>
-//                   <Container>
-//                     <Row>
-//                       <Col/>
-//                     </Row>
-//                   </Container>
-//                 </Card.Header>
-//               </Card>
-//             ))}
-//           </Accordion>
-//         </div>
-//         );
-//     }
-// }
-
-export const ConversationsScreen = ConversationListF;
+export const ConversationsScreen = withFirebase(ConversationListF);

@@ -70,9 +70,10 @@ class Firebase {
     };
 
     public getUserConversations = () => {
+        console.log('fetching');
         return this.db.collection('chat')
-        .where('ownerId', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'))
-        .where('seekerId', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
+        .where('ownerId', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
+        // .where('seekerId', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
     };
 
     public saveItem = (item: Item, image: File) => {
