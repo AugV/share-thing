@@ -69,6 +69,12 @@ class Firebase {
         return this.db.collection('items').where('email', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
     };
 
+    public getUserConversations = () => {
+        return this.db.collection('chat')
+        .where('ownerId', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'))
+        .where('seekerId', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
+    };
+
     public saveItem = (item: Item, image: File) => {
         item.id = item.id ? item.id : Math.random().toString(36).substring(7);
 

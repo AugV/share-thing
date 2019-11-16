@@ -6,6 +6,14 @@ export interface Item {
     [key: string]: any;
 }
 
+interface Conversation {
+    id: string;
+    itemId: string;
+    itemImg: string;
+    ownerId: string;
+    seekerId: string;
+}
+
 export function docToItem(document: firebase.firestore.QueryDocumentSnapshot): Item {
     const item: Item = {
         id: document.id,
@@ -15,4 +23,16 @@ export function docToItem(document: firebase.firestore.QueryDocumentSnapshot): I
     };
 
     return item;
+}
+
+export function docToConvo(document: firebase.firestore.QueryDocumentSnapshot): Conversation {
+    const convo: Conversation = {
+        id: document.id,
+        itemId: document.data().itemId,
+        itemImg: document.data().itemImg,
+        ownerId: document.data().ownerId,
+        seekerId: document.data().seekerId,
+    };
+
+    return convo;
 }

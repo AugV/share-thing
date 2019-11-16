@@ -21,7 +21,7 @@ const PrivateRoutes = () => {
         <Route path={ROUTES.HOME} component={Home} />
         <Route path={ROUTES.PUBLIC} component={PublicScreen} />
         <Route path={ROUTES.ITEM} component={ItemController} />
-        <Route path={ROUTES.MESSAGES} component={ConversationsScreen} />
+        <Route path={ROUTES.CONVERSATIONS} component={ConversationsScreen} />
         <Route path={ROUTES.PASSWORD_RESET} component={PasswordResetScreen} />
       </Switch>
       <Navbar fixed="bottom" variant="dark">
