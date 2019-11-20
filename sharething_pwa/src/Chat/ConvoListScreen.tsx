@@ -9,6 +9,7 @@ import {
   Col,
 } from 'react-bootstrap';
 import { docToConvo, Conversation } from '../Entities/Interfaces';
+import { Link } from 'react-router-dom';
 
 interface Props {
     firebase: Firebase;

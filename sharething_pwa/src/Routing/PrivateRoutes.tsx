@@ -9,7 +9,7 @@ import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import withAuthorization from '../Session/WithAuthorization';
 import { PublicScreen } from '../Sharing/PublicScreen';
-import { ConversationsScreen } from '../Sharing/ConversationsScreen';
+import { ConversationsScreen } from '../Chat/ConvoListScreen';
 
 const condition = (authUser: object) => !!authUser;
 
