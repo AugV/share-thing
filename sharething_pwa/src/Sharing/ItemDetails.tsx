@@ -9,7 +9,6 @@ const INITIAL_STATE: State = {
 
 interface OwnProps {
     loadItem(itemId: string): Promise<Item>;
-
 }
 
 type Props = OwnProps & RouteComponentProps<any>;

@@ -10,6 +10,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import withAuthorization from '../Session/WithAuthorization';
 import { PublicScreen } from '../Sharing/PublicScreen';
 import { ConversationsScreen } from '../Chat/ConvoListScreen';
+import { ConvoScreen } from '../Chat/ConvoScreen';
 
 const condition = (authUser: object) => !!authUser;
 
@@ -21,7 +22,8 @@ const PrivateRoutes = () => {
         <Route path={ROUTES.HOME} component={Home} />
         <Route path={ROUTES.PUBLIC} component={PublicScreen} />
         <Route path={ROUTES.ITEM} component={ItemController} />
-        <Route path={ROUTES.CONVERSATIONS} component={ConversationsScreen} />
+        <Route path={ROUTES.CONVO} component={ConvoScreen} />
+        <Route path={ROUTES.CONVO_LIST} component={ConversationsScreen} />
         <Route path={ROUTES.PASSWORD_RESET} component={PasswordResetScreen} />
       </Switch>
       <Navbar fixed="bottom" variant="dark">

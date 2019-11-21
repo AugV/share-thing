@@ -12,17 +12,16 @@ interface Props {
 
 export const MessageList = (props: Props) => {
 
-    return(
-        <div>
+    return (<div>
             <ul style={myStyles}>
-                {props.messages.map((message, index) => {
+                {props.messages.map((message, index) => (
                     <li key={index}>
                         <Message {...message}/>
-                    </li>;
-                })}
+                    </li>
+                ))}
             </ul>
-        </div>
-    );
+        </div>)
+    ;
 };
 
 const myStyles: CSSProperties = {

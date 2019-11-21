@@ -26,14 +26,14 @@ export function docToItem(document: firebase.firestore.QueryDocumentSnapshot): I
     return item;
 }
 
-export function docToConvo(document: firebase.firestore.QueryDocumentSnapshot): Conversation {
+export function docToConvo(document: firebase.firestore.QueryDocumentSnapshot | firebase.firestore.DocumentSnapshot): Conversation {
     const convo: Conversation = {
         id: document.id,
-        itemId: document.data().itemId,
-        itemImg: document.data().itemImg,
-        itemName: document.data().itemName,
-        ownerId: document.data().ownerId,
-        seekerId: document.data().seekerId,
+        itemId: document.data()!.itemId,
+        itemImg: document.data()!.itemImg,
+        itemName: document.data()!.itemName,
+        ownerId: document.data()!.ownerId,
+        seekerId: document.data()!.seekerId,
     };
 
     console.log('docToCONVO');

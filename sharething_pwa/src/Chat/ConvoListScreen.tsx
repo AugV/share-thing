@@ -35,8 +35,9 @@ const ConversationListF = (props: Props) => {
               <Card key={conversation.id}>
                 <Card.Header>
                   <Container>
-                    <Row>
+                    <Row key={index}>
                       <Col>{conversation.itemName}</Col>
+                      <Link to={`messages/${conversation.id}`}>Go to conversation</Link>
                     </Row>
                   </Container>
                 </Card.Header>

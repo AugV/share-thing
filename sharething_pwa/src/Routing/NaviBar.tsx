@@ -34,7 +34,7 @@ class NaviBar extends React.Component {
           <Link to={ROUTES.PUBLIC}>Public Screen</Link>
         </Nav.Item>
         <Nav.Item>
-          <Link to={ROUTES.CONVERSATIONS}>CONVERSATIONS</Link>
+          <Link to={ROUTES.CONVO_LIST}>CONVERSATIONS</Link>
         </Nav.Item>
       </Nav>
         );

@@ -2,7 +2,7 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import { Item } from '../Entities/Interfaces';
+import { Item, Conversation, docToConvo } from '../Entities/Interfaces';
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -74,6 +74,23 @@ class Firebase {
         return this.db.collection('chat')
         .where('ownerId', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
         // .where('seekerId', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
+    };
+
+    public getConvo = (convoId: string) => {
+        return new Promise<Conversation>((resolve) => {
+            this.db.collection('chat').doc(convoId).get().then(doc => {
+                if (!doc.exists) {
+                    console.log('No such document!');
+                    return;
+                }
+                const conversation = docToConvo(doc);
+
+                resolve(conversation);
+            }).catch(function(error) {
+                console.log('Error getting document:', error);
+            });
+        },
+            );
     };
 
     public saveItem = (item: Item, image: File) => {
