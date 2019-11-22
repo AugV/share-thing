@@ -15,7 +15,7 @@ interface Props {
     firebase: Firebase;
 }
 
-const ConversationListF = (props: Props) => {
+const ConvoList = (props: Props) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [conversations, setConversations] = useState<Conversation[] | null>(null);
 
@@ -49,4 +49,4 @@ const ConversationListF = (props: Props) => {
     );
 };
 
-export const ConversationsScreen = withFirebase(ConversationListF);
+export const ConvoListScreen = withFirebase(ConvoList);

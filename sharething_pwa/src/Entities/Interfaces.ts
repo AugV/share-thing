@@ -15,6 +15,13 @@ export interface Conversation {
     seekerId: string;
 }
 
+export interface Message {
+    id: string;
+    author: string;
+    text: string;
+    time: string;
+}
+
 export function docToItem(document: firebase.firestore.QueryDocumentSnapshot): Item {
     const item: Item = {
         id: document.id,
@@ -36,7 +43,16 @@ export function docToConvo(document: firebase.firestore.QueryDocumentSnapshot | 
         seekerId: document.data()!.seekerId,
     };
 
-    console.log('docToCONVO');
-    console.log(convo);
     return convo;
+}
+
+export function docToMessage(document: firebase.firestore.QueryDocumentSnapshot): Message {
+    const message: Message = {
+        id: document.id,
+        author: document.data().author,
+        text: document.data().text,
+        time: document.data().time,
+    }
+
+    return message;
 }

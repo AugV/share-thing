@@ -10,7 +10,8 @@ interface Props {
     messages: Message[];
 }
 
-export const MessageList = (props: Props) => {
+// TODO:React.memo()??
+const MessageList = (props: Props) => {
 
     return (<div>
             <ul style={myStyles}>
@@ -27,3 +28,5 @@ export const MessageList = (props: Props) => {
 const myStyles: CSSProperties = {
     listStyleType:  'none',
 };
+
+export const MessagesList = React.memo(MessageList);

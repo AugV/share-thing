@@ -13,6 +13,8 @@ const firebaseConfig = {
     messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
 };
 
+type ConvoPack = [Conversation , app.firestore.CollectionReference];
+
 class Firebase {
     public auth: app.auth.Auth;
     public db: app.firestore.Firestore;
@@ -77,15 +79,19 @@ class Firebase {
     };
 
     public getConvo = (convoId: string) => {
-        return new Promise<Conversation>((resolve) => {
+        return new Promise<ConvoPack>((resolve) => {
             this.db.collection('chat').doc(convoId).get().then(doc => {
                 if (!doc.exists) {
                     console.log('No such document!');
                     return;
                 }
+
+                const msgRef = doc.ref.collection('msg1');
                 const conversation = docToConvo(doc);
 
-                resolve(conversation);
+                const convo: ConvoPack = [conversation, msgRef];
+
+                resolve(convo);
             }).catch(function(error) {
                 console.log('Error getting document:', error);
             });

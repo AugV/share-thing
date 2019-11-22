@@ -1,27 +1,42 @@
-import React from 'react';
-import { MessageList } from './MessageList';
+import React, { useEffect, useState }  from 'react';
+import { MessagesList } from './MessageList';
 import { RouteComponentProps } from 'react-router';
+import Firebase, { withFirebase } from '../Firebase';
+import { Conversation, Message, docToMessage } from '../Entities/Interfaces';
 
-const msgList = [
-    { author: 'test', text: 'test' }, { author: 'test1', text: 'test1' }, { author: 'test2', text: 'test2' },
+const msgList: Message[] = [
+    { id: 'test', author: 'test', text: 'test', time: '12:00:00 AM' },
 ];
 
-type Props= RouteComponentProps<any>;
+interface OwnProps {
+    firebase: Firebase;
+}
 
-export const ConvoScreen = (props: Props) => {
+type Props= OwnProps & RouteComponentProps<any>;
+
+const ConvoContainer = (props: Props) => {
+    const [convo, setConvo] = useState<Conversation>();
+    const [messages, setMessages] = useState<Message[]>(msgList);
 
     useEffect(() => {
-        effect;
-        return () => {
-            cleanup;
-        };
+        props.firebase.getConvo(props.match.params.id).then((convoPack) => {
+            const [convoDetails, messagesRef] = convoPack;
+            setConvo(convoDetails);
+
+            return messagesRef.onSnapshot(snapshot => {
+                setMessages(snapshot.docs.map(docToMessage));
+            });
+
+        });
+        console.log('fetching convo');
     }, []);
 
     return(
         <div>
-    <MessageList messages={msgList}/>
-    {/* <InputField /> */}
+            <h2>{convo && convo.itemName}</h2>
+            <MessagesList messages={messages}/>
+            {/* <InputField /> */}
         </div>
     );
 };
-
+export const ConvoScreen = withFirebase(ConvoContainer);
