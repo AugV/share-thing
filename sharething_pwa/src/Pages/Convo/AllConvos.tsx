@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Firebase, { withFirebase } from '../Firebase';
+import Firebase, { withFirebase } from '../../Firebase';
 import {
   Spinner,
   Accordion,
@@ -8,7 +8,7 @@ import {
   Row,
   Col,
 } from 'react-bootstrap';
-import { docToConvo, Conversation } from '../Entities/Interfaces';
+import { docToConvo, Conversation } from '../../Entities/Interfaces';
 import { Link } from 'react-router-dom';
 
 interface Props {

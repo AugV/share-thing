@@ -1,8 +1,8 @@
 import React, { useEffect, useState }  from 'react';
-import { MessagesList } from './MessageList';
+import { MessagesList } from '../../Components/MessageList';
 import { RouteComponentProps } from 'react-router';
-import Firebase, { withFirebase } from '../Firebase';
-import { Conversation, Message, docToMessage } from '../Entities/Interfaces';
+import Firebase, { withFirebase } from '../../Firebase';
+import { Conversation, Message, docToMessage } from '../../Entities/Interfaces';
 
 const msgList: Message[] = [
     { id: 'test', author: 'test', text: 'test', time: '12:00:00 AM' },

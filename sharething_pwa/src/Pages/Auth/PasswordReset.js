@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Form, Button} from 'react-bootstrap';
 
-import { withFirebase } from '../Firebase';
-import * as ROUTES from '../Constants/Routes';
+import { withFirebase } from '../../Firebase';
+import * as ROUTES from '../../Constants/Routes';
 
 const PasswordResetScreen = () => (
   <div>

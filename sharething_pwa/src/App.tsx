@@ -3,11 +3,10 @@ import { Container } from 'react-bootstrap';
 import { Route, BrowserRouter, Switch } from 'react-router-dom';
 import { withFirebaseProvider } from './Firebase';
 import * as ROUTES from './Constants/Routes';
-import { withAuthentication } from './Session';
-import NaviBar from './Routing/NaviBar';
-import { Private } from './Routing/PrivateRoutes';
-import LandingRoutes from './Routing/LandingRoutes';
-
+import { withAuthentication } from './Utils';
+import NaviBar from './Routes/NaviBar';
+import { Private } from './Routes/Private';
+import LandingRoutes from './Routes/Landing';
 
 const App = () => (
   <BrowserRouter>

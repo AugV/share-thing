@@ -1,16 +1,16 @@
 import React from 'react';
 import { Switch, Route } from 'react-router';
 import * as ROUTES from '../Constants/Routes';
-import Account from '../Account/AccountScreen';
-import { Home } from '../Sharing/HomeScreen';
-import PasswordResetScreen from '../Account/PasswordResetScreen';
-import ItemController from './ItemRoutes';
+import Account from '../Pages/Account';
+import { Home } from '../Pages/Home';
+import PasswordResetScreen from '../Pages/Auth/PasswordReset';
+import ItemController from '../Pages/Item/Item';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import withAuthorization from '../Session/WithAuthorization';
-import { PublicScreen } from '../Sharing/PublicScreen';
-import { ConvoListScreen } from '../Chat/ConvoListScreen';
-import { ConvoScreen } from '../Chat/ConvoScreen';
+import withAuthorization from '../Utils/WithAuthorization';
+import { PublicScreen } from '../Pages/Public';
+import { ConvoListScreen } from '../Pages/Convo/AllConvos';
+import { ConvoScreen } from '../Pages/Convo/Convo';
 
 const condition = (authUser: object) => !!authUser;
 

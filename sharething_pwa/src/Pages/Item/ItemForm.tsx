@@ -1,6 +1,6 @@
 import React, { FormEvent } from 'react';
 import { Form, Button } from 'react-bootstrap';
-import { Item } from '../Entities/Interfaces';
+import { Item } from '../../Entities/Interfaces';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 const INITIAL_STATE: State = {
