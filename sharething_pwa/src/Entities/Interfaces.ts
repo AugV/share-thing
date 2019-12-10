@@ -6,7 +6,7 @@ export interface Item {
     [key: string]: any;
 }
 
-export interface Conversation {
+export interface ConversationInfo {
     id: string;
     itemId: string;
     itemImg: string;
@@ -17,9 +17,10 @@ export interface Conversation {
 
 export interface Message {
     id: string;
-    author: string;
+    position: string;
+    type: string;
     text: string;
-    time: string;
+    date: string;
 }
 
 export function docToItem(document: firebase.firestore.QueryDocumentSnapshot): Item {
@@ -33,8 +34,8 @@ export function docToItem(document: firebase.firestore.QueryDocumentSnapshot): I
     return item;
 }
 
-export function docToConvo(document: firebase.firestore.QueryDocumentSnapshot | firebase.firestore.DocumentSnapshot): Conversation {
-    const convo: Conversation = {
+export function docToConvo(document: firebase.firestore.QueryDocumentSnapshot | firebase.firestore.DocumentSnapshot): ConversationInfo {
+    const convo: ConversationInfo = {
         id: document.id,
         itemId: document.data()!.itemId,
         itemImg: document.data()!.itemImg,
@@ -46,13 +47,15 @@ export function docToConvo(document: firebase.firestore.QueryDocumentSnapshot | 
     return convo;
 }
 
-export function docToMessage(document: firebase.firestore.QueryDocumentSnapshot): Message {
+export function docToMessage(document: firebase.firestore.QueryDocumentSnapshot, user: string): Message {
+    console.log(document.data().text + '  ' + user + '  ' + document.data().author);
     const message: Message = {
         id: document.id,
-        author: document.data().author,
+        position: user === document.data().author ? 'right' : 'left',
+        type: 'text',
         text: document.data().text,
-        time: document.data().time,
-    }
+        date: document.data().time,
+    };
 
     return message;
 }

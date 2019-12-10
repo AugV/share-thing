@@ -2,7 +2,8 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import { Item, Conversation, docToConvo } from '../Entities/Interfaces';
+import { Item, ConversationInfo, docToConvo } from '../Entities/Interfaces';
+import * as NAME from '../Constants/Names';
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -13,7 +14,10 @@ const firebaseConfig = {
     messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
 };
 
-type ConvoPack = [Conversation , app.firestore.CollectionReference];
+interface Conversation {
+    conversationInfo: ConversationInfo;
+    messagesRef: app.firestore.CollectionReference;
+}
 
 class Firebase {
     public auth: app.auth.Auth;
@@ -58,7 +62,7 @@ class Firebase {
                     item.imageUrl = itemData.imageUrl;
                 }
                 resolve(item);
-            }).catch(function(error) {
+            }).catch(error => {
                 console.log('Error getting document:', error);
             });
         });
@@ -75,24 +79,24 @@ class Firebase {
         console.log('fetching');
         return this.db.collection('chat')
         .where('ownerId', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
-        // .where('seekerId', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
+        // .where('seekerId', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a')); //TODO: Both seeker & owner should get Convos
     };
 
     public getConvo = (convoId: string) => {
-        return new Promise<ConvoPack>((resolve) => {
+        return new Promise<Conversation>((resolve) => {
             this.db.collection('chat').doc(convoId).get().then(doc => {
                 if (!doc.exists) {
                     console.log('No such document!');
                     return;
                 }
 
-                const msgRef = doc.ref.collection('msg1');
-                const conversation = docToConvo(doc);
+                const conversation: Conversation = {
+                    conversationInfo: docToConvo(doc),
+                    messagesRef: doc.ref.collection(NAME.MESSAGE_COLLECTION),
+                };
 
-                const convo: ConvoPack = [conversation, msgRef];
-
-                resolve(convo);
-            }).catch(function(error) {
+                resolve(conversation);
+            }).catch(error => {
                 console.log('Error getting document:', error);
             });
         },

@@ -10,7 +10,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import withAuthorization from '../Utils/WithAuthorization';
 import { PublicScreen } from '../Pages/Public';
 import { ConvoListScreen } from '../Pages/Convo/AllConvos';
-import { ConvoScreen } from '../Pages/Convo/Convo';
+import { ConvoScreen } from '../Pages/Convo/ConvoPage';
 
 const condition = (authUser: object) => !!authUser;
 

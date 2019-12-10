@@ -8,7 +8,7 @@ import {
   Row,
   Col,
 } from 'react-bootstrap';
-import { docToConvo, Conversation } from '../../Entities/Interfaces';
+import { docToConvo, ConversationInfo } from '../../Entities/Interfaces';
 import { Link } from 'react-router-dom';
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
 
 const ConvoList = (props: Props) => {
     const [loading, setLoading] = useState<boolean>(true);
-    const [conversations, setConversations] = useState<Conversation[] | null>(null);
+    const [conversations, setConversations] = useState<ConversationInfo[] | null>(null);
 
     useEffect(() => {
         const unsubscribe = props.firebase.getUserConversations().onSnapshot(snapshot => {
