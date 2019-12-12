@@ -52,7 +52,6 @@ class Firebase {
                 }
                 const item: Item = { id: itemId, name: 'NA', description: 'NA' };
 
-                console.log('Document data:', doc.data());
                 const itemData = doc.data() ? doc.data() : null;
 
                 if (itemData) {
@@ -75,11 +74,14 @@ class Firebase {
         return this.db.collection('items').where('email', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
     };
 
-    public getUserConversations = () => {
-        console.log('fetching');
+    public getAsOwnerConversations = () => {
         return this.db.collection('chat')
         .where('ownerId', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
-        // .where('seekerId', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a')); //TODO: Both seeker & owner should get Convos
+    };
+
+    public getAsSeekerConversations = () => {
+        return this.db.collection('chat')
+        .where('seekerId', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
     };
 
     public getConvo = (convoId: string) => {
@@ -101,6 +103,15 @@ class Firebase {
             });
         },
             );
+    };
+
+    public sendMessage = (messageText: string, ref: firebase.firestore.CollectionReference) => {
+        ref.add({
+            author: this!.auth!.currentUser!.email,
+            text: messageText,
+            // time: app.firestore.FieldValue.serverTimestamp(),
+            time: new Date(),
+        });
     };
 
     public saveItem = (item: Item, image: File) => {
@@ -149,14 +160,12 @@ class Firebase {
 
     public deleteItem = (itemId: string) => {
         this.db.collection('items').doc(itemId).delete().then(function() {
-            console.log(`Document: ${itemId} successfully deleted!`);
         }).catch(function(error) {
             console.error(`Error removing document ${itemId} : `, error);
         });
         const ref = this.storage.ref(`ItemImages/${itemId}`);
 
         ref.delete().then(() => {
-            console.log('Image deleted succesfully');
         }).catch((error) => {
             console.log('Error when deleting Image');
         });
