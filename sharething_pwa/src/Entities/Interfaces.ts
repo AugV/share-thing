@@ -20,7 +20,7 @@ export interface Message {
     position: string;
     type: string;
     text: string;
-    date: string;
+    date: Date;
 }
 
 export function docToItem(document: firebase.firestore.QueryDocumentSnapshot): Item {
@@ -48,13 +48,12 @@ export function docToConvo(document: firebase.firestore.QueryDocumentSnapshot | 
 }
 
 export function docToMessage(document: firebase.firestore.QueryDocumentSnapshot, user: string): Message {
-    console.log(document.data().text + '  ' + user + '  ' + document.data().author);
     const message: Message = {
         id: document.id,
         position: user === document.data().author ? 'right' : 'left',
         type: 'text',
         text: document.data().text,
-        date: document.data().time,
+        date: document.data().time.toDate(),
     };
 
     return message;

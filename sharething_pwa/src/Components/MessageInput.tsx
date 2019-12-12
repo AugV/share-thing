@@ -1,27 +1,35 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import 'react-chat-elements/dist/main.css';
 import { Input, Button } from 'react-chat-elements';
 
-const MessageInputComponent = () => {
-// const [input, setInput] = useState<string>();
-    const inputE = useRef(null);
-    const onButtonClick = () => {
-    // `current` points to the mounted text input element
-    // @ts-ignore
-        inputE.current = '1000';
+interface Props {
+    submit: (text: string) => void;
+}
 
+const MessageInputComponent = (props: Props) => {
+    const inputRef = useRef<any>(null);
+
+    const onButtonClick = () => {
+        if (inputRef && inputRef.current && inputRef.current.state.value) {
+            props.submit(inputRef.current.state.value);
+            inputRef.current.clear();
+        }
     };
 
     return (
         <Input
-        ref={inputE}
-        placeholder="Type here..."
-        multiline={true}
-        rightButtons={
-            <Button
-                text={'click me!'}
-                onClick={onButtonClick}/>
-    }/>
+            ref={inputRef}
+            placeholder="Type here..."
+            multiline={true}
+            rightButtons={
+                (
+                <Button
+                    text={'click me!'}
+                    onClick={onButtonClick}
+                />
+                )
+                }
+        />
     );
 };
 export const MessageInput = MessageInputComponent;

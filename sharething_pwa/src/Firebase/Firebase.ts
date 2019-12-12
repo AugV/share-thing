@@ -103,6 +103,15 @@ class Firebase {
             );
     };
 
+    public sendMessage = (messageText: string, ref: firebase.firestore.CollectionReference) => {
+        ref.add({
+            author: this!.auth!.currentUser!.email,
+            text: messageText,
+            // time: app.firestore.FieldValue.serverTimestamp(),
+            time: new Date(),
+        });
+    };
+
     public saveItem = (item: Item, image: File) => {
         item.id = item.id ? item.id : Math.random().toString(36).substring(7);
 
