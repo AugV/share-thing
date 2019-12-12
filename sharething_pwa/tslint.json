@@ -1,0 +1,44 @@
+{
+    "defaultSeverity": "warning",
+    "extends": [
+        "tslint:latest",
+        "tslint-react",
+        "tslint-eslint-rules"
+    ],
+    "linterOptions": {
+        "exclude": [
+            "src/i18n/@generated/**/*"
+        ]
+    },
+    "jsRules": {},
+    "rules": {
+        "eofline": true,
+        "object-curly-spacing": [true, "always"],
+        "quotemark": [true, "single", "jsx-double"],
+        "ter-indent": [true, 4, { "SwitchCase": 1 }],
+        "ter-newline-after-var": [true, "always"],
+        "no-implicit-dependencies": false,
+        "interface-name": [true, "never-prefix"],
+        "ordered-imports": false,
+        "object-literal-sort-keys": false,
+        "jsx-no-multiline-js": false,
+        "arrow-parens": false,
+        "array-type": [true, "array"],
+        "no-default-export": true,
+        "no-empty-interface": false,
+        "no-string-literal": false,
+        "no-submodule-imports": false,
+        "typedef": [true, "call-signature", "parameter", "property-declaration", "member-variable-declaration"],
+        "jsx-no-lambda": false,
+        "semicolon": [true, "always", "strict-bound-class-methods"],
+        "no-multi-spaces": true,
+        "object-literal-key-quotes": [true, "as-needed"],
+        "no-unused-variable": true,
+        "max-line-length": [true, {
+            "limit": 120,
+            "ignore-pattern": " from '[\\w-/\\.]*?';$|import(.+)"
+        }],
+        "deprecation": true
+    },
+    "rulesDirectory": []
+}
