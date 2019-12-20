@@ -1,5 +1,5 @@
 import React from 'react';
-import { withAuthorization } from '../Session';
+import { withAuthorization } from '../Utils';
 import Firebase from '../Firebase';
 import {
   Spinner,
@@ -11,7 +11,7 @@ import {
   Image,
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { Item, docToItem } from '../Entities/Iterfaces';
+import { Item, docToItem } from '../Entities/Interfaces';
 
 const condition = (authUser: object) => !!authUser;
 

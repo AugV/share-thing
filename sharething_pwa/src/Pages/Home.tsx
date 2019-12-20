@@ -13,7 +13,7 @@ import {
 import * as ROUTES from '../Constants/Routes';
 import history from 'history';
 import { Link } from 'react-router-dom';
-import { Item, docToItem } from '../Entities/Iterfaces';
+import { Item, docToItem } from '../Entities/Interfaces';
 
 interface HomeScreen {
     unsubscribe: () => void;

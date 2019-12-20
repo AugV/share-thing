@@ -1,11 +1,11 @@
 import React from 'react';
 import { withRouter, Switch, Route } from 'react-router-dom';
-import Firebase, { withFirebase } from '../Firebase';
+import Firebase, { withFirebase } from '../../Firebase';
 import history from 'history';
-import * as ROUTES from '../Constants/Routes';
+import * as ROUTES from '../../Constants/Routes';
 import { ItemForm } from './ItemForm';
 import ItemDetails from './ItemDetails';
-import { Item } from '../Entities/Iterfaces';
+import { Item } from '../../Entities/Interfaces';
 
 const INITIAL_STATE: State = {
     item: null,
@@ -21,7 +21,7 @@ interface State {
     item: Item | null;
 }
 
-class ItemController extends React.Component<Props, State> {
+class ItemRouter extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = INITIAL_STATE;
@@ -71,4 +71,4 @@ class ItemController extends React.Component<Props, State> {
     }
 }
 
-export default withRouter(withFirebase(ItemController));
+export default withRouter(withFirebase(ItemRouter));

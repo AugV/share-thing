@@ -2,7 +2,8 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import { Item } from '../Entities/Iterfaces';
+import { Item, ConversationInfo, docToConvo } from '../Entities/Interfaces';
+import * as NAME from '../Constants/Names';
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -12,6 +13,11 @@ const firebaseConfig = {
     storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
     messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
 };
+
+interface Conversation {
+    conversationInfo: ConversationInfo;
+    messagesRef: app.firestore.CollectionReference;
+}
 
 class Firebase {
     public auth: app.auth.Auth;
@@ -28,7 +34,11 @@ class Firebase {
         return this.auth.createUserWithEmailAndPassword(email, password);
     };
     public signInUserWithEmailAndPsw = (email: string, password: string) => {
+<<<<<<< HEAD
         return this.auth.signInWithEmailAndPassword(email, password)
+=======
+        return this.auth.signInWithEmailAndPassword(email, password);
+>>>>>>> 179e7ddffe49a8270a1235f1fe81ed23f1012c19
     };
     public signOut = () => this.auth.signOut();
     public resetPsw = (email: string) => this.auth.sendPasswordResetEmail(email);
@@ -56,7 +66,7 @@ class Firebase {
                     item.imageUrl = itemData.imageUrl;
                 }
                 resolve(item);
-            }).catch(function(error) {
+            }).catch(error => {
                 console.log('Error getting document:', error);
             });
         });
@@ -64,7 +74,47 @@ class Firebase {
     };
 
     public getItems = () => this.db.collection('items');
-    public getUserItems = () => this.db.collection('items').where('email', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
+
+    public getUserItems = () => {
+        return this.db.collection('items').where('email', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
+    };
+
+    public getUserConversations = () => {
+        console.log('fetching');
+        return this.db.collection('chat')
+        .where('ownerId', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
+        // .where('seekerId', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a')); //TODO: Both seeker & owner should get Convos
+    };
+
+    public getConvo = (convoId: string) => {
+        return new Promise<Conversation>((resolve) => {
+            this.db.collection('chat').doc(convoId).get().then(doc => {
+                if (!doc.exists) {
+                    console.log('No such document!');
+                    return;
+                }
+
+                const conversation: Conversation = {
+                    conversationInfo: docToConvo(doc),
+                    messagesRef: doc.ref.collection(NAME.MESSAGE_COLLECTION),
+                };
+
+                resolve(conversation);
+            }).catch(error => {
+                console.log('Error getting document:', error);
+            });
+        },
+            );
+    };
+
+    public sendMessage = (messageText: string, ref: firebase.firestore.CollectionReference) => {
+        ref.add({
+            author: this!.auth!.currentUser!.email,
+            text: messageText,
+            // time: app.firestore.FieldValue.serverTimestamp(),
+            time: new Date(),
+        });
+    };
 
     public saveItem = (item: Item, image: File) => {
         item.id = item.id ? item.id : Math.random().toString(36).substring(7);

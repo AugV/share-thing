@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { Item } from '../Entities/Iterfaces';
+import { Item } from '../../Entities/Interfaces';
 
 const INITIAL_STATE: State = {
     item: { id: '', name: '', description: '' },
@@ -9,7 +9,6 @@ const INITIAL_STATE: State = {
 
 interface OwnProps {
     loadItem(itemId: string): Promise<Item>;
-
 }
 
 type Props = OwnProps & RouteComponentProps<any>;
@@ -17,8 +16,6 @@ type Props = OwnProps & RouteComponentProps<any>;
 interface State {
     item: Item;
 }
-
-// return <ItemDetails />
 
 class ItemDetails extends React.Component<Props, State> {
     constructor(props: Props) {

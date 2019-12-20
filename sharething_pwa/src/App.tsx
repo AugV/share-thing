@@ -3,13 +3,10 @@ import { Container } from 'react-bootstrap';
 import { Route, BrowserRouter, Switch } from 'react-router-dom';
 import { withFirebaseProvider } from './Firebase';
 import * as ROUTES from './Constants/Routes';
-import { withAuthentication } from './Session';
-import NaviBar from './Navigation/NaviBar';
-import { Private } from './Navigation/PrivateNav';
-import LandingNav from './Navigation/LandingNav';
-
-
-// TODO:JSX Formatavimas 
+import { withAuthentication } from './Utils';
+import NaviBar from './Routes/NaviBar';
+import { Private } from './Routes/Private';
+import LandingRoutes from './Routes/Landing';
 
 const App = () => (
   <BrowserRouter>
@@ -17,7 +14,7 @@ const App = () => (
       <NaviBar />
       <Switch>
         <Route path={ROUTES.PRIVATE_PAGE} component={Private} />
-        <Route path={ROUTES.LANDING} component={LandingNav} />
+        <Route path={ROUTES.LANDING} component={LandingRoutes} />
       </Switch>
     </Container>
   </BrowserRouter>

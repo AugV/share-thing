@@ -1,14 +1,14 @@
-import React from "react";
-import { Nav } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Nav } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-import * as ROUTES from "../Constants/Routes";
+import * as ROUTES from '../Constants/Routes';
 
-//todo remane navigator
+// todo remane navigator
 class NaviBar extends React.Component {
-  render() {
-    return (
-      <Nav fill variant="tabs" defaultActiveKey="/home">
+    render() {
+        return (
+      <Nav fill={true} variant="tabs" defaultActiveKey="/home">
         <Nav.Item>
           <Link to={ROUTES.LANDING}>Landing</Link>
         </Nav.Item>
@@ -33,9 +33,12 @@ class NaviBar extends React.Component {
         <Nav.Item>
           <Link to={ROUTES.PUBLIC}>Public Screen</Link>
         </Nav.Item>
+        <Nav.Item>
+          <Link to={ROUTES.CONVO_LIST}>CONVERSATIONS</Link>
+        </Nav.Item>
       </Nav>
-    );
-  }
+        );
+    }
 }
 
 export default NaviBar;

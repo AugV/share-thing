@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Form, Button} from 'react-bootstrap';
 
-import { SignUpLink } from './SignUpScreen';
-import { withFirebase } from '../Firebase';
-import * as ROUTES from '../Constants/Routes';
-import { PasswordResetLink } from "./PasswordResetScreen";
+import { SignUpLink } from './SignUp';
+import { withFirebase } from '../../Firebase';
+import * as ROUTES from '../../Constants/Routes';
+import { PasswordResetLink } from "./PasswordReset";
 
 const SignInScreen = () => (
   <div>
