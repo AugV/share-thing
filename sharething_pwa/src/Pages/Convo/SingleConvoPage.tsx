@@ -1,4 +1,4 @@
-import React, { useEffect, useState, CSSProperties } from 'react';
+import React, { useEffect, useState, CSSProperties, useRef } from 'react';
 import { RouteComponentProps } from 'react-router';
 import Firebase, { withFirebase } from '../../Firebase';
 import { ConversationInfo, Message, docToMessage } from '../../Entities/Interfaces';
@@ -15,6 +15,7 @@ const ConvoContainer = (props: Props) => {
     const [convoInfo, setConvoInfo] = useState<ConversationInfo>();
     const [messages, setMessages] = useState<Message[]>();
     const [messagesRef, setMessagesRef] = useState<firebase.firestore.CollectionReference>();
+    const scrollBottomDummy = useRef<any>(null);
 
     const sendMessage = (text: string) => {
         props.firebase.sendMessage(text, messagesRef!);
@@ -37,15 +38,21 @@ const ConvoContainer = (props: Props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useEffect(() => {scrollBottomDummy!.current!.scrollIntoView({ behavior: 'smooth' }); },
+            [messages],
+            );
+
     return(
         <div>
             <div className="sticky-top" >
                 <h2>{convoInfo && convoInfo.itemName}</h2>
             </div>
 
-            <div style={bStyle}>
+            <div style={messageList}>
                 <Messages messages={messages}/>
             </div>
+
+            <div ref={scrollBottomDummy}/>
 
             <div className="fixed-bottom">
                 <MessageInput submit={sendMessage}/>
@@ -54,8 +61,8 @@ const ConvoContainer = (props: Props) => {
     );
 };
 
-const bStyle: CSSProperties = {
-    paddingBottom: '60px',
+const messageList: CSSProperties = {
+    paddingBottom: '50px',
 };
 
 export const ConvoScreen = withFirebase(ConvoContainer);
