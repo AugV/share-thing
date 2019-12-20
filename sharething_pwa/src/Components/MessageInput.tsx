@@ -24,7 +24,7 @@ const MessageInputComponent = (props: Props) => {
             rightButtons={
                 (
                 <Button
-                    text={'click me!'}
+                    text={'send'}
                     onClick={onButtonClick}
                 />
                 )

@@ -15,9 +15,6 @@ const MessagesComponent = (props: Props) => {
             messages ?
             (
             <MessageList
-                className="message-list"
-                lockable={true}
-                toBottomHeight={'100%'}
                 dataSource={messages}
             />
             )
