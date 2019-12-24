@@ -4,11 +4,12 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Item } from '../../Entities/Interfaces';
 
 const INITIAL_STATE: State = {
-    item: { id: '', name: '', description: '' },
+    item: { id: '', name: '', description: '', email: '' },
 };
 
 interface OwnProps {
     loadItem(itemId: string): Promise<Item>;
+    createConvo(item: Item): void;
 }
 
 type Props = OwnProps & RouteComponentProps<any>;
@@ -17,19 +18,19 @@ interface State {
     item: Item;
 }
 
-class ItemDetails extends React.Component<Props, State> {
+class ItemDetailsComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = INITIAL_STATE;
     }
 
-    componentDidMount() {
+    public componentDidMount(): void {
         if (this.props.match.params.id) {
-            this.loadItem();
+            this.loadItemToState();
         }
     }
 
-    loadItem() {
+    public loadItemToState(): void {
         this.props.loadItem(this.props.match.params.id).then(item => {
             this.setState({ item });
         });
@@ -42,19 +43,31 @@ class ItemDetails extends React.Component<Props, State> {
     };
 
     public render(): React.ReactNode {
-        return (this.state.item &&
-        <Card>
-          <Card.Img variant="top" src={this.state.item.imageUrl} />
-          <Card.Body>
-            <Card.Title>{this.state.item.name}</Card.Title>
-            <Card.Text>
-              {this.state.item.description}
-            </Card.Text>
-            <Button variant="primary">Request</Button>
-          </Card.Body>
-        </Card>
+        const { item } = this.state;
+
+        return (item &&
+            (
+            <Card>
+                <Card.Img
+                    variant="top"
+                    src={item.imageUrl}
+                />
+                <Card.Body>
+                    <Card.Title>{item.name}</Card.Title>
+                    <Card.Text>
+                    {item.description}
+                    </Card.Text>
+                    <Button
+                        onClick={() => {this.props.createConvo(item); }}
+                        variant="primary"
+                    >Request
+                    </Button>
+                </Card.Body>
+            </Card>
+            )
         );
     }
+
 }
 
-export default withRouter(ItemDetails);
+export const ItemDetails = withRouter(ItemDetailsComponent);

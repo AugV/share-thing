@@ -18,7 +18,7 @@ interface Conversation {
     conversationInfo: ConversationInfo;
     messagesRef: app.firestore.CollectionReference;
 }
-
+// TODO: User has to have email(PRIVATE), userID-hash(email)(PUBLIC) and name(PUBLIC).
 class Firebase {
     public auth: app.auth.Auth;
     public db: app.firestore.Firestore;
@@ -50,7 +50,7 @@ class Firebase {
                     console.log('No such document!');
                     return;
                 }
-                const item: Item = { id: itemId, name: 'NA', description: 'NA' };
+                const item: Item = { id: itemId, name: 'NA', description: 'NA', email: 'NA' };
 
                 const itemData = doc.data() ? doc.data() : null;
 
@@ -59,6 +59,7 @@ class Firebase {
                     item.name = itemData.name;
                     item.description = itemData.description;
                     item.imageUrl = itemData.imageUrl;
+                    item.email = itemData.email;
                 }
                 resolve(item);
             }).catch(error => {
@@ -72,6 +73,24 @@ class Firebase {
 
     public getUserItems = () => {
         return this.db.collection('items').where('email', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
+    };
+
+    public createNewConversation = (item: Item) => {
+        return this.db.collection('conversations')
+            .add({
+                itemId: item.id,
+                itemImg: item.imageUrl,
+                itemName: item.name,
+                ownerId: item.email,
+                seekerId: this.getEmail(),
+            })
+            .then(function() {
+                console.log('Conversation successfully created!');
+            })
+            .catch(function(error) {
+                console.error('Error writing document: ', error);
+                throw error;
+            });
     };
 
     public getAsOwnerConversations = () => {
@@ -109,7 +128,6 @@ class Firebase {
         ref.add({
             author: this!.auth!.currentUser!.email,
             text: messageText,
-            // time: app.firestore.FieldValue.serverTimestamp(),
             time: new Date(),
         });
     };
