@@ -18,7 +18,7 @@ interface Conversation {
     conversationInfo: ConversationInfo;
     messagesRef: app.firestore.CollectionReference;
 }
-
+// TODO: User has to have email(PRIVATE), userID(auth.uid)(PUBLIC) and name(auth.dispalyName).
 class Firebase {
     public auth: app.auth.Auth;
     public db: app.firestore.Firestore;
@@ -40,19 +40,18 @@ class Firebase {
     public resetPsw = (email: string) => this.auth.sendPasswordResetEmail(email);
     public updatePsw = (password: string) => {
         if (this.auth.currentUser) { this.auth.currentUser.updatePassword(password); } };
-    public getEmail = () => { if (this.auth.currentUser) { return this.auth.currentUser.email; } };
-    public user = (uid: string) => this.db.collection('users').doc(uid);
-    public users = () => this.db.collection('users');
+    public getUserId = () => { if (this.auth.currentUser) { return this.auth.currentUser.uid; } };
+    // public user = (uid: string) => this.db.collection(NAME.USERS_COLLECTION).doc(uid);
+    // public users = () => this.db.collection(NAME.USERS_COLLECTION);
     public getItem = (itemId: string) => {
         return new Promise<Item>((resolve) => {
-            this.db.collection('items').doc(itemId).get().then(function(doc) {
+            this.db.collection(NAME.ITEMS_COLLECTION).doc(itemId).get().then(function(doc) {
                 if (!doc.exists) {
                     console.log('No such document!');
                     return;
                 }
-                const item: Item = { id: itemId, name: 'NA', description: 'NA' };
+                const item: Item = { id: itemId, name: 'NA', description: 'NA', ownerId: 'NA' };
 
-                console.log('Document data:', doc.data());
                 const itemData = doc.data() ? doc.data() : null;
 
                 if (itemData) {
@@ -60,6 +59,7 @@ class Firebase {
                     item.name = itemData.name;
                     item.description = itemData.description;
                     item.imageUrl = itemData.imageUrl;
+                    item.ownerId = itemData.ownerId;
                 }
                 resolve(item);
             }).catch(error => {
@@ -69,22 +69,47 @@ class Firebase {
 
     };
 
-    public getItems = () => this.db.collection('items');
+    public getItems = () => this.db.collection(NAME.ITEMS_COLLECTION);
 
     public getUserItems = () => {
-        return this.db.collection('items').where('email', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
+        return this.db.collection(NAME.ITEMS_COLLECTION).where('ownerId', '==', (this.auth.currentUser ? this.auth.currentUser.uid : 'n/a'));
     };
 
-    public getUserConversations = () => {
-        console.log('fetching');
-        return this.db.collection('chat')
-        .where('ownerId', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a'));
-        // .where('seekerId', '==', (this.auth.currentUser ? this.auth.currentUser.email : 'n/a')); //TODO: Both seeker & owner should get Convos
+    public createNewConversation = (item: Item) => {
+        return new Promise<string>((resolve) => {this.db.collection(NAME.CONVERSATION_COLLECTION)
+            .add({
+                itemId: item.id,
+                itemImg: item.imageUrl,
+                itemName: item.name,
+                ownerId: item.ownerId,
+                seekerId: this.getUserId(),
+            })
+            .then((ref: app.firestore.DocumentReference) => {
+                ref.collection(NAME.MESSAGE_COLLECTION).add({}).then(() => {
+                    resolve(ref.id);
+                },
+                );
+                console.log('Conversation successfully created!');
+            })
+            .catch(function(error) {
+                console.error('Error writing document: ', error);
+                throw error;
+            }); });
+    };
+
+    public getAsOwnerConversations = () => {
+        return this.db.collection(NAME.CONVERSATION_COLLECTION)
+        .where('ownerId', '==', (this.auth.currentUser ? this.auth.currentUser.uid : 'n/a'));
+    };
+
+    public getAsSeekerConversations = () => {
+        return this.db.collection(NAME.CONVERSATION_COLLECTION)
+        .where('seekerId', '==', (this.auth.currentUser ? this.auth.currentUser.uid : 'n/a'));
     };
 
     public getConvo = (convoId: string) => {
         return new Promise<Conversation>((resolve) => {
-            this.db.collection('chat').doc(convoId).get().then(doc => {
+            this.db.collection(NAME.CONVERSATION_COLLECTION).doc(convoId).get().then(doc => {
                 if (!doc.exists) {
                     console.log('No such document!');
                     return;
@@ -105,9 +130,8 @@ class Firebase {
 
     public sendMessage = (messageText: string, ref: firebase.firestore.CollectionReference) => {
         ref.add({
-            author: this!.auth!.currentUser!.email,
+            author: this!.auth!.currentUser!.uid,
             text: messageText,
-            // time: app.firestore.FieldValue.serverTimestamp(),
             time: new Date(),
         });
     };
@@ -141,11 +165,11 @@ class Firebase {
     };
 
     public saveItemToFirestore = (item: Item) => {
-        return this.db.collection('items')
+        return this.db.collection(NAME.ITEMS_COLLECTION)
             .doc(item.id)
             .set({
                 ...item,
-                email: (this.auth.currentUser ? this.auth.currentUser.email : null),
+                ownerId: (this.auth.currentUser ? this.auth.currentUser.uid : null),
             })
             .then(function() {
                 console.log('Document successfully written!');
@@ -157,16 +181,12 @@ class Firebase {
     };
 
     public deleteItem = (itemId: string) => {
-        this.db.collection('items').doc(itemId).delete().then(function() {
-            console.log(`Document: ${itemId} successfully deleted!`);
-        }).catch(function(error) {
+        this.db.collection(NAME.ITEMS_COLLECTION).doc(itemId).delete().then().catch((error) => {
             console.error(`Error removing document ${itemId} : `, error);
         });
         const ref = this.storage.ref(`ItemImages/${itemId}`);
 
-        ref.delete().then(() => {
-            console.log('Image deleted succesfully');
-        }).catch((error) => {
+        ref.delete().then().catch((error) => {
             console.log('Error when deleting Image');
         });
     };

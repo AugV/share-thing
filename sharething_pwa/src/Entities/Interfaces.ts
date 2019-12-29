@@ -3,6 +3,7 @@ export interface Item {
     name: string;
     description: string;
     imageUrl?: string;
+    ownerId?: string;
     [key: string]: any;
 }
 
@@ -29,6 +30,7 @@ export function docToItem(document: firebase.firestore.QueryDocumentSnapshot): I
         name: document.data().name,
         description: document.data().description,
         imageUrl: document.data().imageUrl,
+        ownerId: document.data().ownerId,
     };
 
     return item;

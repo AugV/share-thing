@@ -4,7 +4,7 @@ import Firebase, { withFirebase } from '../../Firebase';
 import history from 'history';
 import * as ROUTES from '../../Constants/Routes';
 import { ItemForm } from './ItemForm';
-import ItemDetails from './ItemDetails';
+import { ItemDetails } from './ItemDetails';
 import { Item } from '../../Entities/Interfaces';
 
 const INITIAL_STATE: State = {
@@ -21,7 +21,7 @@ interface State {
     item: Item | null;
 }
 
-class ItemRouter extends React.Component<Props, State> {
+class ItemRouterComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = INITIAL_STATE;
@@ -45,6 +45,13 @@ class ItemRouter extends React.Component<Props, State> {
         });
     };
 
+    public createConvo = (item: Item) => {
+        this.props.firebase.createNewConversation(item).then((convoId) => {
+            this.props.history.push(`/private/messages/${convoId}`);
+        },
+        );
+    };
+
     public render(): React.ReactNode {
         return (
       <Switch>
@@ -63,7 +70,7 @@ class ItemRouter extends React.Component<Props, State> {
         <Route
           path={ROUTES.ITEM_DETAILS}
           component={() => (
-            <ItemDetails loadItem={this.loadItem} />
+            <ItemDetails loadItem={this.loadItem} createConvo={this.createConvo}/>
           )}
         />
       </Switch>
@@ -71,4 +78,4 @@ class ItemRouter extends React.Component<Props, State> {
     }
 }
 
-export default withRouter(withFirebase(ItemRouter));
+export const ItemRouter = withRouter(withFirebase(ItemRouterComponent));
