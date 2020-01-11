@@ -1,12 +1,10 @@
 # share-thing
 
-<h2>Solution for convenient sharing of items</h2>
+<h2>Solution for convenient sharing of items with your neighbours or like-minded individuals</h2>
 
 <p>
-  <div>Borrow/lend items between neighbours or a Group of same interests</div></br>
-  <div>- Quickly upload a photo, description, and choose a way of contacting you - and you're ready to share</div></br>
-  <div>- Define a Group yourself or search for an existing one</div></br>
-  <div>- See the availability of an item and contact person directly</div>
+  <div>- See the items your neighbours are sharing</div></br>
+  <div>- Contact item owner directly via in-built chat</div>
+  <div>- Quickly share an item, by uploading a photo and a description</div></br>
+  <div>- Manage your shared items and see what items you have borrowed</div></br>
 </p>
-
-<p>*Implemented as React PWA</p>
