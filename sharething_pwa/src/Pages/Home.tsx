@@ -57,14 +57,8 @@ class HomeScreen extends React.Component<Props, State> {
     public render(): React.ReactNode {
         const { items, loading } = this.state;
 
-        console.log(this.props!.firebase!.auth!.currentUser!.uid);
         return (
           <div className="container">
-        <div style={{ float: 'right' }}>
-          <Button type="button" onClick={this.props.firebase.signOut}>
-            Sign Out
-          </Button>
-        </div>
         <h1>Home Screen</h1>
         <div>
           {loading && <Spinner animation="border" />}

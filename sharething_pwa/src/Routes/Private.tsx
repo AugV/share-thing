@@ -9,6 +9,7 @@ import withAuthorization from '../Utils/WithAuthorization';
 import { PublicScreen } from '../Pages/Public';
 import { AllConvosPage } from '../Pages/Convo/AllConvosPage';
 import { ConvoScreen } from '../Pages/Convo/SingleConvoPage';
+import { SingOut } from '../Pages/Auth/SignOut';
 
 const condition = (authUser: object) => !!authUser;
 
@@ -23,6 +24,7 @@ const PrivateRoutes = () => {
         <Route path={ROUTES.CONVO} component={ConvoScreen} />
         <Route path={ROUTES.CONVO_LIST} component={AllConvosPage} />
         <Route path={ROUTES.PASSWORD_RESET} component={PasswordResetScreen} />
+        <Route path={ROUTES.SIGN_OUT} component={SingOut} />
       </Switch>
     </div>
     );

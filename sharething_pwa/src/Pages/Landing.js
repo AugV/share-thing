@@ -6,14 +6,13 @@ import * as ROUTES from '../Constants/Routes';
 
 function LandingScreen() {
   return (
-    <div className="container">
-      <h1>ShareThing</h1>
-      <p>
-        <Link to={ROUTES.SIGN_IN}>Sign-In</Link>
-      </p>
-      <p>
-        <Link to={ROUTES.SIGN_UP}>Sign-Up</Link>
-      </p>
+    <div>
+      <Link to={ROUTES.SIGN_IN}>
+        <h2>Sing-in</h2>
+      </Link>
+      <Link to={ROUTES.SIGN_UP}>
+        <h2>Sing-up</h2>
+      </Link>
     </div>
   )
 }

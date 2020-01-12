@@ -9,7 +9,7 @@ import { PasswordResetLink } from "./PasswordReset";
 
 const SignInScreen = () => (
   <div>
-    <h1>Share </h1>
+    <h1>Sign-in</h1>
     <SignInForm />
     <SignUpLink />
     <PasswordResetLink />
