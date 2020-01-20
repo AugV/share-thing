@@ -69,7 +69,7 @@ class PublicScreenTemplate extends React.Component<Props, State> {
                     <Row>
                       <Col>
                         <Link to={`item/${item.id}/details`}>
-                          <Image src={item.imageUrl} thumbnail={true}/>
+                          <img src={item.imageUrl} /* thumbnail={true} *//>
                         </Link>
                       </Col>
                       <Col>
