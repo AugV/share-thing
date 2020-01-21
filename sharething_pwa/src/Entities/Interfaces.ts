@@ -49,10 +49,10 @@ export function docToConvo(document: firebase.firestore.QueryDocumentSnapshot | 
     return convo;
 }
 
-export function docToMessage(document: firebase.firestore.QueryDocumentSnapshot, user: string): Message {
+export function docToMessage(document: firebase.firestore.QueryDocumentSnapshot, userId: string): Message {
     const message: Message = {
         id: document.id,
-        position: user === document.data().author ? 'right' : 'left',
+        position: userId === document.data().author ? 'right' : 'left',
         type: 'text',
         text: document.data().text,
         date: document.data().time.toDate(),
