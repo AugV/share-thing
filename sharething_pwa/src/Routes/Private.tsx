@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router';
 import * as ROUTES from '../Constants/Routes';
-import Account from '../Pages/Account';
+import { Account } from '../Pages/Account';
 import { Home } from '../Pages/Home';
 import PasswordResetScreen from '../Pages/Auth/PasswordReset';
 import { ItemRouter } from '../Pages/Item/Item';

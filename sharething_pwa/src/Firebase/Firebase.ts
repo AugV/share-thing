@@ -137,6 +137,7 @@ class Firebase {
     };
 
     public saveItem = (item: Item, image: File) => {
+        // TODO firebase default seqeunce as ID
         item.id = item.id ? item.id : Math.random().toString(36).substring(7);
 
         return this.saveImageToStorage(image, item.id)

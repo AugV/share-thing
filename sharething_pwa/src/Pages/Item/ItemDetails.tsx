@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Container } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Item } from '../../Entities/Interfaces';
 
