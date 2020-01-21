@@ -1,40 +1,32 @@
 TO-DO list:
--General
-++resrtructure into more general folders
-++make routing hierarchical
---make header(account link in right)
---Create fixed footer for navigation
---FIX:when refreshed - goes to landing page
---INSTALL: TS-Lint
+- General
+-- internationalization
+-- change email to UID everywhere
+-- introduce sass?
 
--HomeScreen
-++strap list to bootstrap
-++modify list/lsitener logic so that duplicates do not appear
-  ++change the logic - delete in DB doesnt respond in app
-++"Add" button in fixed bottom part
-++make redirect button to AddItemScreen
-++filter items which belong to user
-++on item click give option to delete or edit
-++Rewrite routing with itemId in URL
---Move sign-out to Account screen
---make header(account link in right)
---first row as an add Item link
+- HomeScreen
+-- first row as an add Item link
+-- make max height img size
+-- re-think edit and delete accordion
 
--ItemController
-++create form
-++redirect back to HomeScreen
-++send userID as an Item field
-++prevent adding null
+- ItemDetails
+-- make card centered
+-- set img max width 
+-- make it possible to display multiple photos
 
--ItemForm
---fix Props interface with router props
+- Firebase
+-- make possibility to add multiple images 
+-- make possibility to retrieve multiple images
 
--SharedItemScreen
-++display a list of all user shared items
---when item clicked options to: contact owner
+- ItemForm
+-- make adding multiple images possible
+-- make thumbnails of already added images
+-- test mobile camera img adding
 
--NavBar
-++navbar for dev purposes
+- SharedItemScreen
+-- make max height img size
 
--Account
---redirect from login if already logged in
+- Navbar
+-- make account a dropdown with log-out option
+-- look for a good option which would be easily usable on mobile
+-- think through the names of pages
