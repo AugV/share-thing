@@ -41,11 +41,10 @@ class Firebase {
     public updatePsw = (password: string) => {
         if (this.auth.currentUser) { this.auth.currentUser.updatePassword(password); } };
     public getUserId = () => { if (this.auth.currentUser) { return this.auth.currentUser.uid; } };
-    // public user = (uid: string) => this.db.collection(NAME.USERS_COLLECTION).doc(uid);
-    // public users = () => this.db.collection(NAME.USERS_COLLECTION);
+    public userRef = (uid: string) => this.db.collection(NAME.USERS_COLLECTION).doc(uid);
     public getItem = (itemId: string) => {
         return new Promise<Item>((resolve) => {
-            this.db.collection(NAME.ITEMS_COLLECTION).doc(itemId).get().then(function(doc) {
+            this.db.collection(NAME.ITEMS_COLLECTION).doc(itemId).get().then((doc) => {
                 if (!doc.exists) {
                     console.log('No such document!');
                     return;

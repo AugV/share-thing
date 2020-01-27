@@ -4,6 +4,10 @@ TO-DO list:
 -- change email to UID everywhere
 -- introduce sass?
 
+- Bugs
+-- sign-up throwing error
+-- doesn't redirect to home if logged in and vice-versa
+
 - HomeScreen
 -- first row as an add Item link
 -- make max height img size
@@ -30,3 +34,4 @@ TO-DO list:
 -- make account a dropdown with log-out option
 -- look for a good option which would be easily usable on mobile
 -- think through the names of pages
+-- do not show pages and signout and account if not logged in
