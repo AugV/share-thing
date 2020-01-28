@@ -4,8 +4,10 @@ TO-DO list:
 -- change email to UID everywhere
 -- introduce sass?
 
+- Firebase
+-- Add image resizing extension
+
 - Bugs
--- sign-up throwing error
 -- doesn't redirect to home if logged in and vice-versa
 
 - HomeScreen
