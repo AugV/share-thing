@@ -28,7 +28,7 @@ const ConvoContainer = (props: Props) => {
             setConvoInfo(conversationInfo);
             setMessagesRef(msgRef);
 
-            const currentUser = props.firebase.auth.currentUser!.uid;
+            const currentUser = props.firebase.getUserId();
 
             return msgRef.orderBy('time', 'asc').onSnapshot(snapshot => {
                 setMessages(snapshot.docs.map(doc => docToMessage(doc, currentUser!)));

@@ -68,7 +68,7 @@ class PublicScreenTemplate extends React.Component<Props, State> {
                     <Row>
                       <Col>
                         <Link to={`item/${item.id}/details`}>
-                          <img src={item.imageUrl} alt="" />
+                          <img src={item.imageUrl} alt="" style={{ maxHeight: 100, height: 'auto'}}/>
                         </Link>
                       </Col>
                       <Col>
