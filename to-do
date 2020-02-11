@@ -5,7 +5,9 @@ TO-DO list:
 -- introduce sass?
 
 - Firebase
+-- Split object for better readability
 -- Add image resizing extension
+-- Introduce Batches and Transactions
 
 - Bugs
 -- doesn't redirect to home if logged in and vice-versa
