@@ -6,7 +6,7 @@ import * as ROUTES from './Constants/Routes';
 import { withAuthentication } from './Utils';
 import { Private } from './Routes/Private';
 import LandingRoutes from './Routes/Landing';
-import { MainNavBar } from './Components/Navbar';
+import { MainNavBar } from './Components/NavBar/NavBar';
 
 const App = () => (
   <BrowserRouter>
