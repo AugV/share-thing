@@ -10,12 +10,14 @@ import { PublicScreen } from '../Pages/Public';
 import { AllConvosPage } from '../Pages/Convo/AllConvosPage';
 import { ConvoScreen } from '../Pages/Convo/SingleConvoPage';
 import { SingOut } from '../Pages/Auth/SignOut';
+import { MainNavBar } from '../Components/NavBar/BottomNavBar';
 
 const condition = (authUser: object) => !!authUser;
 
 const PrivateRoutes = () => {
     return (
       <div>
+      <MainNavBar />
       <Switch>
         <Route path={ROUTES.ACCOUNT} component={Account} />
         <Route path={ROUTES.HOME} component={Home} />

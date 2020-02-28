@@ -5,3 +5,11 @@
     width: 100%;
     height: 8%;
 }
+
+.active {
+    stroke-width: 0.7;
+}
+
+.inactive {
+    stroke-width: 0;
+}
