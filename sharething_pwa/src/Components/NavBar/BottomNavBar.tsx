@@ -1,36 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { BsHouse, BsSearch, BsPeople, BsDocument } from 'react-icons/bs';
 import * as ROUTES from '../../Constants/Routes';
 import { withFirebase } from '../../Firebase';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import './BottomNavBar.css';
 
-const BottomNavBarComponent: React.FC<FirebaseProps> = (props) => {
+interface ActiveIconProp {
+    activeIcon: string;
+}
+interface NavIcons {
+    home: string;
+    search: string;
+    groups: string;
+    shareg: string;
+    [key: string]: string;
+}
+type BottomNavProps = FirebaseProps & ActiveIconProp;
 
-    const initialValues = () => {
-        return { home: 'inactive', search: 'inactive', groups: 'inactive', shareg: 'inactive' };
-    };
+const BottomNavBarComponent: React.FC<BottomNavProps> = (props) => {
+    const isActive: NavIcons = { home: 'inactive', search: 'inactive', groups: 'inactive', shareg: 'inactive' };
+    isActive[props.activeIcon] = 'active';
+
     const history = useHistory();
-    const location = useLocation();
-    const [isActive, setIsActive] = useState(initialValues());
-
-    useEffect(() => {
-        const iconActivity = initialValues();
-        switch (location.pathname) {
-            case ROUTES.HOME:
-                iconActivity.home = 'active';
-                break;
-            case ROUTES.CONVO_LIST:
-                iconActivity.shareg = 'active';
-                break;
-            default:
-        }
-        setIsActive(iconActivity);
-    }, [location]);
 
     return(
-  props.firebase.getUserId() ?
+    props.firebase.getUserId() ?
     (
       <div className="navbar">
         <BsHouse className={isActive.home} size={50} onClick={() => history.push(ROUTES.HOME)}/>
@@ -42,5 +37,5 @@ const BottomNavBarComponent: React.FC<FirebaseProps> = (props) => {
     : null
     );
 };
- 
+
 export const MainNavBar = withFirebase(BottomNavBarComponent);

@@ -7,6 +7,10 @@ export const ACCOUNT = '/private/account'
 export const PASSWORD_RESET = '/private/resetPassword'
 
 export const HOME = '/private/home';
+export const MY_ITEMS = '/private/home/myItems';
+export const LENT_ITEMS = '/private/home/lentItems';
+export const BORROWED_ITEMS = '/private/home/borrowedItems';
+
 export const PUBLIC = '/private/public';
 export const PRIVATE_PAGE = '/private';
 

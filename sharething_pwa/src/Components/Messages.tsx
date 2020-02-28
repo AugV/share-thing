@@ -12,13 +12,9 @@ const MessagesComponent = (props: Props) => {
     const { messages } = props;
 
     return(
-            messages ?
-            (
-            <MessageList
-                dataSource={messages}
-            />
-            )
-            : <Spinner animation="border" />
+            <div>
+            {messages ? <MessageList dataSource={messages} /> : <Spinner animation="border" />}
+            </div>
     );
 };
 

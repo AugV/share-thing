@@ -1,5 +1,5 @@
 import React from 'react';
-import Firebase, { withFirebase } from '../Firebase';
+import Firebase, { withFirebase } from '../../Firebase';
 import {
   Spinner,
   Button,
@@ -10,12 +10,12 @@ import {
   Col,
   Row,
 } from 'react-bootstrap';
-import * as ROUTES from '../Constants/Routes';
+import * as ROUTES from '../../Constants/Routes';
 import history from 'history';
 import { Link } from 'react-router-dom';
-import { Item, docToItem } from '../Entities/Interfaces';
+import { Item, docToItem } from '../../Entities/Interfaces';
 
-interface HomeScreen {
+interface MyItemsPageComp {
     unsubscribe: () => void;
 }
 
@@ -29,7 +29,7 @@ interface State {
     items: Item[];
 }
 
-class HomeScreen extends React.Component<Props, State> {
+class MyItemsPageComp extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -58,9 +58,8 @@ class HomeScreen extends React.Component<Props, State> {
         const { items, loading } = this.state;
 
         return (
-          <div className="container">
-        <h1>Home Screen</h1>
         <div>
+
           {loading && <Spinner animation="border" />}
           <Button onClick={this.addItem}>Add Item</Button>
           <Accordion>
@@ -104,7 +103,6 @@ class HomeScreen extends React.Component<Props, State> {
               </Card>
             ))}
           </Accordion>
-        </div>
       </div>
         );
     }
@@ -118,4 +116,4 @@ class HomeScreen extends React.Component<Props, State> {
     };
 }
 
-export const Home = withFirebase(HomeScreen);
+export const MyItemsPage = withFirebase(MyItemsPageComp);

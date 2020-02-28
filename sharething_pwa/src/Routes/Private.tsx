@@ -2,7 +2,6 @@ import React from 'react';
 import { Switch, Route } from 'react-router';
 import * as ROUTES from '../Constants/Routes';
 import { Account } from '../Pages/Account';
-import { Home } from '../Pages/Home';
 import PasswordResetScreen from '../Pages/Auth/PasswordReset';
 import { ItemRouter } from '../Pages/Item/Item';
 import withAuthorization from '../Utils/WithAuthorization';
@@ -10,14 +9,13 @@ import { PublicScreen } from '../Pages/Public';
 import { AllConvosPage } from '../Pages/Convo/AllConvosPage';
 import { ConvoScreen } from '../Pages/Convo/SingleConvoPage';
 import { SingOut } from '../Pages/Auth/SignOut';
-import { MainNavBar } from '../Components/NavBar/BottomNavBar';
+import { Home } from '../Pages/Home/Home';
 
 const condition = (authUser: object) => !!authUser;
 
 const PrivateRoutes = () => {
     return (
       <div>
-      <MainNavBar />
       <Switch>
         <Route path={ROUTES.ACCOUNT} component={Account} />
         <Route path={ROUTES.HOME} component={Home} />

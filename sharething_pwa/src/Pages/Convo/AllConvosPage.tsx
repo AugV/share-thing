@@ -7,6 +7,7 @@ import {
 } from 'react-bootstrap';
 import { docToConvo, ConversationInfo } from '../../Entities/Interfaces';
 import { ConvoList } from './ConvoList';
+import { MainNavBar } from '../../Components/NavBar/BottomNavBar';
 
 interface Props {
     firebase: Firebase;
@@ -46,6 +47,7 @@ const AllConvosPageComponent = (props: Props) => {
               </Tab>
             )}
           </Tabs>
+          <MainNavBar activeIcon="shareg"/>
         </div>
     );
 };
