@@ -14,6 +14,7 @@ import * as ROUTES from '../../Constants/Routes';
 import history from 'history';
 import { Link } from 'react-router-dom';
 import { Item, docToItem } from '../../Entities/Interfaces';
+import { NewItemButton } from '../../Components/NewItemButton/NewItemButton';
 
 interface MyItemsPageComp {
     unsubscribe: () => void;
@@ -61,7 +62,7 @@ class MyItemsPageComp extends React.Component<Props, State> {
         <div>
 
           {loading && <Spinner animation="border" />}
-          <Button onClick={this.addItem}>Add Item</Button>
+          <NewItemButton/>
           <Accordion>
             {items.map((item, index) => (
               <Card key={item.id}>
