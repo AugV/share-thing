@@ -7,7 +7,6 @@ export interface Item {
     [key: string]: any;
 }
 
-
 export interface ConversationInfo {
     id: string;
     itemId: string;
@@ -23,6 +22,32 @@ export interface Message {
     type: string;
     text: string;
     date: Date;
+}
+
+export interface UserOwnedItem {
+    itemId: string;
+    itemName: string;
+    imageUrl: string;
+}
+
+export interface UserLentItem {
+    sharegId: string;
+    itemName: string;
+    imageUrl: string;
+    endDate: Date;
+}
+
+export interface UserBorrowedItem {
+    sharegId: string;
+    itemName: string;
+    imageUrl: string;
+    endDate: Date;
+}
+
+export interface UserItemsDocument {
+    userOwnedItemList: UserOwnedItem[];
+    userLentItemList: UserLentItem[];
+    userBorrowedItemList: UserBorrowedItem[];
 }
 
 export function docToItem(document: firebase.firestore.QueryDocumentSnapshot): Item {

@@ -2,7 +2,7 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import { Item, ConversationInfo, docToConvo } from '../Entities/Interfaces';
+import { Item, ConversationInfo, docToConvo, UserItemsDocument } from '../Entities/Interfaces';
 import * as NAME from '../Constants/Names';
 
 const firebaseConfig = {
@@ -29,6 +29,40 @@ class Firebase {
         this.db = app.firestore();
         this.storage = app.storage();
     }
+
+    public getUserItemsDocument =  (listener: any) => {
+        try {
+            const docRef = this.db.collection(NAME.USER_ITEMS).doc(this.auth.currentUser?.uid);
+            // const doc = await docRef.get();
+            // let userItems: UserItemsDocument = this.userItemsMapper(doc);
+
+            // const listener = docRef.onSnapshot((doc) => {
+            //     userItems = this.userItemsMapper(doc);
+            // });
+
+            // return userItems;
+
+            return docRef.onSnapshot((doc) => {
+                const userList: UserItemsDocument = this.userItemsMapper(doc);
+
+                listener(userList);
+            });
+        } catch (e) {
+            console.log('UserItems not fethced');
+            console.log(e);
+        }
+
+    };
+
+    public userItemsMapper = (doc: app.firestore.DocumentSnapshot) => {
+        const userItems: UserItemsDocument = {
+            userOwnedItemList: doc.data()!.owned_items,
+            userLentItemList:  doc.data()!.lent_items,
+            userBorrowedItemList: doc.data()!.borrowed_items,
+        };
+
+        return userItems;
+    };
 
     public createUserWithEmailAndPsw = (email: string, password: string) => {
         return this.auth.createUserWithEmailAndPassword(email, password);

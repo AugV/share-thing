@@ -28,7 +28,7 @@ const BottomNavBarComponent: React.FC<BottomNavProps> = (props) => {
     props.firebase.getUserId() ?
     (
       <div className="navbar">
-        <BsHouse className={isActive.home} size={50} onClick={() => history.push(ROUTES.HOME)}/>
+        <BsHouse className={isActive.home} size={50} onClick={() => history.push(ROUTES.MY_ITEMS)}/>
         <BsSearch size={45} onClick={() => history.push(ROUTES.PUBLIC)}/>
         <BsPeople size={50} onClick={() => history.push(ROUTES.PUBLIC)}/>
         <BsDocument className={isActive.shareg} size={50} onClick={() => history.push(ROUTES.CONVO_LIST)}/>
