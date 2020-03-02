@@ -21,7 +21,6 @@ const HomeRoutes: React.FC<FirebaseProps> = (props) => {
 
     return (
     <div>
-
       <HomeHeader/>
       <Switch>
         <Route

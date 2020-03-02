@@ -25,23 +25,23 @@ export interface Message {
 }
 
 export interface UserOwnedItem {
-    itemId: string;
-    itemName: string;
-    imageUrl: string;
+    item_id: string;
+    item_name: string;
+    image_url: string;
 }
 
 export interface UserLentItem {
-    sharegId: string;
-    itemName: string;
-    imageUrl: string;
-    endDate: Date;
+    shareg_id: string;
+    item_name: string;
+    image_url: string;
+    end_date: Date;
 }
 
 export interface UserBorrowedItem {
-    sharegId: string;
-    itemName: string;
-    imageUrl: string;
-    endDate: Date;
+    shareg_id: string;
+    item_name: string;
+    image_url: string;
+    end_date: Date;
 }
 
 export interface UserItemsDocument {

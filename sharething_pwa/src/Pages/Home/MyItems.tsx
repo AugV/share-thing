@@ -2,6 +2,9 @@ import React from 'react';
 import { withFirebase } from '../../Firebase';
 import { UserOwnedItem } from '../../Entities/Interfaces';
 import { NewItemButton } from '../../Components/NewItemButton/NewItemButton';
+import { ListGroup, Image, Spinner } from 'react-bootstrap';
+import { ListItem } from '../../Components/List/ListItem';
+import { List } from '../../Components/List/List';
 
 interface MyItemsProps {
     itemList: UserOwnedItem[];
@@ -10,11 +13,10 @@ interface MyItemsProps {
 const MyItemsPageComp: React.FC<MyItemsProps> = (props) => {
 
     return (
-          <div>
-            {console.log(props.itemList)}
-            {/* {props.ownedItems && props.ownedItems[1].itemId} */}
+          <div style={{ listStyleType: 'none' }}>
             <NewItemButton/>
-              {/* {items.map((item, index) => ())} */}
+            <List itemList={props.itemList}
+            />
           </div>
     );
 };
