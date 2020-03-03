@@ -33,14 +33,6 @@ class Firebase {
     public getUserItemsDocument =  (listener: any) => {
         try {
             const docRef = this.db.collection(NAME.USER_ITEMS).doc(this.auth.currentUser?.uid);
-            // const doc = await docRef.get();
-            // let userItems: UserItemsDocument = this.userItemsMapper(doc);
-
-            // const listener = docRef.onSnapshot((doc) => {
-            //     userItems = this.userItemsMapper(doc);
-            // });
-
-            // return userItems;
 
             return docRef.onSnapshot((doc) => {
                 const userList: UserItemsDocument = this.userItemsMapper(doc);

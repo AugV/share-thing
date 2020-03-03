@@ -7,6 +7,7 @@ import { HomeHeader } from '../../Components/headers/HomeHeader';
 import { withFirebase } from '../../Firebase/Context';
 import { UserItemsDocument } from '../../Entities/Interfaces';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
+import { LentItemsPage } from './LentItems';
 
 const HomeRoutes: React.FC<FirebaseProps> = (props) => {
     const [userItemsState, setUserItemsState] = useState<UserItemsDocument | undefined>(undefined);
@@ -24,10 +25,13 @@ const HomeRoutes: React.FC<FirebaseProps> = (props) => {
       <HomeHeader/>
       <Switch>
         <Route
-          render={(propss) => (<MyItemsPage {...propss} itemList={userItemsState?.userOwnedItemList}/>)}
           path={ROUTES.MY_ITEMS}
+          render={(propss) => (<MyItemsPage {...propss} itemList={userItemsState?.userOwnedItemList}/>)}
         />
-        <Route path={ROUTES.LENT_ITEMS} component={MyItemsPage} />
+        <Route
+          path={ROUTES.LENT_ITEMS}
+          render={(propss) => (<LentItemsPage {...propss} itemList={userItemsState?.userLentItemList}/>)}
+        />
         <Route path={ROUTES.BORROWED_ITEMS} component={MyItemsPage} />
       </Switch>
       <MainNavBar activeIcon="home" />

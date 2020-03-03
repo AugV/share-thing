@@ -24,30 +24,37 @@ export interface Message {
     date: Date;
 }
 
-export interface UserOwnedItem {
-    item_id: string;
-    item_name: string;
-    image_url: string;
-}
+// export interface UserOwnedItem {
+//     item_id: string;
+//     item_name: string;
+//     image_url: string;
+// }
 
-export interface UserLentItem {
-    shareg_id: string;
-    item_name: string;
-    image_url: string;
-    end_date: Date;
-}
+// export interface UserLentItem {
+//     shareg_id: string;
+//     item_name: string;
+//     image_url: string;
+//     end_date: Date;
+// }
 
-export interface UserBorrowedItem {
-    shareg_id: string;
-    item_name: string;
+// export interface UserBorrowedItem {
+//     shareg_id: string;
+//     item_name: string;
+//     image_url: string;
+//     end_date: Date;
+// }
+
+export interface UserItem {
+    id: string;
+    name: string;
     image_url: string;
-    end_date: Date;
+    end_date?: Date;
 }
 
 export interface UserItemsDocument {
-    userOwnedItemList: UserOwnedItem[];
-    userLentItemList: UserLentItem[];
-    userBorrowedItemList: UserBorrowedItem[];
+    userOwnedItemList: UserItem[];
+    userLentItemList: UserItem[];
+    userBorrowedItemList: UserItem[];
 }
 
 export function docToItem(document: firebase.firestore.QueryDocumentSnapshot): Item {

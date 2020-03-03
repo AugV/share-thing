@@ -1,27 +1,31 @@
 import React from 'react';
-import { UserOwnedItem, UserLentItem, UserBorrowedItem } from '../../Entities/Interfaces';
+import { UserItem } from '../../Entities/Interfaces';
 import { ListItem } from './ListItem';
 import Spinner from 'react-bootstrap/Spinner';
 
 interface ListProps {
-    itemList: UserOwnedItem[] | UserLentItem[] | UserBorrowedItem[];
+    itemList: UserItem[];
+    renderItemDetails?: (content: string | Date) => JSX.Element;
+    onClickItem: (id: string) => void;
 }
 
 const ListComponent: React.FC<ListProps> = (props) => {
 
-    console.log(props.itemList instanceof);
-
     return(
-    <div style={{ listStyleType: 'none' }}>
-    {/* {props. ?
+    <div className="list">
+    {props.itemList ?
         props.itemList.map((item, index) => (
-       <ListItem key={item.item_id} itemData={item} />
-      ))
+       <ListItem
+                key={item.id}
+                itemData={item}
+                renderItemDetails={props.renderItemDetails || undefined}
+                onClickItem={props.onClickItem}
+        />
+        ))
       :
       <Spinner style={{ position: 'fixed', top: '50%', left: '50%' }} animation="grow"/>
-        } */}
-  </div>
-
+        }
+    </div>
     ); };
 
 export const List = ListComponent;
