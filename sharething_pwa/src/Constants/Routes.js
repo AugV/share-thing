@@ -20,5 +20,5 @@ export const EDIT_ITEM = "/private/item/edit/:id";
 export const EDIT_ITEM_BASE = "/private/item/edit";
 export const ITEM_DETAILS = '/private/item/details/:id';
 
-export const CONVO_LIST = '/private/messages';
-export const CONVO = '/private/messages/:id';
+export const SHAREGREEMENT_LIST = '/private/sharegreements';
+export const SHAREGREEMENT = '/private/sharegreement/:id';

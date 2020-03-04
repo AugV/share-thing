@@ -15,7 +15,10 @@ const ListItemComponent: React.FC<ListItemProps> = (props) => {
         <img className="img" src={props.itemData.image_url} alt="Not available" />
         <div className="content">
         <p className="text">{props.itemData.name}</p>
-        <p className="details"> {props.renderItemDetails && props.itemData.end_date && props.renderItemDetails(props.itemData.end_date)}</p>
+        <p className="details"> {props.renderItemDetails
+                                && props.itemData.end_date
+                                && props.renderItemDetails(props.itemData.end_date)}
+        </p>
         </div>
     </div>
     );

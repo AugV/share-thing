@@ -12,11 +12,12 @@
     display: inline-block;
     border-radius: 1px;
     margin: 10px;
+    max-width: 40%;
 }
 
 .content {
     display: inline-block;
-    width: 50%;
+    max-width: 50%;
 }
 
 .text {

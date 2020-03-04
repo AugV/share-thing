@@ -21,8 +21,8 @@ const PrivateRoutes = () => {
         <Route path={ROUTES.HOME} component={Home} />
         <Route path={ROUTES.PUBLIC} component={PublicScreen} />
         <Route path={ROUTES.ITEM} component={ItemRouter} />
-        <Route path={ROUTES.CONVO} component={ConvoScreen} />
-        <Route path={ROUTES.CONVO_LIST} component={AllConvosPage} />
+        <Route path={ROUTES.SHAREGREEMENT} component={ConvoScreen} />
+        <Route path={ROUTES.SHAREGREEMENT_LIST} component={AllConvosPage} />
         <Route path={ROUTES.PASSWORD_RESET} component={PasswordResetScreen} />
         <Route path={ROUTES.SIGN_OUT} component={SingOut} />
       </Switch>

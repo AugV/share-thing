@@ -15,7 +15,7 @@ const DropdownComponent: React.FC<DropDownProps> = (props) => {
         <div className="dropdown">
             <button className="dropbtn">
                 <span style={{ fontSize: '20px' }}>&#x25bc;</span>
-                {props.selectionItems.get(location.pathname)}
+               {props.selectionItems.get(location.pathname)}
             </button>
             <div className="dropdown-content">
             {

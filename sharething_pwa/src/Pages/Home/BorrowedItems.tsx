@@ -6,11 +6,11 @@ import { FirebaseProps } from '../../Entities/PropsInterfaces';
 import { useHistory } from 'react-router-dom';
 import * as ROUTES from '../../Constants/Routes';
 
-interface LentItemsProps {
+interface BorrowedItemsProps {
     itemList: UserItem[];
 }
 
-const LentItemsPageComp: React.FC<LentItemsProps & FirebaseProps> = (props) => {
+const BorrowedItemsPageComp: React.FC<BorrowedItemsProps & FirebaseProps> = (props) => {
 
     const history = useHistory();
 
@@ -22,7 +22,7 @@ const LentItemsPageComp: React.FC<LentItemsProps & FirebaseProps> = (props) => {
     );
 
     const onClickItem = (id: string) => {
-        history.push(`${ROUTES.EDIT_ITEM_BASE}/${id}`);
+        history.push(`${ROUTES.SHAREGREEMENT}/${id}`);
     };
 
     return (
@@ -36,4 +36,4 @@ const LentItemsPageComp: React.FC<LentItemsProps & FirebaseProps> = (props) => {
     );
 };
 
-export const LentItemsPage = withFirebase(LentItemsPageComp);
+export const BorrowedItemsPage = withFirebase(BorrowedItemsPageComp);
