@@ -2,8 +2,9 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import { Item, ConversationInfo, docToConvo, UserItemsDocument } from '../Entities/Interfaces';
+import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument } from '../Entities/Interfaces';
 import * as NAME from '../Constants/Names';
+import { itemMapper, userItemsMapper } from './Mappers';
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -30,30 +31,19 @@ class Firebase {
         this.storage = app.storage();
     }
 
-    public getUserItemsDocument =  (listener: any) => {
+    public getUserItemsDocument = (listener: any) => {
         try {
             const docRef = this.db.collection(NAME.USER_ITEMS).doc(this.auth.currentUser?.uid);
 
             return docRef.onSnapshot((doc) => {
-                const userList: UserItemsDocument = this.userItemsMapper(doc);
+                const userList: UserItemsDocument = userItemsMapper(doc);
 
                 listener(userList);
             });
         } catch (e) {
-            console.log('UserItems not fethced');
-            console.log(e);
+            throw new Error(e);
         }
 
-    };
-
-    public userItemsMapper = (doc: app.firestore.DocumentSnapshot) => {
-        const userItems: UserItemsDocument = {
-            userOwnedItemList: doc.data()!.owned_items,
-            userLentItemList:  doc.data()!.lent_items,
-            userBorrowedItemList: doc.data()!.borrowed_items,
-        };
-
-        return userItems;
     };
 
     public createUserWithEmailAndPsw = (email: string, password: string) => {
@@ -68,31 +58,17 @@ class Firebase {
         if (this.auth.currentUser) { this.auth.currentUser.updatePassword(password); } };
     public getUserId = () => { if (this.auth.currentUser) { return this.auth.currentUser.uid; } };
     public userRef = (uid: string) => this.db.collection(NAME.USERS_COLLECTION).doc(uid);
-    public getItem = (itemId: string) => {
-        return new Promise<Item>((resolve) => {
-            this.db.collection(NAME.ITEMS_COLLECTION).doc(itemId).get().then((doc) => {
-                if (!doc.exists) {
-                    console.log('No such document!');
-                    return;
-                }
-                const item: Item = { id: itemId, name: 'NA', description: 'NA', ownerId: 'NA' };
 
-                const itemData = doc.data() ? doc.data() : null;
+    public async fetchSingleItem(id: string): Promise<ItemModel> {
+        try {
+            const docRef = this.db.collection(NAME.ITEMS_COLLECTION).doc(id);
+            const doc = await docRef.get();
 
-                if (itemData) {
-                    item.id = itemId;
-                    item.name = itemData.name;
-                    item.description = itemData.description;
-                    item.imageUrl = itemData.imageUrl;
-                    item.ownerId = itemData.ownerId;
-                }
-                resolve(item);
-            }).catch(error => {
-                console.log('Error getting document:', error);
-            });
-        });
-
-    };
+            return itemMapper(doc);
+        } catch (e) {
+            throw new Error(e);
+        }
+    }
 
     public getItems = () => this.db.collection(NAME.ITEMS_COLLECTION);
 
@@ -100,13 +76,13 @@ class Firebase {
         return this.db.collection(NAME.ITEMS_COLLECTION).where('ownerId', '==', (this.auth.currentUser ? this.auth.currentUser.uid : 'n/a'));
     };
 
-    public createNewConversation = (item: Item) => {
+    public createNewConversation = (item: ItemModel) => {
         return new Promise<string>((resolve) => {this.db.collection(NAME.CONVERSATION_COLLECTION)
             .add({
                 itemId: item.id,
-                itemImg: item.imageUrl,
+                itemImg: item.images[0],
                 itemName: item.name,
-                ownerId: item.ownerId,
+                ownerId: item.owner,
                 seekerId: this.getUserId(),
             })
             .then((ref: app.firestore.DocumentReference) => {
@@ -161,16 +137,16 @@ class Firebase {
         });
     };
 
-    public saveItem = (item: Item, image: File) => {
-        // TODO firebase default seqeunce as ID
-        item.id = item.id ? item.id : Math.random().toString(36).substring(7);
+    // public saveItem = (item: Item, image: File) => {
+    //     // TODO firebase default seqeunce as ID
+    //     item.id = item.id ? item.id : Math.random().toString(36).substring(7);
 
-        return this.saveImageToStorage(image, item.id)
-        .then(url => {
-            item.imageUrl = url;
-            return this.saveItemToFirestore(item); },
-        );
-    };
+    //     return this.saveImageToStorage(image, item.id)
+    //     .then(url => {
+    //         item.imageUrl = url;
+    //         return this.saveItemToFirestore(item); },
+    //     );
+    // };
 
     public saveImageToStorage = (file: File, fileName: string) => {
         return new Promise<string>((resolve) => {
@@ -190,32 +166,32 @@ class Firebase {
         });
     };
 
-    public saveItemToFirestore = (item: Item) => {
-        return this.db.collection(NAME.ITEMS_COLLECTION)
-            .doc(item.id)
-            .set({
-                ...item,
-                ownerId: (this.auth.currentUser ? this.auth.currentUser.uid : null),
-            })
-            .then(function() {
-                console.log('Document successfully written!');
-            })
-            .catch(function(error) {
-                console.error('Error writing document: ', error);
-                throw error;
-            });
-    };
+    // public saveItemToFirestore = (item: Item) => {
+    //     return this.db.collection(NAME.ITEMS_COLLECTION)
+    //         .doc(item.id)
+    //         .set({
+    //             ...item,
+    //             ownerId: (this.auth.currentUser ? this.auth.currentUser.uid : null),
+    //         })
+    //         .then(function() {
+    //             console.log('Document successfully written!');
+    //         })
+    //         .catch(function(error) {
+    //             console.error('Error writing document: ', error);
+    //             throw error;
+    //         });
+    // };
 
-    public deleteItem = (itemId: string) => {
-        this.db.collection(NAME.ITEMS_COLLECTION).doc(itemId).delete().then().catch((error) => {
-            console.error(`Error removing document ${itemId} : `, error);
-        });
-        const ref = this.storage.ref(`ItemImages/${itemId}`);
+    // public deleteItem = (itemId: string) => {
+    //     this.db.collection(NAME.ITEMS_COLLECTION).doc(itemId).delete().then().catch((error) => {
+    //         console.error(`Error removing document ${itemId} : `, error);
+    //     });
+    //     const ref = this.storage.ref(`ItemImages/${itemId}`);
 
-        ref.delete().then().catch((error) => {
-            console.log('Error when deleting Image');
-        });
-    };
+    //     ref.delete().then().catch((error) => {
+    //         console.log('Error when deleting Image');
+    //     });
+    // };
 
     public getItemImg = () => {
         return new Promise<string>((resolve) => {
