@@ -9,7 +9,7 @@ import { PasswordResetLink } from "./PasswordReset";
 
 const SignInScreen = () => (
   <div>
-    <h1>Share </h1>
+    <h1>Sign-in</h1>
     <SignInForm />
     <SignUpLink />
     <PasswordResetLink />
@@ -36,7 +36,7 @@ class SignInFormBase extends Component {
       .then(() => {
         console.log("SignInFormBase signin callback")
         this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.HOME);
+        this.props.history.push(ROUTES.MY_ITEMS);
       })
       .catch(error => {
         this.setState({ error });

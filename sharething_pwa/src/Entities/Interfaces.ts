@@ -24,6 +24,39 @@ export interface Message {
     date: Date;
 }
 
+// export interface UserOwnedItem {
+//     item_id: string;
+//     item_name: string;
+//     image_url: string;
+// }
+
+// export interface UserLentItem {
+//     shareg_id: string;
+//     item_name: string;
+//     image_url: string;
+//     end_date: Date;
+// }
+
+// export interface UserBorrowedItem {
+//     shareg_id: string;
+//     item_name: string;
+//     image_url: string;
+//     end_date: Date;
+// }
+
+export interface UserItem {
+    id: string;
+    name: string;
+    image_url: string;
+    end_date?: Date;
+}
+
+export interface UserItemsDocument {
+    userOwnedItemList: UserItem[];
+    userLentItemList: UserItem[];
+    userBorrowedItemList: UserItem[];
+}
+
 export function docToItem(document: firebase.firestore.QueryDocumentSnapshot): Item {
     const item: Item = {
         id: document.id,
@@ -49,10 +82,10 @@ export function docToConvo(document: firebase.firestore.QueryDocumentSnapshot | 
     return convo;
 }
 
-export function docToMessage(document: firebase.firestore.QueryDocumentSnapshot, user: string): Message {
+export function docToMessage(document: firebase.firestore.QueryDocumentSnapshot, userId: string): Message {
     const message: Message = {
         id: document.id,
-        position: user === document.data().author ? 'right' : 'left',
+        position: userId === document.data().author ? 'right' : 'left',
         type: 'text',
         text: document.data().text,
         date: document.data().time.toDate(),

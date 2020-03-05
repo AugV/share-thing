@@ -47,23 +47,25 @@ class ItemDetailsComponent extends React.Component<Props, State> {
 
         return (item &&
             (
-            <Card>
-                <Card.Img
-                    variant="top"
-                    src={item.imageUrl}
-                />
-                <Card.Body>
-                    <Card.Title>{item.name}</Card.Title>
-                    <Card.Text>
-                    {item.description}
-                    </Card.Text>
-                    <Button
-                        onClick={() => {this.props.createConvo(item); }}
-                        variant="primary"
-                    >Request
-                    </Button>
-                </Card.Body>
-            </Card>
+            <div style={{ maxWidth: 800, height: 'auto'}}>
+                <Card>
+                    <Card.Img
+                        variant="top"
+                        src={item.imageUrl}
+                    />
+                    <Card.Body>
+                        <Card.Title>{item.name}</Card.Title>
+                        <Card.Text>
+                        {item.description}
+                        </Card.Text>
+                        <Button
+                            onClick={() => {this.props.createConvo(item); }}
+                            variant="primary"
+                        >Request
+                        </Button>
+                    </Card.Body>
+                </Card>
+            </div>
             )
         );
     }

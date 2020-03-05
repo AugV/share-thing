@@ -8,7 +8,6 @@ import {
   Container,
   Row,
   Col,
-  Image,
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Item, docToItem } from '../Entities/Interfaces';
@@ -69,7 +68,7 @@ class PublicScreenTemplate extends React.Component<Props, State> {
                     <Row>
                       <Col>
                         <Link to={`item/${item.id}/details`}>
-                          <Image src={item.imageUrl} thumbnail={true}/>
+                          <img src={item.imageUrl} alt="" style={{ maxHeight: 100, height: 'auto'}}/>
                         </Link>
                       </Col>
                       <Col>

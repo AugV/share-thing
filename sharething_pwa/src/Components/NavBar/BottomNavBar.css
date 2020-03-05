@@ -1,0 +1,16 @@
+.navbar {
+    background: lightgrey;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 56px;
+    padding: 5px;
+}
+
+.active {
+    stroke-width: 0.7;
+}
+
+.inactive {
+    stroke-width: 0;
+}

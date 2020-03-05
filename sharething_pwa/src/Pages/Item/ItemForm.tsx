@@ -98,6 +98,8 @@ class ItemFormTemplate extends React.Component<Props, State> {
           <Button variant="primary" disabled={!this.state.name} type="submit">
             Submit
           </Button>
+
+          {/* <input type="file" accept="image/*" capture="capture"></input> */}
         </Form>
       )
         );

@@ -2,7 +2,7 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import { Item, ConversationInfo, docToConvo } from '../Entities/Interfaces';
+import { Item, ConversationInfo, docToConvo, UserItemsDocument } from '../Entities/Interfaces';
 import * as NAME from '../Constants/Names';
 
 const firebaseConfig = {
@@ -30,6 +30,32 @@ class Firebase {
         this.storage = app.storage();
     }
 
+    public getUserItemsDocument =  (listener: any) => {
+        try {
+            const docRef = this.db.collection(NAME.USER_ITEMS).doc(this.auth.currentUser?.uid);
+
+            return docRef.onSnapshot((doc) => {
+                const userList: UserItemsDocument = this.userItemsMapper(doc);
+
+                listener(userList);
+            });
+        } catch (e) {
+            console.log('UserItems not fethced');
+            console.log(e);
+        }
+
+    };
+
+    public userItemsMapper = (doc: app.firestore.DocumentSnapshot) => {
+        const userItems: UserItemsDocument = {
+            userOwnedItemList: doc.data()!.owned_items,
+            userLentItemList:  doc.data()!.lent_items,
+            userBorrowedItemList: doc.data()!.borrowed_items,
+        };
+
+        return userItems;
+    };
+
     public createUserWithEmailAndPsw = (email: string, password: string) => {
         return this.auth.createUserWithEmailAndPassword(email, password);
     };
@@ -41,11 +67,10 @@ class Firebase {
     public updatePsw = (password: string) => {
         if (this.auth.currentUser) { this.auth.currentUser.updatePassword(password); } };
     public getUserId = () => { if (this.auth.currentUser) { return this.auth.currentUser.uid; } };
-    // public user = (uid: string) => this.db.collection(NAME.USERS_COLLECTION).doc(uid);
-    // public users = () => this.db.collection(NAME.USERS_COLLECTION);
+    public userRef = (uid: string) => this.db.collection(NAME.USERS_COLLECTION).doc(uid);
     public getItem = (itemId: string) => {
         return new Promise<Item>((resolve) => {
-            this.db.collection(NAME.ITEMS_COLLECTION).doc(itemId).get().then(function(doc) {
+            this.db.collection(NAME.ITEMS_COLLECTION).doc(itemId).get().then((doc) => {
                 if (!doc.exists) {
                     console.log('No such document!');
                     return;
@@ -137,6 +162,7 @@ class Firebase {
     };
 
     public saveItem = (item: Item, image: File) => {
+        // TODO firebase default seqeunce as ID
         item.id = item.id ? item.id : Math.random().toString(36).substring(7);
 
         return this.saveImageToStorage(image, item.id)
