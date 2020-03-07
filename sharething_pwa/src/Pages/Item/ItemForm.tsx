@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { ItemModel } from '../../Entities/Interfaces';
 import Spinner from 'react-bootstrap/Spinner';
+import { SubPageHeader } from '../../Components/Headers/SubPageHeader';
+import { ImageUpload } from '../../Components/ImageUpload';
 
 interface ItemFormProps {
     fetchData: (id?: string) => Promise<ItemModel>;
+    pageTitle: string;
 }
 
 const ItemFormPage: React.FC<ItemFormProps> = (props) => {
@@ -20,7 +23,13 @@ const ItemFormPage: React.FC<ItemFormProps> = (props) => {
         <>
             {
             !item ? <Spinner style={{ position: 'fixed', top: '50%', left: '50%' }} animation="grow"/>
-            : <div>{item.name}</div>
+            :
+
+            (<div>
+                <SubPageHeader title={props.pageTitle}/>
+                <ImageUpload/>
+
+            </div>)
             }
         </>
     );

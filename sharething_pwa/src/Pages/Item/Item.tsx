@@ -38,11 +38,11 @@ const Item: React.FC<FirebaseProps> = (props) => {
         <Switch>
             <Route
                 path={ROUTES.ADD_ITEM}
-                render={(propss) => (<ItemForm {...propss} fetchData={initialData}/>)}
+                render={(propss) => (<ItemForm {...propss} fetchData={initialData} pageTitle={'Add Item'}/>)}
             />
             <Route
                 path={ROUTES.EDIT_ITEM_ID}
-                render={(propss) => (<ItemForm {...propss} fetchData={fetchItem as FetchData}/>)}
+                render={(propss) => (<ItemForm {...propss} fetchData={fetchItem as FetchData} pageTitle={'Edit Item'}/>)}
             />
         </Switch>
     );

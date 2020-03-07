@@ -4,5 +4,25 @@
     top:0;
     width: 100%;
     height: 50px;
+}
 
+.back-arrow-button {
+    width:10%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.sub-page-title-box {
+    display: inline-block;
+    margin-left: 10%;
+    height: 100%;
+}
+
+.sub-page-title {
+    margin-top: 5px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 34px;
+    line-height: 40px;
 }
