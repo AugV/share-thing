@@ -1,0 +1,48 @@
+.box {
+    display: inline-block;
+}
+
+
+.preview {
+    vertical-align:top;
+    position:relative;
+    background: #C4C4C4;
+    border-radius: 5px;
+    height: 80px;
+    width: 80px;
+    /* padding: 10px; */
+    margin-right: 10px;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+
+.container {
+    margin-left: 2px;
+}
+
+.label {
+    vertical-align:top;
+    display: inline-block;
+    position:relative;
+    background: #C4C4C4;
+    border-radius: 5px;
+    height: 80px;
+    width: 80px;
+    padding: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.input {
+    display: none;
+}
+
+.icon {
+    position:relative;
+    text-align: center;
+    vertical-align: bottom;
+    height: 70%;
+    width: 70%;
+    margin: 12%;
+}
