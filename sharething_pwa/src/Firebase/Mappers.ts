@@ -25,7 +25,7 @@ export const itemMapper = (doc: firebase.firestore.DocumentSnapshot) => {
             images: docData!.images,
             borrowed: docData!.borrowed,
             borrowed_date: docData!.borrowed_date || [],
-            group: docData!.group,
+            groups: docData!.group,
         };
         return item;
     } catch (e) {

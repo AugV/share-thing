@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { ItemModel } from '../../Entities/Interfaces';
 import Spinner from 'react-bootstrap/Spinner';
 import { SubPageHeader } from '../../Components/Headers/SubPageHeader';
-import { ImageUploadContainer } from '../../Components/ImageUpload/ImageUploadContainer';
 import { ImageInput } from '../../Components/ImageUpload/Input';
 
 interface ItemFormProps {
@@ -11,59 +10,94 @@ interface ItemFormProps {
     pageTitle: string;
 }
 
-const imageBoxes: string[] = ['first', 'second', 'third'];
+interface ItemFormData {
+    itemName: string;
+    itemDescription: string;
+    [key: string]: string;
+}
+
+const imageBoxes: string[] = ['0', '1', '2'];
 
 const ItemFormPage: React.FC<ItemFormProps> = (props) => {
     const { fetchData } = props;
-    const imgPack: File[];
+    const imgPack: (File | undefined)[] = [undefined, undefined, undefined];
 
-    const [item, setItem] = useState<ItemModel | null>(null);
-    const [imgUrl, setImgUrl] = useState<string[]>([]);
-    const [preview, setPreview] = useState<string[]>();
+    const [itemFormData, setItemFormData] = useState<ItemFormData | undefined>(undefined);
+    const [preview, setPreview] = useState<string[]>([]);
+    const [groups, setGroups] = useState<string[] | undefined>(undefined);
 
     const { id } = useParams();
 
     useEffect(() => {
-        fetchData(id).then(data => setItem(data));
+        fetchData(id).then(data => {
+
+            const urls: string[] = [];
+            data.images.map(image => urls.push(image.url));
+            setPreview(urls);
+
+            const formData: ItemFormData = {
+                itemName: data.name,
+                itemDescription: data.description || ''};
+            setItemFormData(formData);
+
+            setGroups(data.groups);
+        });
     }, [fetchData, id]);
+
+    const handleImageChange = (e: any) => {
+        e.preventDefault();
+        const position = parseInt(e.target.accessKey, 10);
+
+        const image: File = e.target.files[0];
+        const url = URL.createObjectURL(image);
+
+        const newPreview: string[] = { ...preview };
+        newPreview[position] = url;
+        setPreview(newPreview);
+
+        imgPack[position] = image;
+    };
+
+    const handleImageDelete = (e: any) => {
+        e.preventDefault();
+        const position = parseInt(e.target.accessKey, 10);
+
+        const newPreview: string[] = { ...preview };
+        newPreview[position] = '';
+        setPreview(newPreview);
+
+        imgPack[position] = undefined;
+
+    };
 
     return(
         <>
             {
-                !item ? <Spinner style={{ position: 'fixed', top: '50%', left: '50%' }} animation="grow"/>
+                !itemFormData ? <Spinner style={{ position: 'fixed', top: '50%', left: '50%' }} animation="grow"/>
                 :
 
-                (<div>
+                (
+                <div>
                 <SubPageHeader title={props.pageTitle}/>
                 <div className="container">
-                <h2>Images</h2>
-                <div>
-                    {imageBoxes.map((position) => {
-                        <ImageInput onChange={handleImageChange} preview="https://homepages.cae.wisc.edu/~ece533/images/monarch.png"/>;
-                    })}
-                </div>
+                    <h2>Images</h2>
+                    <div>
+                        {imageBoxes.map((position, index) => (
+                            <ImageInput
+                                key={index}
+                                position={position}
+                                onChange={handleImageChange}
+                                onDelete={handleImageDelete}
+                                preview={(preview && preview[index]) || ''}
+                            />
+                        ))}
+                    </div>
                 </div>
             </div>)
             }
         </>
     );
-    const handleImageChange = (e: any) => {
-        e.preventDefault();
-        const files: File[] = Array.from(e.target.files);
 
-        files.forEach((file, i) => {
-
-            const url = URL.createObjectURL(file);
-
-            setImgUrl(prevState => {
-            const newState = [url, ...prevState];
-            return newState;
-        });
-
-            imgPack.push(file);
-        },
-);
-    };
 };
 
 export const ItemForm = ItemFormPage;

@@ -5,13 +5,13 @@ import { ItemModel } from '../../Entities/Interfaces';
 
 const INITIAL_STATE: State = {
     item : {   id: '5656561',
-               name: 'User 1 Item 1',
-               owner: 'ESk2bOqGi9MLXG7SaavxV4gYvvU2',
-               description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It wa',
-               images: ['https://homepages.cae.wisc.edu/~ece533/images/cat.png', 'https://homepages.cae.wisc.edu/~ece533/images/cat.png'],
-               borrowed: false,
-               borrowed_date: [],
-               group: ['group_1', 'group_2'],
+        name: 'User 1 Item 1',
+        owner: 'ESk2bOqGi9MLXG7SaavxV4gYvvU2',
+        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It wa',
+        images: [{ path: 'https://homepages.cae.wisc.edu/~ece533/images/cat.png', url: 'https://homepages.cae.wisc.edu/~ece533/images/cat.png' }],
+        borrowed: false,
+        borrowed_date: [],
+        groups: ['group_1', 'group_2'],
     },
 };
 
@@ -59,7 +59,7 @@ class ItemDetailsComponent extends React.Component<Props, State> {
                 <Card>
                     <Card.Img
                         variant="top"
-                        src={item.images[0]}
+                        src={item.images[0].url}
                     />
                     <Card.Body>
                         <Card.Title>{item.name}</Card.Title>

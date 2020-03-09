@@ -24,7 +24,7 @@ const Item: React.FC<FirebaseProps> = (props) => {
             images: [],
             borrowed: false,
             borrowed_date: [],
-            group: [],
+            groups: [],
         };
 
         return item;

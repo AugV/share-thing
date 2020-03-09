@@ -5,16 +5,18 @@ import './image-upload.css';
 
 interface ImageInputProps {
     onChange: (e: any) => void;
+    onDelete: (e: any) => void;
     preview: string;
+    position: string;
 }
 
 const ImageInputComponent: React.FC<ImageInputProps> = (props) => {
 
     return(
-        preview ?
+        props.preview ?
 
         (
-            <img className="preview" src={preview} />
+            <img className="preview" onClick={props.onDelete} accessKey={props.position} src={props.preview} />
         )
 
         :
@@ -23,7 +25,7 @@ const ImageInputComponent: React.FC<ImageInputProps> = (props) => {
         <label className="label">
             <div>
                 <MdAddAPhoto className="icon" />
-                <input className="input" type="file" onChange={props.onChange} accept="image/*;capture=camera"/>
+                <input className="input" accessKey={props.position} type="file" onChange={props.onChange} accept="image/*;capture=camera"/>
             </div>
         </label>
         )

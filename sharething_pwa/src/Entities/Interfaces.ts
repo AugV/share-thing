@@ -3,15 +3,20 @@ interface StartEndDate {
     end: Date;
 }
 
+interface ItemImage {
+    path: string;
+    url: string;
+}
+
 export interface ItemModel {
     id: string;
     name: string;
     owner: string;
     description?: string;
-    images: string[];
+    images: ItemImage[];
     borrowed: false;
     borrowed_date?: StartEndDate[];
-    group: string[];
+    groups: string[];
 }
 
 export interface ConversationInfo {
