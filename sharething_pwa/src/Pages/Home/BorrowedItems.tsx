@@ -10,15 +10,13 @@ interface BorrowedItemsProps {
     itemList: UserItem[];
 }
 
+type RenderItemDetails = ((content: string | Date) => JSX.Element) | undefined;
 const BorrowedItemsPageComp: React.FC<BorrowedItemsProps & FirebaseProps> = (props) => {
 
     const history = useHistory();
 
-    // TODO: paklaust kodėl taip neveikia
-    // const renderUntilDate = (date: Date ) => (
-    const renderUntilDate = (date: Date | string) => (
-        // <> {`until ${date ? date.toDateString() : ''}`} </>
-        <> {`until ${date ? date.toString() : '*no date set*'}`} </>
+    const renderUntilDate = (date: Date) => (
+        <> {`until ${date ? date : ''}`} </>
     );
 
     const onClickItem = (id: string) => {
@@ -29,7 +27,7 @@ const BorrowedItemsPageComp: React.FC<BorrowedItemsProps & FirebaseProps> = (pro
           <div>
             <List
                   itemList={props.itemList}
-                  renderItemDetails={renderUntilDate}
+                  renderItemDetails={renderUntilDate as RenderItemDetails}
                   onClickItem={onClickItem}
             />
           </div>

@@ -22,7 +22,7 @@ const LentItemsPageComp: React.FC<LentItemsProps & FirebaseProps> = (props) => {
     );
 
     const onClickItem = (id: string) => {
-        history.push(`${ROUTES.EDIT_ITEM_BASE}/${id}`);
+        history.push(`${ROUTES.SHAREGREEMENT}/${id}`);
     };
 
     return (

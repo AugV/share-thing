@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router';
 import * as ROUTES from '../../Constants/Routes';
 import { MyItemsPage } from './MyItems';
 import { MainNavBar } from '../../Components/NavBar/BottomNavBar';
-import { HomeHeader } from '../../Components/headers/Header';
+import { HomeHeader } from '../../Components/Headers/Header';
 import { withFirebase } from '../../Firebase/Context';
 import { UserItemsDocument } from '../../Entities/Interfaces';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';

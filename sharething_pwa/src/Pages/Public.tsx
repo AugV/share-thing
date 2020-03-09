@@ -10,7 +10,7 @@ import {
   Col,
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { Item, docToItem } from '../Entities/Interfaces';
+import { ItemModel } from '../Entities/Interfaces';
 
 const condition = (authUser: object) => !!authUser;
 
@@ -24,7 +24,7 @@ interface Props {
 
 interface State {
     loading: boolean;
-    items: Item[];
+    items: ItemModel[];
 }
 
 class PublicScreenTemplate extends React.Component<Props, State> {
@@ -44,7 +44,7 @@ class PublicScreenTemplate extends React.Component<Props, State> {
             this.setState(
                 {
                     loading: false,
-                    items: snapshot.docs.map(docToItem),
+                    // items: snapshot.docs.map(docToItem),
                 },
       );
         });
@@ -68,7 +68,7 @@ class PublicScreenTemplate extends React.Component<Props, State> {
                     <Row>
                       <Col>
                         <Link to={`item/${item.id}/details`}>
-                          <img src={item.imageUrl} alt="" style={{ maxHeight: 100, height: 'auto'}}/>
+                          <img src={item.images[0].url} alt="" style={{ maxHeight: 100, height: 'auto' }}/>
                         </Link>
                       </Col>
                       <Col>

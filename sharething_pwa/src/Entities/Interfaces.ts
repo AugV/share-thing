@@ -1,10 +1,22 @@
-export interface Item {
+interface StartEndDate {
+    start: Date;
+    end: Date;
+}
+
+interface ItemImage {
+    path: string;
+    url: string;
+}
+
+export interface ItemModel {
     id: string;
     name: string;
-    description: string;
-    imageUrl?: string;
-    ownerId?: string;
-    [key: string]: any;
+    owner: string;
+    description?: string;
+    images: ItemImage[];
+    borrowed: false;
+    borrowed_date?: StartEndDate[];
+    groups: string[];
 }
 
 export interface ConversationInfo {
@@ -24,26 +36,6 @@ export interface Message {
     date: Date;
 }
 
-// export interface UserOwnedItem {
-//     item_id: string;
-//     item_name: string;
-//     image_url: string;
-// }
-
-// export interface UserLentItem {
-//     shareg_id: string;
-//     item_name: string;
-//     image_url: string;
-//     end_date: Date;
-// }
-
-// export interface UserBorrowedItem {
-//     shareg_id: string;
-//     item_name: string;
-//     image_url: string;
-//     end_date: Date;
-// }
-
 export interface UserItem {
     id: string;
     name: string;
@@ -55,18 +47,6 @@ export interface UserItemsDocument {
     userOwnedItemList: UserItem[];
     userLentItemList: UserItem[];
     userBorrowedItemList: UserItem[];
-}
-
-export function docToItem(document: firebase.firestore.QueryDocumentSnapshot): Item {
-    const item: Item = {
-        id: document.id,
-        name: document.data().name,
-        description: document.data().description,
-        imageUrl: document.data().imageUrl,
-        ownerId: document.data().ownerId,
-    };
-
-    return item;
 }
 
 export function docToConvo(document: firebase.firestore.QueryDocumentSnapshot | firebase.firestore.DocumentSnapshot): ConversationInfo {

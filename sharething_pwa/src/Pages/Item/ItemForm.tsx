@@ -1,115 +1,103 @@
-import React, { FormEvent } from 'react';
-import { Form, Button } from 'react-bootstrap';
-import { Item } from '../../Entities/Interfaces';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { ItemModel } from '../../Entities/Interfaces';
+import Spinner from 'react-bootstrap/Spinner';
+import { SubPageHeader } from '../../Components/Headers/SubPageHeader';
+import { ImageInput } from '../../Components/ImageUpload/Input';
 
-const INITIAL_STATE: State = {
-    id: '',
-    name: '',
-    description: '',
-    image: null,
-    render: false,
+interface ItemFormProps {
+    fetchData: (id?: string) => Promise<ItemModel>;
+    pageTitle: string;
+}
+
+interface ItemFormData {
+    itemName: string;
+    itemDescription: string;
+    [key: string]: string;
+}
+
+const imageBoxes: string[] = ['0', '1', '2'];
+
+const ItemFormPage: React.FC<ItemFormProps> = (props) => {
+    const { fetchData } = props;
+    const imgPack: (File | undefined)[] = [undefined, undefined, undefined];
+
+    const [itemFormData, setItemFormData] = useState<ItemFormData | undefined>(undefined);
+    const [preview, setPreview] = useState<string[]>([]);
+    const [groups, setGroups] = useState<string[] | undefined>(undefined);
+
+    const { id } = useParams();
+
+    useEffect(() => {
+        fetchData(id).then(data => {
+
+            const urls: string[] = [];
+            data.images.map(image => urls.push(image.url));
+            setPreview(urls);
+
+            const formData: ItemFormData = {
+                itemName: data.name,
+                itemDescription: data.description || ''};
+            setItemFormData(formData);
+
+            setGroups(data.groups);
+        });
+    }, [fetchData, id]);
+
+    const handleImageChange = (e: any) => {
+        e.preventDefault();
+        const position = parseInt(e.target.accessKey, 10);
+
+        const image: File = e.target.files[0];
+        const url = URL.createObjectURL(image);
+
+        const newPreview: string[] = { ...preview };
+        newPreview[position] = url;
+        setPreview(newPreview);
+
+        imgPack[position] = image;
+    };
+
+    const handleImageDelete = (e: any) => {
+        e.preventDefault();
+        const position = parseInt(e.target.accessKey, 10);
+
+        const newPreview: string[] = { ...preview };
+        newPreview[position] = '';
+        setPreview(newPreview);
+
+        imgPack[position] = undefined;
+
+    };
+
+    return(
+        <>
+            {
+                !itemFormData ? <Spinner style={{ position: 'fixed', top: '50%', left: '50%' }} animation="grow"/>
+                :
+
+                (
+                <div>
+                <SubPageHeader title={props.pageTitle}/>
+                <div className="container">
+                    <h2>Images</h2>
+                    <div>
+                        {imageBoxes.map((position, index) => (
+                            <ImageInput
+                                key={index}
+                                position={position}
+                                onChange={handleImageChange}
+                                onDelete={handleImageDelete}
+                                preview={(preview && preview[index]) || ''}
+                            />
+                        ))}
+                    </div>
+                </div>
+            </div>)
+            }
+        </>
+    );
+
 };
 
-interface OwnProps {
-    onSubmit(item: Item, file: File): void;
-    loadItem(itemId: string): Promise<Item>;
-}
-
-type Props = OwnProps & RouteComponentProps<any>;
-
-interface State {
-    id: string;
-    name: string;
-    description: string;
-    image?: File | null;
-    render: boolean;
-}
-
-class ItemFormTemplate extends React.Component<Props, State> {
-    constructor(props: Props) {
-        super(props);
-        this.state = INITIAL_STATE;
-    }
-
-    public componentDidMount(): void {
-        if (this.props.match.params.id) {
-            this.loadItem();
-        } else {
-            this.setState({ render: true });
-        }
-    }
-
-    public onChange = (event: any) => {
-        const name = event.target.name as string;
-
-        this.setState({ ...this.state, [name]: event.target.value });
-    };
-
-    public onFileChange = (event: any) => {
-        this.setState({ image: event.target.files[0] });
-    };
-
-    public onSubmit = (event: FormEvent<HTMLFormElement>) => {
-        const item: Item = {
-            id: this.state.id,
-            name: this.state.name,
-            description: this.state.description,
-        };
-
-        this.props.onSubmit(item, this.state.image!);
-
-        event.preventDefault();
-    };
-
-    public render(): React.ReactNode {
-        return (
-      this.state.render && (
-        <Form onSubmit={this.onSubmit}>
-          <Form.Group controlId="name">
-            <Form.Label>Item name</Form.Label>
-            <Form.Control
-              placeholder="Enter Item name"
-              name="name"
-              onChange={this.onChange}
-              value={this.state.name}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="description">
-            <Form.Label>Item description</Form.Label>
-            <Form.Control
-              placeholder="Enter Item description"
-              name="description"
-              onChange={this.onChange}
-              value={this.state.description || ''}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="image">
-            <Form.Label>Item image</Form.Label>
-            <Form.Control
-              name="image"
-              type="file"
-              onChange={this.onFileChange}
-            />
-          </Form.Group>
-
-          <Button variant="primary" disabled={!this.state.name} type="submit">
-            Submit
-          </Button>
-
-          {/* <input type="file" accept="image/*" capture="capture"></input> */}
-        </Form>
-      )
-        );
-    }
-
-    private loadItem(): void {
-        this.props.loadItem(this.props.match.params.id).then(item => {
-            this.setState({ ...item, render: true });
-        });
-    }
-}
-
-export const ItemForm = withRouter(ItemFormTemplate);
+export const ItemForm = ItemFormPage;

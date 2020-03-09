@@ -16,8 +16,9 @@ export const PRIVATE_PAGE = '/private';
 
 export const ITEM = '/private/item';
 export const ADD_ITEM = '/private/item/add';
-export const EDIT_ITEM = "/private/item/edit/:id";
-export const EDIT_ITEM_BASE = "/private/item/edit";
+export const EDIT_ITEM_ID = "/private/item/edit/:id";
+export const EDIT_ITEM = "/private/item/edit";
+
 export const ITEM_DETAILS = '/private/item/details/:id';
 
 export const SHAREGREEMENT_LIST = '/private/sharegreements';

@@ -16,7 +16,7 @@ const MyItemsPageComp: React.FC<MyItemsProps & FirebaseProps> = (props) => {
     const history = useHistory();
 
     const onClickItem = (id: string) => {
-        history.push(`${ROUTES.EDIT_ITEM_BASE}/${id}`);
+        history.push(`${ROUTES.EDIT_ITEM}/${id}`);
     };
 
     return (
