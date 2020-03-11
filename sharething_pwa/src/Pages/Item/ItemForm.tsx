@@ -4,6 +4,7 @@ import { ItemModel } from '../../Entities/Interfaces';
 import Spinner from 'react-bootstrap/Spinner';
 import { SubPageHeader } from '../../Components/Headers/SubPageHeader';
 import { ImageInput } from '../../Components/ImageUpload/Input';
+import { AddGroupBox } from '../../Components/AddGroupBox/AddGroupBox';
 
 interface ItemFormProps {
     fetchData: (id?: string) => Promise<ItemModel>;
@@ -80,6 +81,7 @@ const ItemFormPage: React.FC<ItemFormProps> = (props) => {
                 <div>
                 <SubPageHeader title={props.pageTitle}/>
                 <div className="container">
+
                     <h2>Images</h2>
                     <div>
                         {imageBoxes.map((position, index) => (
@@ -92,6 +94,10 @@ const ItemFormPage: React.FC<ItemFormProps> = (props) => {
                             />
                         ))}
                     </div>
+
+                    <h2>Groups</h2>
+
+                    <AddGroupBox/>
                 </div>
             </div>)
             }

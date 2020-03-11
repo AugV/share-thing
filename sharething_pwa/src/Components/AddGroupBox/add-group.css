@@ -1,0 +1,9 @@
+.add-group-btn {
+    background: #C4C4C4;
+    display: table-cell;
+    border-radius: 3px;
+}
+
+.demo-option-label-item > span {
+    margin-right: 6px;
+  }
