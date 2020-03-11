@@ -11,15 +11,6 @@ import { LentItemsPage } from './LentItems';
 import { BorrowedItemsPage } from './BorrowedItems';
 
 const HomeRoutes: React.FC<FirebaseProps> = (props) => {
-    const [userItemsState, setUserItemsState] = useState<UserItemsDocument | undefined>(undefined);
-
-    const listenerCallback = (userItems: UserItemsDocument) => {
-        setUserItemsState(userItems);
-    };
-
-    useEffect(() => {
-        return props.firebase.getUserItemsDocument(listenerCallback);
-    }, [props.firebase]);
 
     const subPages: Map<string, string> = function getMapForDropdown(): Map<string, string> {
         const map = new Map();
@@ -32,7 +23,7 @@ const HomeRoutes: React.FC<FirebaseProps> = (props) => {
     return (
     <div>
       <HomeHeader subPages={subPages}/>
-      <Switch>
+      {/* <Switch>
         <Route
           path={ROUTES.MY_ITEMS}
           render={(propss) => (<MyItemsPage {...propss} itemList={userItemsState?.userOwnedItemList}/>)}
@@ -46,7 +37,7 @@ const HomeRoutes: React.FC<FirebaseProps> = (props) => {
           render={(propss) => (<BorrowedItemsPage {...propss} itemList={userItemsState?.userBorrowedItemList}/>)}
         />
       </Switch>
-      <MainNavBar activeIcon="home" />
+      <MainNavBar activeIcon="home" /> */}
     </div>
     );
 };

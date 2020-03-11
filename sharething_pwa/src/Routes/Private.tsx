@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router';
 import * as ROUTES from '../Constants/Routes';
 import { Account } from '../Pages/Account';
@@ -11,10 +11,25 @@ import { ConvoScreen } from '../Pages/Convo/SingleConvoPage';
 import { SingOut } from '../Pages/Auth/SignOut';
 import { Home } from '../Pages/Home/Home';
 import { ItemPage } from '../Pages/Item/Item';
+import { FirebaseProps } from '../Entities/PropsInterfaces';
+import { UserItemsDocument } from '../Entities/Interfaces';
+import { withFirebase } from '../Firebase';
 
 const condition = (authUser: object) => !!authUser;
 
-const PrivateRoutes = () => {
+const PrivateRoutes: React.FC<FirebaseProps> = (props) => {
+
+    const [userItemsState, setUserItemsState] = useState<UserItemsDocument | undefined>(undefined);
+
+    const listenerCallback = (userItems: UserItemsDocument) => {
+        console.log(userItems);
+      setUserItemsState(userItems);
+    };
+
+    useEffect(() => {
+        return props.firebase.getUserItemsDocument(listenerCallback);
+    }, [props.firebase]);
+
     return (
       <div>
       <Switch>
@@ -31,4 +46,5 @@ const PrivateRoutes = () => {
     );
 };
 
-export const Private = withAuthorization(condition)(PrivateRoutes);
+export const Private = withFirebase(withAuthorization(condition)(PrivateRoutes));
+
