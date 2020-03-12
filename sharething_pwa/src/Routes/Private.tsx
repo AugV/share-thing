@@ -15,6 +15,8 @@ import { FirebaseProps } from '../Entities/PropsInterfaces';
 import { UserItemsDocument } from '../Entities/Interfaces';
 import { withFirebase } from '../Firebase';
 
+export const UserItemContext = React.createContext<UserItemsDocument | undefined>(undefined);
+
 const condition = (authUser: object) => !!authUser;
 
 const PrivateRoutes: React.FC<FirebaseProps> = (props) => {
@@ -22,8 +24,7 @@ const PrivateRoutes: React.FC<FirebaseProps> = (props) => {
     const [userItemsState, setUserItemsState] = useState<UserItemsDocument | undefined>(undefined);
 
     const listenerCallback = (userItems: UserItemsDocument) => {
-        console.log(userItems);
-      setUserItemsState(userItems);
+        setUserItemsState(userItems);
     };
 
     useEffect(() => {
@@ -32,19 +33,20 @@ const PrivateRoutes: React.FC<FirebaseProps> = (props) => {
 
     return (
       <div>
-      <Switch>
-        <Route path={ROUTES.ACCOUNT} component={Account} />
-        <Route path={ROUTES.HOME} component={Home} />
-        <Route path={ROUTES.PUBLIC} component={PublicScreen} />
-        <Route path={ROUTES.ITEM} component={ItemPage} />
-        <Route path={ROUTES.SHAREGREEMENT} component={ConvoScreen} />
-        <Route path={ROUTES.SHAREGREEMENT_LIST} component={AllConvosPage} />
-        <Route path={ROUTES.PASSWORD_RESET} component={PasswordResetScreen} />
-        <Route path={ROUTES.SIGN_OUT} component={SingOut} />
-      </Switch>
-    </div>
+        <UserItemContext.Provider value={userItemsState}>
+          <Switch>
+            <Route path={ROUTES.ACCOUNT} component={Account} />
+            <Route path={ROUTES.HOME} component={Home} />
+            <Route path={ROUTES.PUBLIC} component={PublicScreen} />
+            <Route path={ROUTES.ITEM} component={ItemPage} />
+            <Route path={ROUTES.SHAREGREEMENT} component={ConvoScreen} />
+            <Route path={ROUTES.SHAREGREEMENT_LIST} component={AllConvosPage} />
+            <Route path={ROUTES.PASSWORD_RESET} component={PasswordResetScreen} />
+            <Route path={ROUTES.SIGN_OUT} component={SingOut} />
+          </Switch>
+        </UserItemContext.Provider>
+      </div>
     );
 };
 
 export const Private = withFirebase(withAuthorization(condition)(PrivateRoutes));
-
