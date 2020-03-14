@@ -12,7 +12,7 @@ import { SingOut } from '../Pages/Auth/SignOut';
 import { Home } from '../Pages/Home/Home';
 import { ItemPage } from '../Pages/Item/Item';
 import { FirebaseProps } from '../Entities/PropsInterfaces';
-import { UserItemsDocument } from '../Entities/Interfaces';
+import { UserItemsDocument, GroupNameAndId } from '../Entities/Interfaces';
 import { withFirebase } from '../Firebase';
 
 export const UserItemContext = React.createContext<UserItemsDocument | undefined>(undefined);
@@ -20,19 +20,23 @@ export const UserItemContext = React.createContext<UserItemsDocument | undefined
 const condition = (authUser: object) => !!authUser;
 
 const PrivateRoutes: React.FC<FirebaseProps> = (props) => {
+    const { firebase } = props;
 
     const [userItemsState, setUserItemsState] = useState<UserItemsDocument | undefined>(undefined);
+    const [groupNames, setGroupNames] = useState<GroupNameAndId[] | undefined>(undefined);
 
     const listenerCallback = (userItems: UserItemsDocument) => {
         setUserItemsState(userItems);
     };
 
     useEffect(() => {
-        return props.firebase.getUserItemsDocument(listenerCallback);
-    }, [props.firebase]);
+        firebase.getUsersGroupNamesAndIds().then(userGroups => setGroupNames(userGroups));
+        return firebase.getUserItemsDocument(listenerCallback);
+    }, [firebase]);
 
     return (
       <div>
+        {console.log(groupNames)}
         <UserItemContext.Provider value={userItemsState}>
           <Switch>
             <Route path={ROUTES.ACCOUNT} component={Account} />

@@ -2,7 +2,7 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument } from '../Entities/Interfaces';
+import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument, GroupNameAndId } from '../Entities/Interfaces';
 import * as NAME from '../Constants/Names';
 import { itemMapper, userItemsMapper } from './Mappers';
 
@@ -33,7 +33,8 @@ class Firebase {
 
     public getUserItemsDocument = (listener: any) => {
         try {
-            const docRef = this.db.collection(NAME.USER_ITEMS).doc(this.auth.currentUser?.uid);
+            const userId = this.auth.currentUser?.uid;
+            const docRef = this.db.collection(NAME.USER_ITEMS).doc(userId);
 
             return docRef.onSnapshot((doc) => {
                 const userList: UserItemsDocument = userItemsMapper(doc);
@@ -201,6 +202,28 @@ class Firebase {
                 resolve(url);
             });
         });
+    };
+
+    public getUsersGroupNamesAndIds = async () => {
+        try {
+            const userId = this.auth.currentUser?.uid;
+            const userGroupIdsRef = this.db.collection(NAME.USER_GROUPS).doc(userId);
+            const userGroupIdsDoc = await userGroupIdsRef.get();
+            const userGroupIds = userGroupIdsDoc.data()!.groups;
+
+            const userGroups: GroupNameAndId[] = [];
+            const groupsRef = this.db.collection(NAME.GROUPS).where('id', 'in', userGroupIds);
+
+            await groupsRef.get().then((querySnapshot) => {
+                querySnapshot.forEach(doc => {
+                    userGroups.push({ id: doc.data().id, name: doc.data().name });
+                });
+            });
+
+            return userGroups;
+        } catch (e) {
+            throw new Error(e);
+        }
     };
 
 }

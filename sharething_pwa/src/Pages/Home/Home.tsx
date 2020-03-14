@@ -22,7 +22,9 @@ const HomeRoutes: React.FC<UserItems> = (props) => {
         map.set(ROUTES.BORROWED_ITEMS, 'Borrowed');
         return map;
     }();
+
     const { userItems } = props;
+
     return (
     <div>
       <HomeHeader subPages={subPages}/>

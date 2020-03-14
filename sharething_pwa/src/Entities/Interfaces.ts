@@ -43,10 +43,16 @@ export interface UserItem {
     end_date?: Date;
 }
 
+export interface GroupNameAndId {
+    id: string;
+    name: string;
+}
+
 export interface UserItemsDocument {
     userOwnedItemList: UserItem[];
     userLentItemList: UserItem[];
     userBorrowedItemList: UserItem[];
+    groupList: string[];
 }
 
 export function docToConvo(document: firebase.firestore.QueryDocumentSnapshot | firebase.firestore.DocumentSnapshot): ConversationInfo {

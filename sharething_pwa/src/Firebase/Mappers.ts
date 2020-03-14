@@ -7,6 +7,7 @@ export const userItemsMapper = (doc: firebase.firestore.DocumentSnapshot) => {
             userOwnedItemList: docData!.owned_items,
             userLentItemList:  docData!.lent_items,
             userBorrowedItemList: docData!.borrowed_items,
+            groupList: docData!.groups,
         };
         return userItems;
     } catch (e) {

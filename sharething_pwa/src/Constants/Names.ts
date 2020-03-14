@@ -3,3 +3,5 @@ export const CONVERSATION_COLLECTION = 'conversations';
 export const USERS_COLLECTION = 'users';
 export const ITEMS_COLLECTION = 'items';
 export const USER_ITEMS = 'user_items';
+export const USER_GROUPS = 'user_groups';
+export const GROUPS = 'groups';
