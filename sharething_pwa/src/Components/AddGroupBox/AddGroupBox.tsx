@@ -1,40 +1,54 @@
 import React, { useState } from 'react';
-import './add-group.css';
-import { AddGroupButton } from './AddGroupButton';
 import 'antd/dist/antd.css';
-import { Select } from 'antd';
+import { Select, Spin, Skeleton } from 'antd';
+import { withUserGroups } from '../../Context/withUserGroup';
+import { GroupNameAndId } from '../../Entities/Interfaces';
+
 const { Option } = Select;
 
-const AddGroupBoxComponent = () => {
+type UserGroupLookup = GroupNameAndId[];
 
-    const [modalShow, setModalShow] = useState(false);
+interface AddGroupBoxProps {
+    userGroups: UserGroupLookup;
+    itemGroups: string[] | undefined;
+    handleChange: (values: string[]) => void;
+}
 
-    const handleChange = (value: string[]) => {
-
-    };
+const AddGroupBoxComponent: React.FC<AddGroupBoxProps> = (props) => {
+    const { userGroups, itemGroups, handleChange } = props;
 
     return(
-      <Select
-        mode="multiple"
-        size="large"
-        style={{ width: '100%' }}
-        placeholder="select one country"
-        defaultValue={['chin']}
-        onChange={handleChange}
-        optionLabelProp="label"
-    >
-      <Option value="china" label="China">
-        <div className="demo-option-label-item">
-          <span role="img" aria-label="China">
-            🇨🇳
-          </span>
-          China (中国)
-        </div>
-      </Option>
+      (itemGroups && userGroups) ?
+      (
+        <div>
+          <h3>Groups</h3>
+          <Select
+            mode="multiple"
+            size="large"
+            style={{ width: '100%' }}
+            placeholder="Select groups"
+            defaultValue={itemGroups}
+            onChange={handleChange}
+            optionLabelProp="label"
+          >
+          {userGroups.map((group) => (
+            <Option key={group.id} value={group.id} label={group.name} >
+                {group.name}
+            </Option>
+          ),
+          )}
+          </Select>
+      </div>
+    )
 
-    </Select>
-
+    :
+    (
+      <Spin>
+          <h3>Groups</h3>
+          <Skeleton.Input style={{ width: '300px' }} active={true} size={'large'} />
+      </Spin>
+    )
     );
 };
 
-export const AddGroupBox = AddGroupBoxComponent;
+export const AddGroupBox = withUserGroups(AddGroupBoxComponent);

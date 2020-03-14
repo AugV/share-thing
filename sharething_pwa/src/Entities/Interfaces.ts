@@ -1,3 +1,5 @@
+import { ImagePack } from './Types';
+
 interface StartEndDate {
     start: Date;
     end: Date;
@@ -15,6 +17,16 @@ export interface ItemModel {
     description?: string;
     images: ItemImage[];
     borrowed: false;
+    borrowed_date?: StartEndDate[];
+    groups: string[];
+}
+
+export interface ItemModelSend {
+    id?: string;
+    name: string;
+    description?: string;
+    images: ImagePack;
+    borrowed?: false;
     borrowed_date?: StartEndDate[];
     groups: string[];
 }

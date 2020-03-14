@@ -2,7 +2,7 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument, GroupNameAndId } from '../Entities/Interfaces';
+import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument, GroupNameAndId, ItemModelSend } from '../Entities/Interfaces';
 import * as NAME from '../Constants/Names';
 import { itemMapper, userItemsMapper } from './Mappers';
 
@@ -47,6 +47,52 @@ class Firebase {
 
     };
 
+    public saveItem = (item: ItemModelSend) => {
+        if (item.id) {
+            this.updateItem(item);
+        } else {
+            // this.createItem(item);
+        }
+    };
+
+    public updateItem = async (item: ItemModelSend) => {
+        const itemDocRef = this.db.collection(NAME.ITEMS).doc(item.id);
+
+        if (!await itemDocRef.get()) {
+            throw new Error('Item does not exist');
+        }
+
+         // Image upload
+        const rootImageRef = this.storage.ref(`${NAME.IMAGE_STORAGE_BASE_PATH}${item.id}/`);
+        const imagePreview: string[] = ['', '', ''];
+
+        console.log(item.images[1]);
+        item.images.map((image, index) => {
+            const imageRef = rootImageRef.child(index.toString());
+
+            if (image) {
+                imageRef.put(image)
+                .then(snapshot => {
+                    console.log(imageRef.fullPath);
+                    console.log(snapshot);
+                    imageRef.getDownloadURL().then(imageUrl => {
+                        imagePreview[index] = imageUrl;
+                    });
+                })
+                .catch(e => {throw new Error(e); });
+            }
+        });
+
+        // Item upload
+        return this.db.runTransaction(async (transaction) => {
+            const itemDoc = await transaction.get(itemDocRef);
+
+            if (!itemDoc.data()) { throw new Error('Item does not exist'); }
+
+            await transaction.update(itemDocRef, item);
+        }).then(() => {console.log('complete'); }).catch(() => {console.log('failed'); });
+    };
+
     public createUserWithEmailAndPsw = (email: string, password: string) => {
         return this.auth.createUserWithEmailAndPassword(email, password);
     };
@@ -58,11 +104,11 @@ class Firebase {
     public updatePsw = (password: string) => {
         if (this.auth.currentUser) { this.auth.currentUser.updatePassword(password); } };
     public getUserId = () => { if (this.auth.currentUser) { return this.auth.currentUser.uid; } };
-    public userRef = (uid: string) => this.db.collection(NAME.USERS_COLLECTION).doc(uid);
+    public userRef = (uid: string) => this.db.collection(NAME.USERS).doc(uid);
 
     public async fetchSingleItem(id: string): Promise<ItemModel> {
         try {
-            const docRef = this.db.collection(NAME.ITEMS_COLLECTION).doc(id);
+            const docRef = this.db.collection(NAME.ITEMS).doc(id);
             const doc = await docRef.get();
 
             return itemMapper(doc);
@@ -71,14 +117,14 @@ class Firebase {
         }
     }
 
-    public getItems = () => this.db.collection(NAME.ITEMS_COLLECTION);
+    public getItems = () => this.db.collection(NAME.ITEMS);
 
     public getUserItems = () => {
-        return this.db.collection(NAME.ITEMS_COLLECTION).where('ownerId', '==', (this.auth.currentUser ? this.auth.currentUser.uid : 'n/a'));
+        return this.db.collection(NAME.ITEMS).where('ownerId', '==', (this.auth.currentUser ? this.auth.currentUser.uid : 'n/a'));
     };
 
     public createNewConversation = (item: ItemModel) => {
-        return new Promise<string>((resolve) => {this.db.collection(NAME.CONVERSATION_COLLECTION)
+        return new Promise<string>((resolve) => {this.db.collection(NAME.CONVERSATIONS)
             .add({
                 itemId: item.id,
                 itemImg: item.images[0],
@@ -87,7 +133,7 @@ class Firebase {
                 seekerId: this.getUserId(),
             })
             .then((ref: app.firestore.DocumentReference) => {
-                ref.collection(NAME.MESSAGE_COLLECTION).add({}).then(() => {
+                ref.collection(NAME.MESSAGES).add({}).then(() => {
                     resolve(ref.id);
                 },
                 );
@@ -100,18 +146,18 @@ class Firebase {
     };
 
     public getAsOwnerConversations = () => {
-        return this.db.collection(NAME.CONVERSATION_COLLECTION)
+        return this.db.collection(NAME.CONVERSATIONS)
         .where('ownerId', '==', (this.auth.currentUser ? this.auth.currentUser.uid : 'n/a'));
     };
 
     public getAsSeekerConversations = () => {
-        return this.db.collection(NAME.CONVERSATION_COLLECTION)
+        return this.db.collection(NAME.CONVERSATIONS)
         .where('seekerId', '==', (this.auth.currentUser ? this.auth.currentUser.uid : 'n/a'));
     };
 
     public getConvo = (convoId: string) => {
         return new Promise<Conversation>((resolve) => {
-            this.db.collection(NAME.CONVERSATION_COLLECTION).doc(convoId).get().then(doc => {
+            this.db.collection(NAME.CONVERSATIONS).doc(convoId).get().then(doc => {
                 if (!doc.exists) {
                     console.log('No such document!');
                     return;
@@ -119,7 +165,7 @@ class Firebase {
 
                 const conversation: Conversation = {
                     conversationInfo: docToConvo(doc),
-                    messagesRef: doc.ref.collection(NAME.MESSAGE_COLLECTION),
+                    messagesRef: doc.ref.collection(NAME.MESSAGES),
                 };
 
                 resolve(conversation);
