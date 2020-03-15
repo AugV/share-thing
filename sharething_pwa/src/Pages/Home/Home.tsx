@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Switch, Route } from 'react-router';
 import * as ROUTES from '../../Constants/Routes';
 import { MyItemsPage } from './MyItems';

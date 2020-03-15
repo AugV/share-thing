@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { ItemModel, ItemModelSend } from '../../Entities/Interfaces';
 import Spinner from 'react-bootstrap/Spinner';
@@ -22,8 +22,6 @@ interface ItemTextFormData {
 }
 
 const imageBoxPosition: string[] = ['0', '1', '2'];
-// TODO: should reset for every different item
-const imgPack: ImagePack = [undefined, undefined, undefined];
 
 const ItemFormPage: React.FC<ItemFormProps> = (props) => {
     const { fetchData, saveData, pageTitle } = props;
@@ -31,6 +29,7 @@ const ItemFormPage: React.FC<ItemFormProps> = (props) => {
     const [textFormData, setTextFormData] = useState<ItemTextFormData | undefined>(undefined);
     const [preview, setPreview] = useState<string[]>([]);
     const [groups, setGroups] = useState<string[] | undefined>(undefined);
+    const changedImgPack = useRef<ImagePack>([undefined, undefined, undefined]);
 
     const { id } = useParams();
 
@@ -49,36 +48,34 @@ const ItemFormPage: React.FC<ItemFormProps> = (props) => {
         });
     }, [fetchData, id]);
 
-    const handleImageChange = (e: any) => {
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
-        const position = parseInt(e.target.accessKey, 10);
+        const position = parseInt(e.target.getAttribute('data-position')!, 10);
 
-        const image: File = e.target.files[0];
+        const image: File = e.target.files![0];
         const url = URL.createObjectURL(image);
 
         const newPreview: string[] = { ...preview };
         newPreview[position] = url;
         setPreview(newPreview);
-        console.log(imgPack);
-        imgPack[position] = image;
+        changedImgPack.current[position] = image;
     };
 
-    const handleImageDelete = (e: any) => {
+    const handleImageDelete = (e: React.ChangeEvent<HTMLInputElement>) => {
+
         e.preventDefault();
-        const position = parseInt(e.target.accessKey, 10);
+        const position = parseInt(e.target.getAttribute('data-position')!, 10);
 
         const newPreview: string[] = { ...preview };
         newPreview[position] = '';
         setPreview(newPreview);
 
-        imgPack[position] = undefined;
+        changedImgPack.current[position] = undefined;
     };
 
     const handleGroupChange = (selectedGroups: string[]) => {
         setGroups(selectedGroups);
     };
-
-    function to<T>(value: T): T { return value; }
 
     const onTextChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const fieldName = event.target.name;
@@ -92,7 +89,7 @@ const ItemFormPage: React.FC<ItemFormProps> = (props) => {
             id,
             name: textFormData!.itemName,
             description: textFormData!.itemDescription,
-            images: imgPack,
+            images: changedImgPack.current,
             borrowed: false,
             groups: groups!,
         };
@@ -146,7 +143,7 @@ const ItemFormPage: React.FC<ItemFormProps> = (props) => {
                         onClick={saveItem}
                     >
                         Save
-                </Button>
+                    </Button>
 
                 </div>
             )

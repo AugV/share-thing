@@ -66,31 +66,37 @@ class Firebase {
         const rootImageRef = this.storage.ref(`${NAME.IMAGE_STORAGE_BASE_PATH}${item.id}/`);
         const imagePreview: string[] = ['', '', ''];
 
-        console.log(item.images[1]);
         item.images.map((image, index) => {
             const imageRef = rootImageRef.child(index.toString());
 
             if (image) {
                 imageRef.put(image)
                 .then(snapshot => {
-                    console.log(imageRef.fullPath);
-                    console.log(snapshot);
+                    // TODO:handle image deletion
                     imageRef.getDownloadURL().then(imageUrl => {
                         imagePreview[index] = imageUrl;
                     });
                 })
                 .catch(e => {throw new Error(e); });
-            }
+            } else {
+                // TODO: suppress error
+                imageRef.getDownloadURL().then(imageUrl => {
+                    imagePreview[index] = imageUrl;
+                }).catch(e => imagePreview[index] = ''); }
         });
 
         // Item upload
         return this.db.runTransaction(async (transaction) => {
+            console.log(imagePreview);
             const itemDoc = await transaction.get(itemDocRef);
 
             if (!itemDoc.data()) { throw new Error('Item does not exist'); }
 
-            await transaction.update(itemDocRef, item);
-        }).then(() => {console.log('complete'); }).catch(() => {console.log('failed'); });
+            await transaction.update(itemDocRef, { ...item, images: imagePreview });
+
+        })
+        .then(() => {console.log('complete'); })
+        .catch((e) => {console.log(e); });
     };
 
     public createUserWithEmailAndPsw = (email: string, password: string) => {
