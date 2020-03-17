@@ -1,1 +1,1 @@
-export type ImagePack = (File | undefined)[];
+export type ImagePack = (File | undefined | null)[];

@@ -1,4 +1,5 @@
 import { UserItemsDocument, ItemModel } from '../Entities/Interfaces';
+import { ItemDTO } from './DTOs';
 
 export const userItemsMapper = (doc: firebase.firestore.DocumentSnapshot) => {
     try {
@@ -26,7 +27,7 @@ export const itemMapper = (doc: firebase.firestore.DocumentSnapshot) => {
             images: docData!.images,
             borrowed: docData!.borrowed,
             borrowed_date: docData!.borrowed_date || [],
-            groups: docData!.group,
+            groups: docData!.groups,
         };
         return item;
     } catch (e) {

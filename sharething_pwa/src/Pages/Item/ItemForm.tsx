@@ -36,14 +36,14 @@ const ItemFormPage: React.FC<ItemFormProps> = (props) => {
     useEffect(() => {
         fetchData(id).then(data => {
             const urls: string[] = [];
-            data.images.map(image => urls.push(image.url));
+            data.images.map(image => urls.push(image));
             setPreview(urls);
 
             const formData: ItemTextFormData = {
                 itemName: data.name,
                 itemDescription: data.description || ''};
             setTextFormData(formData);
-
+            console.log(data.groups);
             setGroups(data.groups);
         });
     }, [fetchData, id]);
@@ -70,7 +70,7 @@ const ItemFormPage: React.FC<ItemFormProps> = (props) => {
         newPreview[position] = '';
         setPreview(newPreview);
 
-        changedImgPack.current[position] = undefined;
+        changedImgPack.current[position] = null;
     };
 
     const handleGroupChange = (selectedGroups: string[]) => {

@@ -5,6 +5,8 @@ import 'firebase/storage';
 import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument, GroupNameAndId, ItemModelSend } from '../Entities/Interfaces';
 import * as NAME from '../Constants/Names';
 import { itemMapper, userItemsMapper } from './Mappers';
+import { UserItemDTO } from './DTOs';
+import { ImagePack } from '../Entities/Types';
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -19,7 +21,7 @@ interface Conversation {
     conversationInfo: ConversationInfo;
     messagesRef: app.firestore.CollectionReference;
 }
-// TODO: User has to have email(PRIVATE), userID(auth.uid)(PUBLIC) and name(auth.dispalyName).
+
 class Firebase {
     public auth: app.auth.Auth;
     public db: app.firestore.Firestore;
@@ -62,41 +64,24 @@ class Firebase {
             throw new Error('Item does not exist');
         }
 
-         // Image upload
-        const rootImageRef = this.storage.ref(`${NAME.IMAGE_STORAGE_BASE_PATH}${item.id}/`);
-        const imagePreview: string[] = ['', '', ''];
+        const newImagePreview: string[] = await this.uploadImages(item.id!, item.images);
 
-        item.images.map((image, index) => {
-            const imageRef = rootImageRef.child(index.toString());
+        const userItemRef = this.db.collection(NAME.USER_ITEMS).doc(this.auth.currentUser!.uid);
+        const userItemDoc: UserItemDTO = await (await userItemRef.get()).data() as UserItemDTO;
 
-            if (image) {
-                imageRef.put(image)
-                .then(snapshot => {
-                    // TODO:handle image deletion
-                    imageRef.getDownloadURL().then(imageUrl => {
-                        imagePreview[index] = imageUrl;
-                    });
-                })
-                .catch(e => {throw new Error(e); });
+        const ownedItemsUpdated = userItemDoc.owned_items.map((value) => {
+            if (value.id === item.id) {
+                return { ...value, name: item.name, image_url: newImagePreview[0] };
             } else {
-                // TODO: suppress error
-                imageRef.getDownloadURL().then(imageUrl => {
-                    imagePreview[index] = imageUrl;
-                }).catch(e => imagePreview[index] = ''); }
+                return value;
+            }
         });
 
-        // Item upload
-        return this.db.runTransaction(async (transaction) => {
-            console.log(imagePreview);
-            const itemDoc = await transaction.get(itemDocRef);
+        const batch = this.db.batch();
 
-            if (!itemDoc.data()) { throw new Error('Item does not exist'); }
-
-            await transaction.update(itemDocRef, { ...item, images: imagePreview });
-
-        })
-        .then(() => {console.log('complete'); })
-        .catch((e) => {console.log(e); });
+        return batch.update(itemDocRef, { ...item, images: newImagePreview })
+        .update(userItemRef, { owned_items: ownedItemsUpdated })
+        .commit();
     };
 
     public createUserWithEmailAndPsw = (email: string, password: string) => {
@@ -264,18 +249,40 @@ class Firebase {
             const userGroupIds = userGroupIdsDoc.data()!.groups;
 
             const userGroups: GroupNameAndId[] = [];
-            const groupsRef = this.db.collection(NAME.GROUPS).where('id', 'in', userGroupIds);
 
-            await groupsRef.get().then((querySnapshot) => {
-                querySnapshot.forEach(doc => {
-                    userGroups.push({ id: doc.data().id, name: doc.data().name });
+            if (userGroupIds.length > 0) {
+                const groupsRef = this.db.collection(NAME.GROUPS).where('id', 'in', userGroupIds);
+
+                await groupsRef.get().then((querySnapshot) => {
+                    querySnapshot.forEach(doc => {
+                        userGroups.push({ id: doc.data().id, name: doc.data().name });
+                    });
                 });
-            });
 
+            }
             return userGroups;
         } catch (e) {
             throw new Error(e);
         }
+    };
+
+    private uploadImages = (id: string, images: ImagePack) => {
+        const rootImageRef = this.storage.ref(`${NAME.IMAGE_STORAGE_BASE_PATH}${id}/`);
+
+        return Promise.all(images.map(async (image, index) => {
+            const imageRef = rootImageRef.child(index.toString());
+
+            if (image) {
+                await imageRef.put(image);
+                return imageRef.getDownloadURL().then(url => Promise.resolve(url));
+            } else if (image === null) {
+                await imageRef.delete();
+                return '';
+            } else {
+        // TODO: suppress error
+                return imageRef.getDownloadURL().then(url => Promise.resolve(url));
+            }
+        }));
     };
 
 }

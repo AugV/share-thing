@@ -5,17 +5,12 @@ interface StartEndDate {
     end: Date;
 }
 
-interface ItemImage {
-    path: string;
-    url: string;
-}
-
 export interface ItemModel {
     id: string;
     name: string;
     owner: string;
     description?: string;
-    images: ItemImage[];
+    images: string[];
     borrowed: false;
     borrowed_date?: StartEndDate[];
     groups: string[];
