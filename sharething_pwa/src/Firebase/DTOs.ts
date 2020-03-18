@@ -19,6 +19,13 @@ interface OwnedItemDTO {
 }
 
 export interface UserItemDTO {
+    id: string;
+    name: string;
+    image_url: string;
+    end_date?: string;
+}
+
+export interface UserItemsDocDTO {
     user_name: string;
     owned_items: OwnedItemDTO[];
     lent_items: LentItemDTO[];

@@ -2,10 +2,10 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument, GroupNameAndId, ItemModelSend } from '../Entities/Interfaces';
+import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument, GroupNameAndId, ItemModelSend, UserItem } from '../Entities/Interfaces';
 import * as NAME from '../Constants/Names';
 import { itemMapper, userItemsMapper } from './Mappers';
-import { UserItemDTO } from './DTOs';
+import { UserItemsDocDTO, UserItemDTO } from './DTOs';
 import { ImagePack } from '../Entities/Types';
 
 const firebaseConfig = {
@@ -26,6 +26,7 @@ class Firebase {
     public auth: app.auth.Auth;
     public db: app.firestore.Firestore;
     public storage: app.storage.Storage;
+
     constructor() {
         app.initializeApp(firebaseConfig);
         this.auth = app.auth();
@@ -51,37 +52,10 @@ class Firebase {
 
     public saveItem = (item: ItemModelSend) => {
         if (item.id) {
-            this.updateItem(item);
+            return this.updateItem(item);
         } else {
-            // this.createItem(item);
+            return this.createItem(item);
         }
-    };
-
-    public updateItem = async (item: ItemModelSend) => {
-        const itemDocRef = this.db.collection(NAME.ITEMS).doc(item.id);
-
-        if (!await itemDocRef.get()) {
-            throw new Error('Item does not exist');
-        }
-
-        const newImagePreview: string[] = await this.uploadImages(item.id!, item.images);
-
-        const userItemRef = this.db.collection(NAME.USER_ITEMS).doc(this.auth.currentUser!.uid);
-        const userItemDoc: UserItemDTO = await (await userItemRef.get()).data() as UserItemDTO;
-
-        const ownedItemsUpdated = userItemDoc.owned_items.map((value) => {
-            if (value.id === item.id) {
-                return { ...value, name: item.name, image_url: newImagePreview[0] };
-            } else {
-                return value;
-            }
-        });
-
-        const batch = this.db.batch();
-
-        return batch.update(itemDocRef, { ...item, images: newImagePreview })
-        .update(userItemRef, { owned_items: ownedItemsUpdated })
-        .commit();
     };
 
     public createUserWithEmailAndPsw = (email: string, password: string) => {
@@ -175,17 +149,6 @@ class Firebase {
         });
     };
 
-    // public saveItem = (item: Item, image: File) => {
-    //     // TODO firebase default seqeunce as ID
-    //     item.id = item.id ? item.id : Math.random().toString(36).substring(7);
-
-    //     return this.saveImageToStorage(image, item.id)
-    //     .then(url => {
-    //         item.imageUrl = url;
-    //         return this.saveItemToFirestore(item); },
-    //     );
-    // };
-
     public saveImageToStorage = (file: File, fileName: string) => {
         return new Promise<string>((resolve) => {
             const upload = this.storage.ref('ItemImages/' + fileName).put(file);
@@ -203,33 +166,6 @@ class Firebase {
 
         });
     };
-
-    // public saveItemToFirestore = (item: Item) => {
-    //     return this.db.collection(NAME.ITEMS_COLLECTION)
-    //         .doc(item.id)
-    //         .set({
-    //             ...item,
-    //             ownerId: (this.auth.currentUser ? this.auth.currentUser.uid : null),
-    //         })
-    //         .then(function() {
-    //             console.log('Document successfully written!');
-    //         })
-    //         .catch(function(error) {
-    //             console.error('Error writing document: ', error);
-    //             throw error;
-    //         });
-    // };
-
-    // public deleteItem = (itemId: string) => {
-    //     this.db.collection(NAME.ITEMS_COLLECTION).doc(itemId).delete().then().catch((error) => {
-    //         console.error(`Error removing document ${itemId} : `, error);
-    //     });
-    //     const ref = this.storage.ref(`ItemImages/${itemId}`);
-
-    //     ref.delete().then().catch((error) => {
-    //         console.log('Error when deleting Image');
-    //     });
-    // };
 
     public getItemImg = () => {
         return new Promise<string>((resolve) => {
@@ -266,23 +202,82 @@ class Firebase {
         }
     };
 
-    private uploadImages = (id: string, images: ImagePack) => {
+    private updateItem = async (item: ItemModelSend) => {
+        const itemDocRef = this.db.collection(NAME.ITEMS).doc(item.id);
+
+        if (!await itemDocRef.get()) {
+            throw new Error('Item does not exist');
+        }
+
+        await this.uploadImages(item.id!, item.images);
+
+        const newImagePreview: string[] = await this.getImageUrls(item.id!);
+
+        const userItemRef = this.db.collection(NAME.USER_ITEMS).doc(this.auth.currentUser!.uid);
+        const userItemDoc: UserItemsDocDTO = await (await userItemRef.get()).data() as UserItemsDocDTO;
+
+        const ownedItemsUpdated = userItemDoc.owned_items.map((value) => {
+            if (value.id === item.id) {
+                return { ...value, name: item.name, image_url: newImagePreview[0] };
+            } else {
+                return value;
+            }
+        });
+
+        const batch = this.db.batch();
+
+        return batch.update(itemDocRef, { ...item, images: newImagePreview })
+        .update(userItemRef, { owned_items: ownedItemsUpdated })
+        .commit();
+    };
+
+    private createItem = async (item: ItemModelSend) => {
+        const itemDocRef = this.db.collection(NAME.ITEMS).doc();
+
+        await this.uploadImages(itemDocRef.id, item.images);
+        const newImagePreview: string[] = await this.getImageUrls(itemDocRef.id);
+
+        await itemDocRef.set({
+            ...item,
+            id: itemDocRef,
+            images: newImagePreview,
+        });
+
+        const userItemRef = this.db.collection(NAME.USER_ITEMS).doc(this.auth.currentUser!.uid);
+        const itemPreview: UserItemDTO = {
+            id: itemDocRef.id,
+            name: item.name,
+            image_url: newImagePreview[0],
+        };
+
+        return userItemRef.update({ owned_items: app.firestore.FieldValue.arrayUnion({ ...itemPreview }) });
+
+    };
+
+    private uploadImages = async (id: string, images: ImagePack) => {
         const rootImageRef = this.storage.ref(`${NAME.IMAGE_STORAGE_BASE_PATH}${id}/`);
 
-        return Promise.all(images.map(async (image, index) => {
+        return Promise.all(images.map((image, index) => {
             const imageRef = rootImageRef.child(index.toString());
 
             if (image) {
-                await imageRef.put(image);
-                return imageRef.getDownloadURL().then(url => Promise.resolve(url));
+                return imageRef.put(image);
             } else if (image === null) {
-                await imageRef.delete();
-                return '';
-            } else {
-        // TODO: suppress error
-                return imageRef.getDownloadURL().then(url => Promise.resolve(url));
+                return imageRef.delete();
             }
         }));
+    };
+
+    private getImageUrls = async (id: string) => {
+        const rootImageRef = this.storage.ref(`${NAME.IMAGE_STORAGE_BASE_PATH}${id}/`);
+
+        const st = await rootImageRef.listAll().then((res) => {
+            return Promise.all(res.items.map(item => {
+                return item.getDownloadURL().then(url => url);
+            }));
+        });
+
+        return st;
     };
 
 }
