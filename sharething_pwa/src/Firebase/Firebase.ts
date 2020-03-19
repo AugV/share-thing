@@ -5,7 +5,7 @@ import 'firebase/storage';
 import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument, GroupNameAndId, ItemModelSend, UserItem } from '../Entities/Interfaces';
 import * as NAME from '../Constants/Names';
 import { itemMapper, userItemsMapper } from './Mappers';
-import { UserItemsDocDTO, UserItemDTO } from './DTOs';
+import { UserItemsDocDTO, ItemPreviewDTO } from './DTOs';
 import { ImagePack } from '../Entities/Types';
 
 const firebaseConfig = {
@@ -244,7 +244,7 @@ class Firebase {
         });
 
         const userItemRef = this.db.collection(NAME.USER_ITEMS).doc(this.auth.currentUser!.uid);
-        const itemPreview: UserItemDTO = {
+        const itemPreview: ItemPreviewDTO = {
             id: itemDocRef.id,
             name: item.name,
             image_url: newImagePreview[0],

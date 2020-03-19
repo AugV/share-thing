@@ -10,7 +10,7 @@ type UserGroupLookup = GroupNameAndId[];
 
 interface AddGroupBoxProps {
     userGroups: UserGroupLookup;
-    itemGroups: string[] | undefined;
+    itemGroups?: string[] | undefined;
     handleChange: (values: string[]) => void;
 }
 
@@ -21,7 +21,6 @@ const AddGroupBoxComponent: React.FC<AddGroupBoxProps> = (props) => {
       (itemGroups && userGroups) ?
       (
         <div>
-          <h3>Groups</h3>
           <Select
             mode="multiple"
             size="large"

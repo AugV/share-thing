@@ -13,6 +13,7 @@ import { ItemPage } from '../Pages/Item/Item';
 import { FirebaseProps } from '../Entities/PropsInterfaces';
 import { UserItemsDocument, GroupNameAndId } from '../Entities/Interfaces';
 import { withFirebase } from '../Firebase';
+import { Search } from '../Pages/Search/Search';
 
 // TODO: make HOC provider for these Contexts
 export const UserItemContext = React.createContext<UserItemsDocument | undefined>(undefined);
@@ -42,6 +43,7 @@ const PrivateRoutes: React.FC<FirebaseProps> = (props) => {
             <Switch>
               <Route path={ROUTES.ACCOUNT} component={Account} />
               <Route path={ROUTES.HOME} component={Home} />
+              <Route path={ROUTES.SEARCH} component={Search} />
               <Route path={ROUTES.PUBLIC} component={PublicScreen} />
               <Route path={ROUTES.ITEM} component={ItemPage} />
               <Route path={ROUTES.SHAREGREEMENT} component={ConvoScreen} />

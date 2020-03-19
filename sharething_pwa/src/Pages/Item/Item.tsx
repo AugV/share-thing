@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 import { withFirebase } from '../../Firebase';
 import * as ROUTES from '../../Constants/Routes';
 import { ItemForm } from './ItemForm';
@@ -10,9 +10,11 @@ type FetchData = (id?: string | undefined) => Promise<ItemModel>;
 
 const Item: React.FC<FirebaseProps> = (props) => {
     const { firebase } = props;
+    const history = useHistory();
 
     const saveItem = (item: ItemModelSend) => {
         firebase.saveItem(item);
+        history.push(ROUTES.HOME);
     };
 
     const initialData = async () => {

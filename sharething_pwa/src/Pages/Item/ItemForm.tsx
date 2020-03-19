@@ -121,6 +121,7 @@ const ItemFormPage: React.FC<ItemFormProps> = (props) => {
                         ))}
                     </div>
 
+                    <h3>Groups</h3>
                     <AddGroupBox itemGroups={groups} handleChange={handleGroupChange}/>
 
                     <h3>Name</h3>

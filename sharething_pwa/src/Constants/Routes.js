@@ -11,6 +11,11 @@ export const MY_ITEMS = '/private/home/myItems';
 export const LENT_ITEMS = '/private/home/lentItems';
 export const BORROWED_ITEMS = '/private/home/borrowedItems';
 
+export const SEARCH = '/private/search';
+export const SEARCH_LIST = '/private/search/list';
+export const SEARCH_ITEM_DETAILS = '/private/search/item_details/';
+export const SEARCH_ITEM_DETAILS_ID = '/private/search/item_details/:id';
+
 export const PUBLIC = '/private/public';
 export const PRIVATE_PAGE = '/private';
 

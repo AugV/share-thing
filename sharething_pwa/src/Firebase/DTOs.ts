@@ -18,7 +18,7 @@ interface OwnedItemDTO {
     image_url: string;
 }
 
-export interface UserItemDTO {
+export interface ItemPreviewDTO {
     id: string;
     name: string;
     image_url: string;
@@ -46,3 +46,4 @@ export interface ItemDTO {
     borrowed_date?: Period[];
     borrowed?: false;
 }
+
