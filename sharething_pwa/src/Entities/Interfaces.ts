@@ -1,5 +1,10 @@
 import { ImagePack } from './Types';
 
+export interface ItemQuery {
+    name: string;
+    groups: string[];
+}
+
 interface StartEndDate {
     start: Date;
     end: Date;

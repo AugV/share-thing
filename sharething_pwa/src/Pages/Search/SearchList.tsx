@@ -5,7 +5,11 @@ import { List } from '../../Components/List/List';
 import { useHistory } from 'react-router-dom';
 import * as ROUTES from '../../Constants/Routes';
 
-const SearchList: React.FC = () => {
+interface SearchListProps {
+    onSearch: (name: string, groups: string[]) => void;
+}
+
+const SearchList: React.FC<SearchListProps> = (props) => {
     const history = useHistory();
 
     const onItemClick = (id: string) => {
@@ -16,16 +20,21 @@ const SearchList: React.FC = () => {
 
     };
 
+    const search = () => {
+        console.log('searchinit');
+        props.onSearch('User 1 Item 1', ['group_3']);
+    };
+
     return(
         <div>
         <Search
             placeholder="input search text"
-            onSearch={value => console.log(value)}
+            onSearch={search}
             style={{ width: '100%' }}
             size="large"
         />
         <AddGroupBox itemGroups={[]} handleChange={handleGroupChange}/>
-        <List itemList={} onClickItem={onItemClick} />
+        {/* <List itemList={} onClickItem={onItemClick} /> */}
         </div>
     );
 };

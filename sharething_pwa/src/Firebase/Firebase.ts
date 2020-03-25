@@ -2,11 +2,14 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument, GroupNameAndId, ItemModelSend, UserItem } from '../Entities/Interfaces';
+import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument, GroupNameAndId, ItemModelSend, UserItem, ItemQuery } from '../Entities/Interfaces';
 import * as NAME from '../Constants/Names';
 import { itemMapper, userItemsMapper } from './Mappers';
-import { UserItemsDocDTO, ItemPreviewDTO } from './DTOs';
+import { UserItemsDocDTO, ItemPreviewDTO, ItemQueryResult } from './DTOs';
 import { ImagePack } from '../Entities/Types';
+
+type Query<T = app.firestore.DocumentData> = app.firestore.Query;
+type DocumentData = app.firestore.DocumentData;
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -33,6 +36,40 @@ class Firebase {
         this.db = app.firestore();
         this.storage = app.storage();
     }
+
+    public queryItems = (query: ItemQuery) => {
+        const itemCollection = this.db.collection(NAME.ITEMS).limit(5);
+
+        const dbQuery = function nameQuery(nameFilter: Query<DocumentData>)
+        : Query<DocumentData> {
+
+            if (query.name) {
+                return function groupQuery(groupFilter: Query<DocumentData>)
+                : Query<DocumentData> {
+                    if (query.groups) {
+                        return groupFilter.where('groups', 'array-contains-any', query.groups);
+                    }
+                    return groupFilter;
+                }(nameFilter.where('name', '==', query.name));
+            }
+
+            return function groupQuery(groupFilter: Query<DocumentData>)
+            : Query<DocumentData> {
+                if (query.groups) {
+                    return groupFilter.where('groups', 'array-contains-any', query.groups);
+                }
+                return groupFilter;
+            }(nameFilter);
+
+        }(itemCollection);
+
+        console.log(dbQuery);
+
+        dbQuery.get().then((result) => {
+            console.log(result);
+        });
+
+    };
 
     public getUserItemsDocument = (listener: any) => {
         try {
