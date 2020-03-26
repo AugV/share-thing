@@ -1,8 +1,8 @@
-import { ImagePack } from './Types';
+import { ImagePack, NameQueryParam, GroupsQueryParam } from './Types';
 
 export interface ItemQuery {
-    name: string;
-    groups: string[];
+    name: NameQueryParam;
+    groups: GroupsQueryParam;
 }
 
 interface StartEndDate {
@@ -48,7 +48,7 @@ export interface Message {
     date: Date;
 }
 
-export interface UserItem {
+export interface ItemPreview {
     id: string;
     name: string;
     image_url: string;
@@ -61,9 +61,9 @@ export interface GroupNameAndId {
 }
 
 export interface UserItemsDocument {
-    userOwnedItemList: UserItem[];
-    userLentItemList: UserItem[];
-    userBorrowedItemList: UserItem[];
+    userOwnedItemList: ItemPreview[];
+    userLentItemList: ItemPreview[];
+    userBorrowedItemList: ItemPreview[];
     groupList: string[];
 }
 

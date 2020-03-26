@@ -1,6 +1,6 @@
 import React from 'react';
 import { withFirebase } from '../../Firebase';
-import { UserItem } from '../../Entities/Interfaces';
+import { ItemPreview } from '../../Entities/Interfaces';
 import { NewItemButton } from '../../Components/NewItemButton/NewItemButton';
 import { List } from '../../Components/List/List';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom';
 import * as ROUTES from '../../Constants/Routes';
 
 interface MyItemsProps {
-    itemList: UserItem[];
+    itemList: ItemPreview[];
 }
 
 const MyItemsPageComp: React.FC<MyItemsProps & FirebaseProps> = (props) => {

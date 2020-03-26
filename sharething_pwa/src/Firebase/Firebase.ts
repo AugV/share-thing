@@ -2,9 +2,9 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument, GroupNameAndId, ItemModelSend, UserItem, ItemQuery } from '../Entities/Interfaces';
+import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument, GroupNameAndId, ItemModelSend, ItemPreview, ItemQuery } from '../Entities/Interfaces';
 import * as NAME from '../Constants/Names';
-import { itemMapper, userItemsMapper } from './Mappers';
+import { toItem, userItemsMapper, toItemPreview } from './Mappers';
 import { UserItemsDocDTO, ItemPreviewDTO, ItemQueryResult } from './DTOs';
 import { ImagePack } from '../Entities/Types';
 
@@ -37,7 +37,7 @@ class Firebase {
         this.storage = app.storage();
     }
 
-    public queryItems = (query: ItemQuery) => {
+    public queryItems = async (query: ItemQuery) => {
         const itemCollection = this.db.collection(NAME.ITEMS).limit(5);
 
         const dbQuery = function nameQuery(nameFilter: Query<DocumentData>)
@@ -55,7 +55,7 @@ class Firebase {
 
             return function groupQuery(groupFilter: Query<DocumentData>)
             : Query<DocumentData> {
-                if (query.groups) {
+                if (query.groups && query.groups.length) {
                     return groupFilter.where('groups', 'array-contains-any', query.groups);
                 }
                 return groupFilter;
@@ -63,12 +63,13 @@ class Firebase {
 
         }(itemCollection);
 
-        console.log(dbQuery);
+        const queryResult = await dbQuery.get();
 
-        dbQuery.get().then((result) => {
-            console.log(result);
+        const items = queryResult.docs.map((doc) => {
+            return toItemPreview(doc);
         });
 
+        return items;
     };
 
     public getUserItemsDocument = (listener: any) => {
@@ -113,7 +114,7 @@ class Firebase {
             const docRef = this.db.collection(NAME.ITEMS).doc(id);
             const doc = await docRef.get();
 
-            return itemMapper(doc);
+            return toItem(doc);
         } catch (e) {
             throw new Error(e);
         }
@@ -186,34 +187,6 @@ class Firebase {
         });
     };
 
-    public saveImageToStorage = (file: File, fileName: string) => {
-        return new Promise<string>((resolve) => {
-            const upload = this.storage.ref('ItemImages/' + fileName).put(file);
-
-            upload.on('state_changed', (snapshot) => {
-                // Observe state change events such as progress, pause, and resume
-            }, (error) => {
-                // Handle unsuccessful uploads
-            },
-            () => {
-                upload.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                    resolve(downloadURL);
-                });
-            });
-
-        });
-    };
-
-    public getItemImg = () => {
-        return new Promise<string>((resolve) => {
-            const ref = this.storage.ref('ItemImages/use_case_naudos_01.jpg');
-
-            ref.getDownloadURL().then(url => {
-                resolve(url);
-            });
-        });
-    };
-
     public getUsersGroupNamesAndIds = async () => {
         try {
             const userId = this.auth.currentUser?.uid;
@@ -276,7 +249,7 @@ class Firebase {
 
         await itemDocRef.set({
             ...item,
-            id: itemDocRef,
+            id: itemDocRef.id,
             images: newImagePreview,
         });
 

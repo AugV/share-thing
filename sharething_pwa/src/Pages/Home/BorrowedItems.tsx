@@ -1,13 +1,13 @@
 import React from 'react';
 import { withFirebase } from '../../Firebase';
-import { UserItem } from '../../Entities/Interfaces';
+import { ItemPreview } from '../../Entities/Interfaces';
 import { List } from '../../Components/List/List';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
 import { useHistory } from 'react-router-dom';
 import * as ROUTES from '../../Constants/Routes';
 
 interface BorrowedItemsProps {
-    itemList: UserItem[];
+    itemList: ItemPreview[];
 }
 
 type RenderItemDetails = ((content: string | Date) => JSX.Element) | undefined;

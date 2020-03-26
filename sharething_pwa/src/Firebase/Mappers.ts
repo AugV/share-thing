@@ -1,4 +1,4 @@
-import { UserItemsDocument, ItemModel } from '../Entities/Interfaces';
+import { UserItemsDocument, ItemModel, ItemPreview } from '../Entities/Interfaces';
 import { ItemDTO } from './DTOs';
 
 export const userItemsMapper = (doc: firebase.firestore.DocumentSnapshot) => {
@@ -16,11 +16,11 @@ export const userItemsMapper = (doc: firebase.firestore.DocumentSnapshot) => {
     }
 };
 
-export const itemMapper = (doc: firebase.firestore.DocumentSnapshot) => {
+export const toItem = (doc: firebase.firestore.DocumentSnapshot) => {
     try {
         const docData = doc.data();
         const item: ItemModel = {
-            id: docData!.id,
+            id: doc.id,
             name: docData!.name,
             owner: docData!.owner,
             description: docData!.description || '',
@@ -33,4 +33,19 @@ export const itemMapper = (doc: firebase.firestore.DocumentSnapshot) => {
     } catch (e) {
         throw new Error(e);
     }
+};
+
+export const toItemPreview = (doc: firebase.firestore.DocumentSnapshot): ItemPreview => {
+    try {
+        const docData = doc.data();
+        const item: ItemPreview = {
+            id: doc.id,
+            name: docData!.name,
+            image_url: docData!.images[0],
+        };
+        return item;
+    } catch (e) {
+        throw new Error(e);
+    }
+
 };
