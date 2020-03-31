@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import * as ROUTES from '../../Constants/Routes';
 import { SearchPage } from './Search';
-import { MainNavBar } from '../../Components/NavBar/BottomNavBar';
 import { withFirebase } from '../../Firebase';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
 import { ItemQuery, ItemPreview } from '../../Entities/Interfaces';
+import { BorrowDetails } from './BorrowDetails';
 
 const BorrowItems: React.FC<FirebaseProps> = (props) => {
     const [items, setItems] = useState<ItemPreview[] | undefined>(undefined);
@@ -16,8 +16,11 @@ const BorrowItems: React.FC<FirebaseProps> = (props) => {
         });
     };
 
+    const fetchItem = (itemId: string) => {
+        return props.firebase.fetchSingleItem(itemId);
+    };
+
     return (
-        <div>
             <Switch>
                 <Route
                     path={ROUTES.SEARCH}
@@ -29,9 +32,11 @@ const BorrowItems: React.FC<FirebaseProps> = (props) => {
                         />
                     )}
                 />
+                <Route
+                    path={ROUTES.BORROW_DETAILS_ID}
+                    render={(propss) => (<BorrowDetails getItemData={fetchItem} {...propss}/>)}
+                />
             </Switch>
-            <MainNavBar activeIcon="search" />
-        </div>
     );
 };
 

@@ -7,6 +7,7 @@ import { toItemQuery } from '../../Entities/Mappers';
 import { GroupsQueryParam } from '../../Entities/Types';
 import { ItemQuery, ItemPreview } from '../../Entities/Interfaces';
 import { List } from '../../Components/List/List';
+import { MainNavBar } from '../../Components/NavBar/BottomNavBar';
 
 interface SearchListProps {
     items: ItemPreview[] | undefined;
@@ -19,7 +20,7 @@ const SearchPage: React.FC<SearchListProps> = (props) => {
     const selectedGroups = useRef<GroupsQueryParam>(null);
 
     const onItemClick = (id: string) => {
-        history.push(`${ROUTES.BORROW_DETAILS}/${id}`);
+        history.push(`${ROUTES.BORROW_DETAILS}${id}`);
     };
 
     const handleGroupChange = (groups: string[]) => {
@@ -42,6 +43,7 @@ const SearchPage: React.FC<SearchListProps> = (props) => {
         <AddGroupBox itemGroups={[]} handleChange={handleGroupChange}/>
 
         {props.items && <List itemList={props.items} onClickItem={onItemClick} />}
+        <MainNavBar activeIcon="search" />
         </div>
     );
 };

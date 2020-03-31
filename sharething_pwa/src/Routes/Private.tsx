@@ -37,7 +37,6 @@ const PrivateRoutes: React.FC<FirebaseProps> = (props) => {
     }, [firebase]);
 
     return (
-      <div>
         <UserItemContext.Provider value={userItemsState}>
           <UserGroupContext.Provider value={groupNames}>
             <Switch>
@@ -53,7 +52,6 @@ const PrivateRoutes: React.FC<FirebaseProps> = (props) => {
             </Switch>
           </UserGroupContext.Provider>
         </UserItemContext.Provider>
-      </div>
     );
 };
 
