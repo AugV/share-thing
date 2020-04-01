@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { BsImage } from 'react-icons/bs';
+import React from 'react';
 import { MdAddAPhoto } from 'react-icons/md';
 import './image-upload.css';
 
@@ -16,7 +15,7 @@ const ImageInputComponent: React.FC<ImageInputProps> = (props) => {
         props.preview ?
 
         (
-            <img className="preview" onClick={props.onDelete} accessKey={props.position} src={props.preview} />
+            <img className="preview" onClick={props.onDelete} data-position={props.position} src={props.preview} alt="Cannot load" />
         )
 
         :
@@ -25,7 +24,7 @@ const ImageInputComponent: React.FC<ImageInputProps> = (props) => {
         <label className="label">
             <div>
                 <MdAddAPhoto className="icon" />
-                <input className="input" accessKey={props.position} type="file" onChange={props.onChange} accept="image/*;capture=camera"/>
+                <input className="input" data-position={props.position} type="file" onChange={props.onChange} accept="image/*;capture=camera"/>
             </div>
         </label>
         )

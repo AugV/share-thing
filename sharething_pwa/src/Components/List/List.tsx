@@ -1,10 +1,10 @@
 import React from 'react';
-import { UserItem } from '../../Entities/Interfaces';
+import { ItemPreview } from '../../Entities/Interfaces';
 import { ListItem } from './ListItem';
 import Spinner from 'react-bootstrap/Spinner';
 
 interface ListProps {
-    itemList: UserItem[];
+    itemList: ItemPreview[];
     renderItemDetails?: (content: string | Date) => JSX.Element;
     onClickItem: (id: string) => void;
 }

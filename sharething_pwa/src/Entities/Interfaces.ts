@@ -1,11 +1,13 @@
+import { ImagePack, NameQueryParam, GroupsQueryParam } from './Types';
+
+export interface ItemQuery {
+    name: NameQueryParam;
+    groups: GroupsQueryParam;
+}
+
 interface StartEndDate {
     start: Date;
     end: Date;
-}
-
-interface ItemImage {
-    path: string;
-    url: string;
 }
 
 export interface ItemModel {
@@ -13,8 +15,18 @@ export interface ItemModel {
     name: string;
     owner: string;
     description?: string;
-    images: ItemImage[];
+    images: string[];
     borrowed: false;
+    borrowed_date?: StartEndDate[];
+    groups: string[];
+}
+
+export interface ItemModelSend {
+    id?: string;
+    name: string;
+    description?: string;
+    images: ImagePack;
+    borrowed?: false;
     borrowed_date?: StartEndDate[];
     groups: string[];
 }
@@ -36,17 +48,23 @@ export interface Message {
     date: Date;
 }
 
-export interface UserItem {
+export interface ItemPreview {
     id: string;
     name: string;
     image_url: string;
     end_date?: Date;
 }
 
+export interface GroupNameAndId {
+    id: string;
+    name: string;
+}
+
 export interface UserItemsDocument {
-    userOwnedItemList: UserItem[];
-    userLentItemList: UserItem[];
-    userBorrowedItemList: UserItem[];
+    userOwnedItemList: ItemPreview[];
+    userLentItemList: ItemPreview[];
+    userBorrowedItemList: ItemPreview[];
+    groupList: string[];
 }
 
 export function docToConvo(document: firebase.firestore.QueryDocumentSnapshot | firebase.firestore.DocumentSnapshot): ConversationInfo {

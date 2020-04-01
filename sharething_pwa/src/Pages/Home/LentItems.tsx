@@ -1,13 +1,13 @@
 import React from 'react';
 import { withFirebase } from '../../Firebase';
-import { UserItem } from '../../Entities/Interfaces';
+import { ItemPreview } from '../../Entities/Interfaces';
 import { List } from '../../Components/List/List';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
 import { useHistory } from 'react-router-dom';
 import * as ROUTES from '../../Constants/Routes';
 
 interface LentItemsProps {
-    itemList: UserItem[];
+    itemList: ItemPreview[];
 }
 
 const LentItemsPageComp: React.FC<LentItemsProps & FirebaseProps> = (props) => {

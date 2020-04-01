@@ -1,9 +1,9 @@
 import React from 'react';
-import { UserItem } from '../../Entities/Interfaces';
+import { ItemPreview } from '../../Entities/Interfaces';
 import './list-item.css';
 
 interface ListItemProps {
-    itemData: UserItem;
+    itemData: ItemPreview;
     renderItemDetails?: (content: string | Date) => JSX.Element;
     onClickItem: (id: string) => void;
 }

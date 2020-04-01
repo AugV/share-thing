@@ -1,25 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Switch, Route } from 'react-router';
 import * as ROUTES from '../../Constants/Routes';
 import { MyItemsPage } from './MyItems';
 import { MainNavBar } from '../../Components/NavBar/BottomNavBar';
 import { HomeHeader } from '../../Components/Headers/Header';
-import { withFirebase } from '../../Firebase/Context';
 import { UserItemsDocument } from '../../Entities/Interfaces';
-import { FirebaseProps } from '../../Entities/PropsInterfaces';
 import { LentItemsPage } from './LentItems';
 import { BorrowedItemsPage } from './BorrowedItems';
+import { withUserItems } from '../../Context/withUserItems';
 
-const HomeRoutes: React.FC<FirebaseProps> = (props) => {
-    const [userItemsState, setUserItemsState] = useState<UserItemsDocument | undefined>(undefined);
+interface UserItems {
+    userItems: UserItemsDocument;
+}
 
-    const listenerCallback = (userItems: UserItemsDocument) => {
-        setUserItemsState(userItems);
-    };
-
-    useEffect(() => {
-        return props.firebase.getUserItemsDocument(listenerCallback);
-    }, [props.firebase]);
+const HomeRoutes: React.FC<UserItems> = (props) => {
 
     const subPages: Map<string, string> = function getMapForDropdown(): Map<string, string> {
         const map = new Map();
@@ -29,26 +23,31 @@ const HomeRoutes: React.FC<FirebaseProps> = (props) => {
         return map;
     }();
 
+    const { userItems } = props;
+
     return (
     <div>
       <HomeHeader subPages={subPages}/>
-      <Switch>
-        <Route
-          path={ROUTES.MY_ITEMS}
-          render={(propss) => (<MyItemsPage {...propss} itemList={userItemsState?.userOwnedItemList}/>)}
-        />
-        <Route
-          path={ROUTES.LENT_ITEMS}
-          render={(propss) => (<LentItemsPage {...propss} itemList={userItemsState?.userLentItemList}/>)}
-        />
-        <Route
-          path={ROUTES.BORROWED_ITEMS}
-          render={(propss) => (<BorrowedItemsPage {...propss} itemList={userItemsState?.userBorrowedItemList}/>)}
-        />
-      </Switch>
+      {userItems &&
+        (
+          <Switch>
+            <Route
+              path={ROUTES.MY_ITEMS}
+              render={(propss) => (<MyItemsPage {...propss} itemList={userItems.userOwnedItemList}/>)}
+            />
+            <Route
+              path={ROUTES.LENT_ITEMS}
+              render={(propss) => (<LentItemsPage {...propss} itemList={userItems.userLentItemList}/>)}
+            />
+            <Route
+              path={ROUTES.BORROWED_ITEMS}
+              render={(propss) => (<BorrowedItemsPage {...propss} itemList={userItems.userBorrowedItemList}/>)}
+            />
+          </Switch>
+        )}
       <MainNavBar activeIcon="home" />
     </div>
     );
 };
 
-export const Home = withFirebase(HomeRoutes);
+export const Home = withUserItems(HomeRoutes);

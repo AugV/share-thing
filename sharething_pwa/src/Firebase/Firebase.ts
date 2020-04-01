@@ -2,9 +2,14 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument } from '../Entities/Interfaces';
+import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument, GroupNameAndId, ItemModelSend, ItemPreview, ItemQuery } from '../Entities/Interfaces';
 import * as NAME from '../Constants/Names';
-import { itemMapper, userItemsMapper } from './Mappers';
+import { toItem, userItemsMapper, toItemPreview } from './Mappers';
+import { UserItemsDocDTO, ItemPreviewDTO } from './DTOs';
+import { ImagePack } from '../Entities/Types';
+
+type Query<T = app.firestore.DocumentData> = app.firestore.Query;
+type DocumentData = app.firestore.DocumentData;
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -19,11 +24,12 @@ interface Conversation {
     conversationInfo: ConversationInfo;
     messagesRef: app.firestore.CollectionReference;
 }
-// TODO: User has to have email(PRIVATE), userID(auth.uid)(PUBLIC) and name(auth.dispalyName).
+
 class Firebase {
     public auth: app.auth.Auth;
     public db: app.firestore.Firestore;
     public storage: app.storage.Storage;
+
     constructor() {
         app.initializeApp(firebaseConfig);
         this.auth = app.auth();
@@ -31,9 +37,45 @@ class Firebase {
         this.storage = app.storage();
     }
 
+    public queryItems = async (query: ItemQuery) => {
+        const itemCollection = this.db.collection(NAME.ITEMS).limit(5);
+
+        const dbQuery = function nameQuery(nameFilter: Query<DocumentData>)
+        : Query<DocumentData> {
+
+            if (query.name) {
+                return function groupQuery(groupFilter: Query<DocumentData>)
+                : Query<DocumentData> {
+                    if (query.groups) {
+                        return groupFilter.where('groups', 'array-contains-any', query.groups);
+                    }
+                    return groupFilter;
+                }(nameFilter.where('name', '==', query.name));
+            }
+
+            return function groupQuery(groupFilter: Query<DocumentData>)
+            : Query<DocumentData> {
+                if (query.groups && query.groups.length) {
+                    return groupFilter.where('groups', 'array-contains-any', query.groups);
+                }
+                return groupFilter;
+            }(nameFilter);
+
+        }(itemCollection);
+
+        const queryResult = await dbQuery.get();
+
+        const items = queryResult.docs.map((doc) => {
+            return toItemPreview(doc);
+        });
+
+        return items;
+    };
+
     public getUserItemsDocument = (listener: any) => {
         try {
-            const docRef = this.db.collection(NAME.USER_ITEMS).doc(this.auth.currentUser?.uid);
+            const userId = this.auth.currentUser?.uid;
+            const docRef = this.db.collection(NAME.USER_ITEMS).doc(userId);
 
             return docRef.onSnapshot((doc) => {
                 const userList: UserItemsDocument = userItemsMapper(doc);
@@ -44,6 +86,14 @@ class Firebase {
             throw new Error(e);
         }
 
+    };
+
+    public saveItem = (item: ItemModelSend) => {
+        if (item.id) {
+            return this.updateItem(item);
+        } else {
+            return this.createItem(item);
+        }
     };
 
     public createUserWithEmailAndPsw = (email: string, password: string) => {
@@ -57,27 +107,27 @@ class Firebase {
     public updatePsw = (password: string) => {
         if (this.auth.currentUser) { this.auth.currentUser.updatePassword(password); } };
     public getUserId = () => { if (this.auth.currentUser) { return this.auth.currentUser.uid; } };
-    public userRef = (uid: string) => this.db.collection(NAME.USERS_COLLECTION).doc(uid);
+    public userRef = (uid: string) => this.db.collection(NAME.USERS).doc(uid);
 
     public async fetchSingleItem(id: string): Promise<ItemModel> {
         try {
-            const docRef = this.db.collection(NAME.ITEMS_COLLECTION).doc(id);
+            const docRef = this.db.collection(NAME.ITEMS).doc(id);
             const doc = await docRef.get();
 
-            return itemMapper(doc);
+            return toItem(doc);
         } catch (e) {
             throw new Error(e);
         }
     }
 
-    public getItems = () => this.db.collection(NAME.ITEMS_COLLECTION);
+    public getItems = () => this.db.collection(NAME.ITEMS);
 
     public getUserItems = () => {
-        return this.db.collection(NAME.ITEMS_COLLECTION).where('ownerId', '==', (this.auth.currentUser ? this.auth.currentUser.uid : 'n/a'));
+        return this.db.collection(NAME.ITEMS).where('ownerId', '==', (this.auth.currentUser ? this.auth.currentUser.uid : 'n/a'));
     };
 
     public createNewConversation = (item: ItemModel) => {
-        return new Promise<string>((resolve) => {this.db.collection(NAME.CONVERSATION_COLLECTION)
+        return new Promise<string>((resolve) => {this.db.collection(NAME.CONVERSATIONS)
             .add({
                 itemId: item.id,
                 itemImg: item.images[0],
@@ -86,7 +136,7 @@ class Firebase {
                 seekerId: this.getUserId(),
             })
             .then((ref: app.firestore.DocumentReference) => {
-                ref.collection(NAME.MESSAGE_COLLECTION).add({}).then(() => {
+                ref.collection(NAME.MESSAGES).add({}).then(() => {
                     resolve(ref.id);
                 },
                 );
@@ -99,18 +149,18 @@ class Firebase {
     };
 
     public getAsOwnerConversations = () => {
-        return this.db.collection(NAME.CONVERSATION_COLLECTION)
+        return this.db.collection(NAME.CONVERSATIONS)
         .where('ownerId', '==', (this.auth.currentUser ? this.auth.currentUser.uid : 'n/a'));
     };
 
     public getAsSeekerConversations = () => {
-        return this.db.collection(NAME.CONVERSATION_COLLECTION)
+        return this.db.collection(NAME.CONVERSATIONS)
         .where('seekerId', '==', (this.auth.currentUser ? this.auth.currentUser.uid : 'n/a'));
     };
 
     public getConvo = (convoId: string) => {
         return new Promise<Conversation>((resolve) => {
-            this.db.collection(NAME.CONVERSATION_COLLECTION).doc(convoId).get().then(doc => {
+            this.db.collection(NAME.CONVERSATIONS).doc(convoId).get().then(doc => {
                 if (!doc.exists) {
                     console.log('No such document!');
                     return;
@@ -118,7 +168,7 @@ class Firebase {
 
                 const conversation: Conversation = {
                     conversationInfo: docToConvo(doc),
-                    messagesRef: doc.ref.collection(NAME.MESSAGE_COLLECTION),
+                    messagesRef: doc.ref.collection(NAME.MESSAGES),
                 };
 
                 resolve(conversation);
@@ -137,70 +187,108 @@ class Firebase {
         });
     };
 
-    // public saveItem = (item: Item, image: File) => {
-    //     // TODO firebase default seqeunce as ID
-    //     item.id = item.id ? item.id : Math.random().toString(36).substring(7);
+    public getUsersGroupNamesAndIds = async () => {
+        try {
+            const userId = this.auth.currentUser?.uid;
+            const userGroupIdsRef = this.db.collection(NAME.USER_GROUPS).doc(userId);
+            const userGroupIdsDoc = await userGroupIdsRef.get();
+            const userGroupIds = userGroupIdsDoc.data()!.groups;
 
-    //     return this.saveImageToStorage(image, item.id)
-    //     .then(url => {
-    //         item.imageUrl = url;
-    //         return this.saveItemToFirestore(item); },
-    //     );
-    // };
+            const userGroups: GroupNameAndId[] = [];
 
-    public saveImageToStorage = (file: File, fileName: string) => {
-        return new Promise<string>((resolve) => {
-            const upload = this.storage.ref('ItemImages/' + fileName).put(file);
+            if (userGroupIds.length > 0) {
+                const groupsRef = this.db.collection(NAME.GROUPS).where('id', 'in', userGroupIds);
 
-            upload.on('state_changed', (snapshot) => {
-                // Observe state change events such as progress, pause, and resume
-            }, (error) => {
-                // Handle unsuccessful uploads
-            },
-            () => {
-                upload.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                    resolve(downloadURL);
+                await groupsRef.get().then((querySnapshot) => {
+                    querySnapshot.forEach(doc => {
+                        userGroups.push({ id: doc.data().id, name: doc.data().name });
+                    });
                 });
-            });
 
-        });
+            }
+            return userGroups;
+        } catch (e) {
+            throw new Error(e);
+        }
     };
 
-    // public saveItemToFirestore = (item: Item) => {
-    //     return this.db.collection(NAME.ITEMS_COLLECTION)
-    //         .doc(item.id)
-    //         .set({
-    //             ...item,
-    //             ownerId: (this.auth.currentUser ? this.auth.currentUser.uid : null),
-    //         })
-    //         .then(function() {
-    //             console.log('Document successfully written!');
-    //         })
-    //         .catch(function(error) {
-    //             console.error('Error writing document: ', error);
-    //             throw error;
-    //         });
-    // };
+    private updateItem = async (item: ItemModelSend) => {
+        const itemDocRef = this.db.collection(NAME.ITEMS).doc(item.id);
 
-    // public deleteItem = (itemId: string) => {
-    //     this.db.collection(NAME.ITEMS_COLLECTION).doc(itemId).delete().then().catch((error) => {
-    //         console.error(`Error removing document ${itemId} : `, error);
-    //     });
-    //     const ref = this.storage.ref(`ItemImages/${itemId}`);
+        if (!await itemDocRef.get()) {
+            throw new Error('Item does not exist');
+        }
 
-    //     ref.delete().then().catch((error) => {
-    //         console.log('Error when deleting Image');
-    //     });
-    // };
+        await this.uploadImages(item.id!, item.images);
 
-    public getItemImg = () => {
-        return new Promise<string>((resolve) => {
-            const ref = this.storage.ref('ItemImages/use_case_naudos_01.jpg');
+        const newImagePreview: string[] = await this.getImageUrls(item.id!);
 
-            ref.getDownloadURL().then(url => {
-                resolve(url);
-            });
+        const userItemRef = this.db.collection(NAME.USER_ITEMS).doc(this.auth.currentUser!.uid);
+        const userItemDoc: UserItemsDocDTO = await (await userItemRef.get()).data() as UserItemsDocDTO;
+
+        const ownedItemsUpdated = userItemDoc.owned_items.map((value) => {
+            if (value.id === item.id) {
+                return { ...value, name: item.name, image_url: newImagePreview[0] };
+            } else {
+                return value;
+            }
         });
+
+        const batch = this.db.batch();
+
+        return batch.update(itemDocRef, { ...item, images: newImagePreview })
+        .update(userItemRef, { owned_items: ownedItemsUpdated })
+        .commit();
+    };
+
+    private createItem = async (item: ItemModelSend) => {
+        const itemDocRef = this.db.collection(NAME.ITEMS).doc();
+
+        await this.uploadImages(itemDocRef.id, item.images);
+        const newImagePreview: string[] = await this.getImageUrls(itemDocRef.id);
+
+        await itemDocRef.set({
+            ...item,
+            owner: this.auth.currentUser!.uid,
+            id: itemDocRef.id,
+            images: newImagePreview,
+        });
+
+        const userItemRef = this.db.collection(NAME.USER_ITEMS).doc(this.auth.currentUser!.uid);
+        const itemPreview: ItemPreviewDTO = {
+            id: itemDocRef.id,
+            name: item.name,
+            image_url: newImagePreview[0],
+        };
+
+        return userItemRef.update({ owned_items: app.firestore.FieldValue.arrayUnion({ ...itemPreview }) });
+
+    };
+
+    private uploadImages = async (id: string, images: ImagePack) => {
+        const rootImageRef = this.storage.ref(`${NAME.IMAGE_STORAGE_BASE_PATH}${id}/`);
+
+        return Promise.all(images.map((image, index) => {
+            const imageRef = rootImageRef.child(index.toString());
+
+            if (image) {
+                return imageRef.put(image);
+            } else if (image === null) {
+                return imageRef.delete();
+            }
+        }));
+    };
+
+    private getImageUrls = async (id: string) => {
+        const rootImageRef = this.storage.ref(`${NAME.IMAGE_STORAGE_BASE_PATH}${id}/`);
+
+        const st = await rootImageRef.listAll().then((res) => {
+            return Promise.all(res.items.map(item => {
+                return item.getDownloadURL().then(url => url);
+            }));
+        });
+
+        return st;
     };
 
 }

@@ -1,18 +1,20 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 import { withFirebase } from '../../Firebase';
 import * as ROUTES from '../../Constants/Routes';
 import { ItemForm } from './ItemForm';
-import { ItemModel } from '../../Entities/Interfaces';
+import { ItemModel, ItemModelSend } from '../../Entities/Interfaces';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
 
 type FetchData = (id?: string | undefined) => Promise<ItemModel>;
 
 const Item: React.FC<FirebaseProps> = (props) => {
     const { firebase } = props;
+    const history = useHistory();
 
-    const saveItem = () => {
-
+    const saveItem = (item: ItemModelSend) => {
+        firebase.saveItem(item);
+        history.push(ROUTES.HOME);
     };
 
     const initialData = async () => {
@@ -38,11 +40,25 @@ const Item: React.FC<FirebaseProps> = (props) => {
         <Switch>
             <Route
                 path={ROUTES.ADD_ITEM}
-                render={(propss) => (<ItemForm {...propss} fetchData={initialData} pageTitle={'Add Item'}/>)}
+                render={(propss) => (
+                                        <ItemForm
+                                            {...propss}
+                                            fetchData={initialData}
+                                            pageTitle={'Add Item'}
+                                            saveData={saveItem}
+                                        />
+                                    )}
             />
             <Route
                 path={ROUTES.EDIT_ITEM_ID}
-                render={(propss) => (<ItemForm {...propss} fetchData={fetchItem as FetchData} pageTitle={'Edit Item'}/>)}
+                render={(propss) => (
+                                        <ItemForm
+                                            {...propss}
+                                            fetchData={fetchItem as FetchData}
+                                            pageTitle={'Edit Item'}
+                                            saveData={saveItem}
+                                        />
+                                    )}
             />
         </Switch>
     );
