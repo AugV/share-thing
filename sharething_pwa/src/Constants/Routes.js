@@ -16,6 +16,12 @@ export const SEARCH = '/private/borrow/search';
 export const BORROW_DETAILS = '/private/borrow/item_details/';
 export const BORROW_DETAILS_ID = '/private/borrow/item_details/:id';
 
+export const GROUP = '/private/group';;
+export const GROUP_LIST = `${GROUP}/list`;
+export const GROUP_NEW = `${GROUP}/new`;
+export const GROUP_DETAILS = `${GROUP}/details`;
+export const GROUP_DETAILS_ID = `${GROUP}/details/:id`;
+
 export const PUBLIC = '/private/public';
 export const PRIVATE_PAGE = '/private';
 
