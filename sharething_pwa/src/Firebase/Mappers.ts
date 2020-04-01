@@ -1,5 +1,4 @@
 import { UserItemsDocument, ItemModel, ItemPreview } from '../Entities/Interfaces';
-import { ItemDTO } from './DTOs';
 
 export const userItemsMapper = (doc: firebase.firestore.DocumentSnapshot) => {
     try {

@@ -5,7 +5,7 @@ import 'firebase/storage';
 import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument, GroupNameAndId, ItemModelSend, ItemPreview, ItemQuery } from '../Entities/Interfaces';
 import * as NAME from '../Constants/Names';
 import { toItem, userItemsMapper, toItemPreview } from './Mappers';
-import { UserItemsDocDTO, ItemPreviewDTO, ItemQueryResult } from './DTOs';
+import { UserItemsDocDTO, ItemPreviewDTO } from './DTOs';
 import { ImagePack } from '../Entities/Types';
 
 type Query<T = app.firestore.DocumentData> = app.firestore.Query;
@@ -249,6 +249,7 @@ class Firebase {
 
         await itemDocRef.set({
             ...item,
+            owner: this.auth.currentUser!.uid,
             id: itemDocRef.id,
             images: newImagePreview,
         });

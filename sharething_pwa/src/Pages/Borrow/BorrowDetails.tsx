@@ -3,7 +3,10 @@ import { ItemModel } from '../../Entities/Interfaces';
 import {  useParams } from 'react-router-dom';
 import { Spin, Carousel, Button } from 'antd';
 import { SubPageHeader } from '../../Components/Headers/SubPageHeader';
-import Paragraph from 'antd/lib/skeleton/Paragraph';
+import './borrow-details.css';
+
+import Title from 'antd/lib/typography/Title';
+import Paragraph from 'antd/lib/typography/Paragraph';
 
 interface BorrowDetailsProps {
     getItemData: (id: string) => Promise<ItemModel>;
@@ -21,7 +24,7 @@ const BorrowDetails: React.FC<BorrowDetailsProps> = (props) => {
     }, [id]);
 
     return(
-        <React.Fragment>
+        <div>
         <SubPageHeader title="Overview"/>
         {!itemData ?
             <Spin/> :
@@ -32,9 +35,11 @@ const BorrowDetails: React.FC<BorrowDetailsProps> = (props) => {
                         <img key={image} src={image}/>
                     ))}
                 </Carousel>
-                <h3>{itemData.name}</h3>
-                <Paragraph>{itemData.description}</Paragraph>
-                <h3>Owner: {itemData.owner}</h3>
+                <Title level={3}>{itemData.name}</Title>
+                <div className="description">
+                <Paragraph ellipsis={{ expandable: true }} >{itemData.description}</Paragraph>
+                </div>
+                <Title level={4}>Owner: {itemData.owner}</Title>
                 <Button
                         style={{ position: 'fixed', bottom: '0', marginTop: '10px' }}
                         size="large"
@@ -47,7 +52,7 @@ const BorrowDetails: React.FC<BorrowDetailsProps> = (props) => {
         )
         }
 
-        </React.Fragment>
+        </div>
     );
 };
 
