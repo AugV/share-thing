@@ -2,9 +2,9 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument, GroupNameAndId, ItemModelSend, ItemPreview, ItemQuery } from '../Entities/Interfaces';
+import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument, GroupNameAndId, ItemModelSend, ItemPreview, ItemQuery, GroupModel } from '../Entities/Interfaces';
 import * as NAME from '../Constants/Names';
-import { toItem, userItemsMapper, toItemPreview } from './Mappers';
+import { toItem, userItemsMapper, toItemPreview, toGroup } from './Mappers';
 import { UserItemsDocDTO, ItemPreviewDTO } from './DTOs';
 import { ImagePack } from '../Entities/Types';
 
@@ -115,6 +115,17 @@ class Firebase {
             const doc = await docRef.get();
 
             return toItem(doc);
+        } catch (e) {
+            throw new Error(e);
+        }
+    }
+
+    public async fetchSingleGroup(id: string): Promise<GroupModel> {
+        try {
+            const docRef = this.db.collection(NAME.GROUPS).doc(id);
+            const doc = await docRef.get();
+
+            return toGroup(doc);
         } catch (e) {
             throw new Error(e);
         }

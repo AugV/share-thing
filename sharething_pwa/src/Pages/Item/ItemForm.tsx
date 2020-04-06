@@ -43,7 +43,6 @@ const ItemFormPage: React.FC<ItemFormProps> = (props) => {
                 itemName: data.name,
                 itemDescription: data.description || ''};
             setTextFormData(formData);
-            console.log(data.groups);
             setGroups(data.groups);
         });
     }, [fetchData, id]);
@@ -105,34 +104,34 @@ const ItemFormPage: React.FC<ItemFormProps> = (props) => {
 
                 (
                 <div>
-                <SubPageHeader title={pageTitle}/>
-                <div className="container" style={{ paddingBottom: '50px' }}>
+                    <SubPageHeader title={pageTitle}/>
+                    <div className="container" style={{ paddingBottom: '50px' }}>
 
-                    <h3>Images</h3>
-                    <div>
-                        {imageBoxPosition.map((position, index) => (
-                            <ImageInput
-                                key={index}
-                                position={position}
-                                onChange={handleImageChange}
-                                onDelete={handleImageDelete}
-                                preview={(preview && preview[index]) || ''}
-                            />
-                        ))}
-                    </div>
+                        <h3>Images</h3>
+                        <div>
+                            {imageBoxPosition.map((position, index) => (
+                                <ImageInput
+                                    key={index}
+                                    position={position}
+                                    onChange={handleImageChange}
+                                    onDelete={handleImageDelete}
+                                    preview={(preview && preview[index]) || ''}
+                                />
+                            ))}
+                        </div>
 
-                    <h3>Groups</h3>
-                    <AddGroupBox itemGroups={groups} handleChange={handleGroupChange}/>
+                        <h3>Groups</h3>
+                        <AddGroupBox itemGroups={groups} handleChange={handleGroupChange}/>
 
-                    <h3>Name</h3>
-                    <Input name="itemName" value={textFormData.itemName} onChange={onTextChange} placeholder="Basic usage" />
-                    <h3>Description</h3>
-                    <TextArea
-                        autoSize={true}
-                        name="itemDescription"
-                        value={textFormData.itemDescription}
-                        onChange={onTextChange}
-                    />
+                        <h3>Name</h3>
+                        <Input name="itemName" value={textFormData.itemName} onChange={onTextChange} placeholder="Basic usage" />
+                        <h3>Description</h3>
+                        <TextArea
+                            autoSize={true}
+                            name="itemDescription"
+                            value={textFormData.itemDescription}
+                            onChange={onTextChange}
+                        />
 
                     </div>
 

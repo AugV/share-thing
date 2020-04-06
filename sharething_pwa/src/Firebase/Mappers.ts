@@ -1,4 +1,4 @@
-import { UserItemsDocument, ItemModel, ItemPreview } from '../Entities/Interfaces';
+import { UserItemsDocument, ItemModel, ItemPreview, GroupModel } from '../Entities/Interfaces';
 
 export const userItemsMapper = (doc: firebase.firestore.DocumentSnapshot) => {
     try {
@@ -47,4 +47,23 @@ export const toItemPreview = (doc: firebase.firestore.DocumentSnapshot): ItemPre
         throw new Error(e);
     }
 
+};
+
+export const toGroup = (doc: firebase.firestore.DocumentSnapshot) => {
+    try {
+        const docData = doc.data();
+        const group: GroupModel = {
+            id: docData!.id,
+            name: docData!.name,
+            description: docData!.description,
+            admins: [{
+                id: docData!.admins[0],
+                name: 'test',
+            }],
+            members: docData!.users,
+        };
+        return group;
+    } catch (e) {
+        throw new Error(e);
+    }
 };
