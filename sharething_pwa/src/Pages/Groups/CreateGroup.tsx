@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SubPageHeader } from '../../Components/Headers/SubPageHeader';
 import Input from 'antd/lib/input/Input';
 import TextArea from 'antd/lib/input/TextArea';
 import Button from 'antd/lib/button/button';
+import { GroupModel, User, GroupModelSend } from '../../Entities/Interfaces';
+import { SelectionList } from '../../Components/selectors/SelectionList';
 
 interface FormData {
     name: string | undefined;
@@ -11,7 +13,8 @@ interface FormData {
 }
 
 interface CreateGroupProps {
-    createGroup: () => void;
+    createGroup: (group: GroupModelSend) => Promise<void>;
+    getUserList: () => Promise<User[]>;
 }
 
 const initialFormValues: FormData = {
@@ -20,14 +23,34 @@ const initialFormValues: FormData = {
 };
 
 const CreateGroup: React.FC<CreateGroupProps> = (props) => {
-    const { createGroup } = props;
+    const { createGroup, getUserList } = props;
     const [formData, setFormData] = useState<FormData>(initialFormValues);
+    const [userList, setUserList] = useState<User[] | undefined>(undefined);
+    const [selectedMembers, setSelectedMembers] = useState<string[] | undefined>(undefined);
+
+    useEffect(() => {
+        getUserList().then(userList => setUserList(userList));
+    }, []);
 
     const updateFormData = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const fieldName = event.target.name;
         const fieldValue = event.target.value;
         const newFormData = { ...formData, [fieldName]: fieldValue } as FormData;
         setFormData(newFormData);
+    };
+
+    const handleMemberChange = (selectedMembers: string[]) => {
+        setSelectedMembers(selectedMembers);
+    };
+
+    const saveGroup = () => {
+        const group: GroupModelSend =  {
+            name: formData.name!,
+            description: formData.description,
+            members: selectedMembers!,
+        };
+
+        createGroup(group);
     };
 
     return(
@@ -40,18 +63,24 @@ const CreateGroup: React.FC<CreateGroupProps> = (props) => {
             <TextArea
                 autoSize={true}
                 name="description"
+                placeholder="Description"
                 value={formData.description}
                 onChange={updateFormData}
             />
 
-            <p>group members</p>
+            <SelectionList
+                header="Members"
+                listItems={userList}
+                defaultListItems={selectedMembers}
+                handleChange={handleMemberChange}
+            />
 
             <Button
                 style={{ position: 'fixed', bottom: '0', marginTop: '10px' }}
                 size="large"
                 type="primary"
                 block={true}
-                onClick={createGroup}
+                onClick={saveGroup}
             >
                 Save
             </Button>

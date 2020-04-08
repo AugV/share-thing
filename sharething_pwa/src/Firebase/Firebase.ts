@@ -2,10 +2,10 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument, GroupNameAndId, ItemModelSend, ItemPreview, ItemQuery, GroupModel } from '../Entities/Interfaces';
+import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument, GroupNameAndId, ItemModelSend, ItemPreview, ItemQuery, GroupModel, User, GroupModelSend } from '../Entities/Interfaces';
 import * as NAME from '../Constants/Names';
-import { toItem, userItemsMapper, toItemPreview, toGroup } from './Mappers';
-import { UserItemsDocDTO, ItemPreviewDTO } from './DTOs';
+import { toItem, userItemsMapper, toItemPreview, toGroup, toGroupDTO, toUser } from './Mappers';
+import { UserItemsDocDTO, ItemPreviewDTO, GroupDTO } from './DTOs';
 import { ImagePack } from '../Entities/Types';
 
 type Query<T = app.firestore.DocumentData> = app.firestore.Query;
@@ -106,7 +106,13 @@ class Firebase {
     public resetPsw = (email: string) => this.auth.sendPasswordResetEmail(email);
     public updatePsw = (password: string) => {
         if (this.auth.currentUser) { this.auth.currentUser.updatePassword(password); } };
-    public getUserId = () => { if (this.auth.currentUser) { return this.auth.currentUser.uid; } };
+    public getUserId(): string {
+        if (this.auth.currentUser) {
+            return this.auth.currentUser.uid;
+        } else {
+            throw new Error('Cannot aquire current user ID');
+        }
+    }
     public userRef = (uid: string) => this.db.collection(NAME.USERS).doc(uid);
 
     public async fetchSingleItem(id: string): Promise<ItemModel> {
@@ -129,6 +135,15 @@ class Firebase {
         } catch (e) {
             throw new Error(e);
         }
+    }
+
+    public async createGroup(group: GroupModelSend): Promise<void> {
+        const docRef = this.db.collection(NAME.GROUPS).doc();
+        const currentUserId = this.getUserId();
+
+        // const newGroup: GroupDTO = toGroupDTO(docRef.id, currentUserId, group);
+
+        // docRef.set(newGroup);
     }
 
     public getItems = () => this.db.collection(NAME.ITEMS);
@@ -222,6 +237,16 @@ class Firebase {
             throw new Error(e);
         }
     };
+
+    public async getAllUsers(): Promise<User[]> {
+        const docRef = await this.db.collection(NAME.USERS).get();
+
+        const userList: User[] = docRef.docs.map(doc => {
+            return toUser(doc);
+        });
+
+        return userList;
+    }
 
     private updateItem = async (item: ItemModelSend) => {
         const itemDocRef = this.db.collection(NAME.ITEMS).doc(item.id);

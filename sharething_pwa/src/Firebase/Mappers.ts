@@ -1,4 +1,5 @@
-import { UserItemsDocument, ItemModel, ItemPreview, GroupModel } from '../Entities/Interfaces';
+import { UserItemsDocument, ItemModel, ItemPreview, GroupModel, User, GroupModelSend } from '../Entities/Interfaces';
+import { GroupDTO } from './DTOs';
 
 export const userItemsMapper = (doc: firebase.firestore.DocumentSnapshot) => {
     try {
@@ -56,13 +57,40 @@ export const toGroup = (doc: firebase.firestore.DocumentSnapshot) => {
             id: docData!.id,
             name: docData!.name,
             description: docData!.description,
-            admins: [{
-                id: docData!.admins[0],
-                name: 'test',
-            }],
+            admins: [docData!.admins[0]],
             members: docData!.users,
         };
         return group;
+    } catch (e) {
+        throw new Error(e);
+    }
+};
+
+export const toGroupDTO = (docId: string, adminId: string, groupDetails: GroupModelSend) => {
+    // const newGroup: GroupDTO = {
+    //     id: docId!,
+    //     admins: [adminId]!,
+    //     name: groupDetails.name!,
+    //     description: groupDetails.description!,
+    //     members: groupDetails.members?.map(member => {
+    //         return {
+    //             id: member.id,
+    //             name: member.name,
+    //         };
+    //     })!,
+    // };
+
+    // return newGroup;
+};
+
+export const toUser = (doc: firebase.firestore.DocumentSnapshot) => {
+    try {
+        const docData = doc.data();
+        const user: User = {
+            id: docData!.userId,
+            name: docData!.username,
+        };
+        return user;
     } catch (e) {
         throw new Error(e);
     }

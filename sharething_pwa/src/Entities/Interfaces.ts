@@ -10,9 +10,14 @@ interface StartEndDate {
     end: Date;
 }
 
-interface User {
+export interface ListItem {
     id: string;
-    name?: string;
+    name: string;
+}
+
+export interface User {
+    id: string;
+    name: string;
 }
 
 export interface ItemModel {
@@ -76,8 +81,14 @@ export interface GroupModel {
     id: string;
     name: string;
     description: string;
-    admins: User[];
+    admins: string[];
     members: User[];
+}
+
+export interface GroupModelSend {
+    name: string;
+    description: string | undefined;
+    members: string[];
 }
 
 export function docToConvo(document: firebase.firestore.QueryDocumentSnapshot | firebase.firestore.DocumentSnapshot): ConversationInfo {

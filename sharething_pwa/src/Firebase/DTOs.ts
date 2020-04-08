@@ -47,6 +47,22 @@ export interface ItemDTO {
     borrowed?: false;
 }
 
+export interface GroupDTO {
+    id: string;
+    name: string;
+    description: string;
+    admins: string[];
+    members: {
+        id: string,
+        name: string,
+    }[];
+}
+
+export interface UserDTO {
+    userId: string;
+    username: string;
+}
+
 export interface ItemQueryResult {
 
 }
