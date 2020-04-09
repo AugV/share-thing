@@ -57,7 +57,7 @@ export const toGroup = (doc: firebase.firestore.DocumentSnapshot) => {
             id: docData!.id,
             name: docData!.name,
             description: docData!.description,
-            admins: [docData!.admins[0]],
+            admins: docData!.admins,
             members: docData!.users,
         };
         return group;
@@ -66,21 +66,16 @@ export const toGroup = (doc: firebase.firestore.DocumentSnapshot) => {
     }
 };
 
-export const toGroupDTO = (docId: string, adminId: string, groupDetails: GroupModelSend) => {
-    // const newGroup: GroupDTO = {
-    //     id: docId!,
-    //     admins: [adminId]!,
-    //     name: groupDetails.name!,
-    //     description: groupDetails.description!,
-    //     members: groupDetails.members?.map(member => {
-    //         return {
-    //             id: member.id,
-    //             name: member.name,
-    //         };
-    //     })!,
-    // };
+export const toGroupDTO = (docId: string, admin: User, members: User[], groupDetails: GroupModelSend) => {
+    const newGroup: GroupDTO = {
+        id: docId!,
+        admins: [admin],
+        name: groupDetails.name!,
+        description: groupDetails.description!,
+        members,
+    };
 
-    // return newGroup;
+    return newGroup;
 };
 
 export const toUser = (doc: firebase.firestore.DocumentSnapshot) => {

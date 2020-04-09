@@ -36,7 +36,7 @@ const GroupDetails: React.FC<GroupDetailsProps> = (props) => {
 
                         <Title level={3}>{group.name}</Title>
                         <Paragraph ellipsis={{ expandable: true }} >{group.description}</Paragraph>
-                        <Title level={4}>Owner: {group.admins![0]}</Title>
+                        <Title level={4}>Owner: {group.admins[0].name}</Title>
                     </div>
                 )
             }

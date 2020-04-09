@@ -7,7 +7,7 @@ import { CreateGroup } from './CreateGroup';
 import { withFirebase } from '../../Firebase/Context';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
 import { GroupDetails } from './GroupDetails';
-import { GroupModel, GroupModelSend } from '../../Entities/Interfaces';
+import { GroupModelSend } from '../../Entities/Interfaces';
 
 const GroupRoutes: React.FC<FirebaseProps> = (props) => {
     const { firebase } = props;

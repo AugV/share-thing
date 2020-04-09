@@ -81,7 +81,7 @@ export interface GroupModel {
     id: string;
     name: string;
     description: string;
-    admins: string[];
+    admins: User[];
     members: User[];
 }
 

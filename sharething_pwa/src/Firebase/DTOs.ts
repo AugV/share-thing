@@ -51,7 +51,10 @@ export interface GroupDTO {
     id: string;
     name: string;
     description: string;
-    admins: string[];
+    admins: {
+        id: string,
+        name: string,
+    }[];
     members: {
         id: string,
         name: string,

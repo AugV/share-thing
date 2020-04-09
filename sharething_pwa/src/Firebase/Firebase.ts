@@ -140,10 +140,36 @@ class Firebase {
     public async createGroup(group: GroupModelSend): Promise<void> {
         const docRef = this.db.collection(NAME.GROUPS).doc();
         const currentUserId = this.getUserId();
+        const admin = {
+            id: currentUserId,
+            name: await this.getUserName(currentUserId),
+        };
 
-        // const newGroup: GroupDTO = toGroupDTO(docRef.id, currentUserId, group);
+        const members = await Promise.all(group.members.map(async memberId => {
+            return {
+                id: memberId,
+                name: await this.getUserName(memberId),
+            };
+        }),
+        );
 
-        // docRef.set(newGroup);
+        members.push(admin);
+
+        const newGroup: GroupDTO = toGroupDTO(docRef.id, admin, members, group);
+
+        this.updateUserGroups(docRef.id, members);
+
+        docRef.set(newGroup);
+    }
+
+    public async getUserName(userId: string): Promise<string> {
+        const userDoc = await this.db.collection(NAME.USERS).doc(userId).get();
+
+        if (userDoc && userDoc.data()) {
+            return userDoc.data()!.username;
+        } else {
+            return 'Anonymous';
+        }
     }
 
     public getItems = () => this.db.collection(NAME.ITEMS);
@@ -246,6 +272,17 @@ class Firebase {
         });
 
         return userList;
+    }
+
+    // TODO: not a void
+    private updateUserGroups(groupId: string, users: User[]): void {
+        const ref = this.db.collection(NAME.USER_GROUPS);
+
+        users.map(user => {
+            ref.doc(user.id).update({
+                groups: app.firestore.FieldValue.arrayUnion(groupId),
+            }).catch(e => {console.log(e);});
+        });
     }
 
     private updateItem = async (item: ItemModelSend) => {
