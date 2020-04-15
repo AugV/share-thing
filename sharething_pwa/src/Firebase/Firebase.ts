@@ -281,7 +281,7 @@ class Firebase {
         users.map(user => {
             ref.doc(user.id).update({
                 groups: app.firestore.FieldValue.arrayUnion(groupId),
-            }).catch(e => {console.log(e);});
+            }).catch(e => console.log(e));
         });
     }
 

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { ItemModel } from '../../Entities/Interfaces';
-import {  useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Spin, Carousel, Button } from 'antd';
 import { SubPageHeader } from '../../Components/Headers/SubPageHeader';
 import './borrow-details.css';
 
 import Title from 'antd/lib/typography/Title';
 import Paragraph from 'antd/lib/typography/Paragraph';
+import { DateModal } from '../Sharegreement/DateDialog';
+import { DateRange } from '../../Entities/Types';
 
 interface BorrowDetailsProps {
     getItemData: (id: string) => Promise<ItemModel>;
@@ -14,6 +16,7 @@ interface BorrowDetailsProps {
 
 const BorrowDetails: React.FC<BorrowDetailsProps> = (props) => {
     const [itemData, setItemData] = useState<ItemModel | undefined>(undefined);
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
     const { id } = useParams();
 
     useEffect(() => {
@@ -22,6 +25,14 @@ const BorrowDetails: React.FC<BorrowDetailsProps> = (props) => {
             props.getItemData(itemId).then(item => setItemData(item));
         }
     }, [id]);
+
+    const closeModal = () => {
+        setModalVisible(false);
+    };
+
+    const createSharegreement = (dates: DateRange) => {
+
+    };
 
     return(
         <div>
@@ -45,13 +56,18 @@ const BorrowDetails: React.FC<BorrowDetailsProps> = (props) => {
                         size="large"
                         type="primary"
                         block={true}
+                        onClick={() => {setModalVisible(true); }}
                 >
                     Request Item
                 </Button>
             </React.Fragment>
         )
         }
-
+        <DateModal
+            visible={modalVisible}
+            closeModal={closeModal}
+            onModalSubmit={createSharegreement}
+        />
         </div>
     );
 };
