@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ItemModel } from '../../Entities/Interfaces';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { Spin, Carousel, Button } from 'antd';
 import { SubPageHeader } from '../../Components/Headers/SubPageHeader';
 import './borrow-details.css';
@@ -9,15 +9,20 @@ import Title from 'antd/lib/typography/Title';
 import Paragraph from 'antd/lib/typography/Paragraph';
 import { DateModal } from '../Sharegreement/DateDialog';
 import { DateRange } from '../../Entities/Types';
+import { FirebaseProps } from '../../Entities/PropsInterfaces';
+import { withFirebase } from '../../Firebase';
+import { toSharegCreateReq } from '../../Entities/Mappers';
+import * as NAMES from '../../Constants/Routes';
 
 interface BorrowDetailsProps {
     getItemData: (id: string) => Promise<ItemModel>;
 }
 
-const BorrowDetails: React.FC<BorrowDetailsProps> = (props) => {
+const BorrowDetailsPage: React.FC<BorrowDetailsProps & FirebaseProps> = (props) => {
     const [itemData, setItemData] = useState<ItemModel | undefined>(undefined);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const { id } = useParams();
+    const history = useHistory();
 
     useEffect(() => {
         const itemId = id;
@@ -31,7 +36,10 @@ const BorrowDetails: React.FC<BorrowDetailsProps> = (props) => {
     };
 
     const createSharegreement = (dates: DateRange) => {
-
+        props.firebase.createSharegreement(toSharegCreateReq(itemData!, dates))
+        .then(sharegreementId => {
+            history.push(`${NAMES.SHAREGREEMENT}/${sharegreementId}`);
+        });
     };
 
     return(
@@ -72,4 +80,4 @@ const BorrowDetails: React.FC<BorrowDetailsProps> = (props) => {
     );
 };
 
-export { BorrowDetails };
+export const BorrowDetails = withFirebase(BorrowDetailsPage);

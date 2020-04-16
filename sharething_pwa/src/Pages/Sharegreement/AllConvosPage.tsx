@@ -5,31 +5,31 @@ import {
   Tabs,
   Tab,
 } from 'react-bootstrap';
-import { docToConvo, ConversationInfo } from '../../Entities/Interfaces';
-import { ConvoList } from './ConvoList';
+import { Sharegreement } from '../../Entities/Interfaces';
+import { ConvoList } from '../Convo/ConvoList';
 import { MainNavBar } from '../../Components/NavBar/BottomNavBar';
 
 interface Props {
     firebase: Firebase;
 }
-// TODO: optimize so that lazy loads on active Tab
+
 const AllConvosPageComponent = (props: Props) => {
     const [loading, setLoading] = useState<boolean>(true);
-    const [asOwnerConversations, setAsOwnerConversations] = useState<ConversationInfo[] | null>(null);
-    const [asSeekerConversations, setAsSeekerConversations] = useState<ConversationInfo[] | null>(null);
+    const [asOwnerConversations, setAsOwnerConversations] = useState<Sharegreement[] | null>(null);
+    const [asSeekerConversations, setAsSeekerConversations] = useState<Sharegreement[] | null>(null);
 
     useEffect(() => {
-        const unsubscribe = props.firebase.getAsOwnerConversations().onSnapshot(snapshot => {
-            setAsOwnerConversations(snapshot.docs.map(docToConvo)); });
+        props.firebase.getOwnerSharegreements().then(sharegreements => {
+            setAsOwnerConversations(sharegreements);
+        });
         setLoading(false);
-        return unsubscribe;
     }, [props.firebase]);
 
     useEffect(() => {
-        const unsubscribe = props.firebase.getAsSeekerConversations().onSnapshot(snapshot => {
-            setAsSeekerConversations(snapshot.docs.map(docToConvo)); });
+        props.firebase.getBorrowerSharegreements().then(sharegreements => {
+            setAsSeekerConversations(sharegreements);
+        });
         setLoading(false);
-        return unsubscribe;
     }, [props.firebase]);
 
     return(
@@ -52,4 +52,4 @@ const AllConvosPageComponent = (props: Props) => {
     );
 };
 
-export const AllConvosPage = withFirebase(AllConvosPageComponent);
+export const SharegreementList = withFirebase(AllConvosPageComponent);

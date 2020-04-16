@@ -5,8 +5,6 @@ import { Account } from '../Pages/Account';
 import PasswordResetScreen from '../Pages/Auth/PasswordReset';
 import withAuthorization from '../Utils/WithAuthorization';
 import { PublicScreen } from '../Pages/Public';
-import { AllConvosPage } from '../Pages/Convo/AllConvosPage';
-import { ConvoScreen } from '../Pages/Convo/SingleConvoPage';
 import { SingOut } from '../Pages/Auth/SignOut';
 import { Home } from '../Pages/Home/Home';
 import { ItemPage } from '../Pages/Item/Item';
@@ -47,8 +45,6 @@ const PrivateRoutes: React.FC<FirebaseProps> = (props) => {
               <Route path={ROUTES.GROUP} component={Group} />
               <Route path={ROUTES.PUBLIC} component={PublicScreen} />
               <Route path={ROUTES.ITEM} component={ItemPage} />
-              <Route path={ROUTES.SHAREGREEMENT} component={ConvoScreen} />
-              <Route path={ROUTES.SHAREGREEMENT_LIST} component={AllConvosPage} />
               <Route path={ROUTES.PASSWORD_RESET} component={PasswordResetScreen} />
               <Route path={ROUTES.SIGN_OUT} component={SingOut} />
             </Switch>

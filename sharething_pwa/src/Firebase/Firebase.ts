@@ -2,11 +2,11 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument, GroupNameAndId, ItemModelSend, ItemPreview, ItemQuery, GroupModel, User, GroupModelSend } from '../Entities/Interfaces';
+import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument, GroupNameAndId, ItemModelSend, ItemPreview, ItemQuery, GroupModel, User, GroupModelSend, Sharegreement, SHAREG_STATUS } from '../Entities/Interfaces';
 import * as NAME from '../Constants/Names';
-import { toItem, userItemsMapper, toItemPreview, toGroup, toGroupDTO, toUser } from './Mappers';
+import { toItem, userItemsMapper, toItemPreview, toGroup, toGroupDTO, toUser, toSharegreementDTO, toSharegreement } from './Mappers';
 import { UserItemsDocDTO, ItemPreviewDTO, GroupDTO } from './DTOs';
-import { ImagePack } from '../Entities/Types';
+import { ImagePack, DateRange } from '../Entities/Types';
 
 type Query<T = app.firestore.DocumentData> = app.firestore.Query;
 type DocumentData = app.firestore.DocumentData;
@@ -35,6 +35,19 @@ class Firebase {
         this.auth = app.auth();
         this.db = app.firestore();
         this.storage = app.storage();
+    }
+
+    public createSharegreement(sharegreement: Partial<Sharegreement>): Promise<string> {
+        const docRef = this.db.collection(NAME.SHAREGREEMENTS).doc();
+        const userId = this.auth.currentUser?.uid;
+
+        const newShareg = toSharegreementDTO(
+            SHAREG_STATUS.PENDING_OWNER_DATE_CONFIRM,
+            userId!,
+            sharegreement,
+            );
+
+        return docRef.set(newShareg).then(() => Promise.resolve(docRef.id));
     }
 
     public queryItems = async (query: ItemQuery) => {
@@ -200,14 +213,20 @@ class Firebase {
             }); });
     };
 
-    public getAsOwnerConversations = () => {
-        return this.db.collection(NAME.CONVERSATIONS)
-        .where('ownerId', '==', (this.auth.currentUser ? this.auth.currentUser.uid : 'n/a'));
+    public getOwnerSharegreements = () => {
+        return this.db.collection(NAME.SHAREGREEMENTS)
+        .where('owner', '==', (this.auth.currentUser ? this.auth.currentUser.uid : 'n/a')).get()
+        .then(querySnaphot => {
+            return querySnaphot.docs.map(doc => toSharegreement(doc));
+        });
     };
 
-    public getAsSeekerConversations = () => {
-        return this.db.collection(NAME.CONVERSATIONS)
-        .where('seekerId', '==', (this.auth.currentUser ? this.auth.currentUser.uid : 'n/a'));
+    public getBorrowerSharegreements = () => {
+        return this.db.collection(NAME.SHAREGREEMENTS)
+        .where('borrower', '==', (this.auth.currentUser ? this.auth.currentUser.uid : 'n/a')).get()
+        .then(querySnaphot => {
+            return querySnaphot.docs.map(doc => toSharegreement(doc));
+        });
     };
 
     public getConvo = (convoId: string) => {

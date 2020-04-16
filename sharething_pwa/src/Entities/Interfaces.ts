@@ -31,6 +31,27 @@ export interface ItemModel {
     groups: string[];
 }
 
+export interface Sharegreement {
+    itemId: string;
+    itemName: string;
+    owner: string;
+    startDate: string;
+    endDate: string;
+    borrower: string;
+    status: SHAREG_STATUS;
+}
+
+export enum SHAREG_STATUS {
+    PENDING_OWNER_DATE_CONFIRM,
+    PENDING_BORROWER_DATE_CONFIRM,
+    DATES_CONFIRMED,
+    BORROWER_ITEM_DISPATCHED,
+    OWNER_ITEM_DISPATCHED,
+    WAITING_FOR,
+    OWNER_ITEM_RETURNED,
+    BORROWER_ITEM_RETURNED,
+}
+
 export interface ItemModelSend {
     id?: string;
     name: string;
