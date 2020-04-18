@@ -13,7 +13,7 @@ const DateModal: React.FC<DateModalProps> = (props) => {
     const { visible: showModal, closeModal, onModalSubmit } = props;
     const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
 
-    const selectedDateChanges = (undefined: unknown, dates: DateRange) => {
+    const selectedDateChanges = (momentDate: unknown, dates: DateRange) => {
         setDateRange(dates);
     };
 

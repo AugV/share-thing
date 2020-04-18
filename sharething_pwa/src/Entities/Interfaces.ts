@@ -31,7 +31,8 @@ export interface ItemModel {
     groups: string[];
 }
 
-export interface Sharegreement {
+export interface SharegreementModel {
+    id: string;
     itemId: string;
     itemName: string;
     owner: string;

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import Search from 'antd/lib/input/Search';
 import { AddGroupBox } from '../../Components/AddGroupBox/AddGroupBox';
 import { useHistory } from 'react-router-dom';

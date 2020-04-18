@@ -1,18 +1,33 @@
-import React from 'react';
-import { Switch, Route } from 'react-router';
+import React, { useEffect } from 'react';
+import { Switch, Route, Redirect } from 'react-router';
 import * as ROUTES from '../Constants/Routes';
 import LandingScreen from '../Pages/Landing';
 import SignInScreen from '../Pages/Auth/SignIn';
 import SignUpScreen from '../Pages/Auth/SignUp';
+import { withFirebase } from '../Firebase';
+import { FirebaseProps } from '../Entities/PropsInterfaces';
 
-const LandingRoutes = () => (
-    <div>
-    <Switch>
-       <Route path={ROUTES.SIGN_UP} component={SignUpScreen} />
-       <Route path={ROUTES.SIGN_IN} component={SignInScreen} />
-       <Route component={LandingScreen} />
-    </Switch>
-    </div>
-);
+const Landing: React.FC<FirebaseProps> = (props) => {
+    const { firebase } = props;
 
-export default LandingRoutes;
+    const redirectIfLoggedIn = () => {
+        if (firebase.auth.currentUser) {
+            return (
+                <Redirect push={true} to={ROUTES.MY_ITEMS}/>
+            );
+        }
+    };
+
+    return(
+        <div>
+            {redirectIfLoggedIn()}
+            <Switch>
+            <Route path={ROUTES.SIGN_UP} component={SignUpScreen} />
+            <Route path={ROUTES.SIGN_IN} component={SignInScreen} />
+            <Route component={LandingScreen} />
+            </Switch>
+        </div>
+    );
+};
+
+export const LandingRoutes = withFirebase(Landing);

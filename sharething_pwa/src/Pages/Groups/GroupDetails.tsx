@@ -23,7 +23,7 @@ const GroupDetails: React.FC<GroupDetailsProps> = (props) => {
         } else {
             setGroup(undefined);
         }
-    }, [id]);
+    }, [id, fetchData]);
 
     return(
         <React.Fragment>

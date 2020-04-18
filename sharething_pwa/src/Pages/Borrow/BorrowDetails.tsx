@@ -19,6 +19,7 @@ interface BorrowDetailsProps {
 }
 
 const BorrowDetailsPage: React.FC<BorrowDetailsProps & FirebaseProps> = (props) => {
+    const { getItemData, firebase } = props;
     const [itemData, setItemData] = useState<ItemModel | undefined>(undefined);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const { id } = useParams();
@@ -27,16 +28,16 @@ const BorrowDetailsPage: React.FC<BorrowDetailsProps & FirebaseProps> = (props) 
     useEffect(() => {
         const itemId = id;
         if (typeof itemId === 'string') {
-            props.getItemData(itemId).then(item => setItemData(item));
+            getItemData(itemId).then(item => setItemData(item));
         }
-    }, [id]);
+    }, [id, getItemData]);
 
     const closeModal = () => {
         setModalVisible(false);
     };
 
     const createSharegreement = (dates: DateRange) => {
-        props.firebase.createSharegreement(toSharegCreateReq(itemData!, dates))
+        firebase.createSharegreement(toSharegCreateReq(itemData!, dates))
         .then(sharegreementId => {
             history.push(`${NAMES.SHAREGREEMENT}/${sharegreementId}`);
         });
@@ -51,7 +52,7 @@ const BorrowDetailsPage: React.FC<BorrowDetailsProps & FirebaseProps> = (props) 
             <React.Fragment>
                 <Carousel>
                     {itemData.images.map(image => (
-                        <img key={image} src={image}/>
+                        <img key={image} src={image} alt="N/A"/>
                     ))}
                 </Carousel>
                 <Title level={3}>{itemData.name}</Title>

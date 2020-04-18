@@ -5,18 +5,19 @@ import {
   Tabs,
   Tab,
 } from 'react-bootstrap';
-import { Sharegreement } from '../../Entities/Interfaces';
-import { ConvoList } from '../Convo/ConvoList';
+import { SharegreementModel } from '../../Entities/Interfaces';
+
 import { MainNavBar } from '../../Components/NavBar/BottomNavBar';
+import { SharegreementList } from './SharegrementList';
 
 interface Props {
     firebase: Firebase;
 }
 
-const AllConvosPageComponent = (props: Props) => {
+const SharegreementListViewComp = (props: Props) => {
     const [loading, setLoading] = useState<boolean>(true);
-    const [asOwnerConversations, setAsOwnerConversations] = useState<Sharegreement[] | null>(null);
-    const [asSeekerConversations, setAsSeekerConversations] = useState<Sharegreement[] | null>(null);
+    const [asOwnerConversations, setAsOwnerConversations] = useState<SharegreementModel[] | null>(null);
+    const [asSeekerConversations, setAsSeekerConversations] = useState<SharegreementModel[] | null>(null);
 
     useEffect(() => {
         props.firebase.getOwnerSharegreements().then(sharegreements => {
@@ -38,12 +39,12 @@ const AllConvosPageComponent = (props: Props) => {
           <Tabs defaultActiveKey="asOwner" id="uncontrolled-tab-example">
             {asOwnerConversations && (
               <Tab eventKey="asOwner" title="As Owner" >
-                  <ConvoList conversations={asOwnerConversations}/>
+                  <SharegreementList sharegreements={asOwnerConversations}/>
               </Tab>
             )}
             {asSeekerConversations && (
               <Tab eventKey="asSeeker" title="As Seeker">
-                  <ConvoList conversations={asSeekerConversations}/>
+                  <SharegreementList sharegreements={asSeekerConversations}/>
               </Tab>
             )}
           </Tabs>
@@ -52,4 +53,4 @@ const AllConvosPageComponent = (props: Props) => {
     );
 };
 
-export const SharegreementList = withFirebase(AllConvosPageComponent);
+export const SharegreementListView = withFirebase(SharegreementListViewComp);

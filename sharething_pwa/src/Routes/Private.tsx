@@ -13,6 +13,7 @@ import { UserItemsDocument, GroupNameAndId } from '../Entities/Interfaces';
 import { withFirebase } from '../Firebase';
 import { Borrow } from '../Pages/Borrow/Borrow';
 import { Group } from '../Pages/Groups/Group';
+import { Sharegreement } from '../Pages/Sharegreement/Sharegreement';
 
 // TODO: make HOC provider for these Contexts
 export const UserItemContext = React.createContext<UserItemsDocument | undefined>(undefined);
@@ -43,10 +44,12 @@ const PrivateRoutes: React.FC<FirebaseProps> = (props) => {
               <Route path={ROUTES.HOME} component={Home} />
               <Route path={ROUTES.BORROW} component={Borrow} />
               <Route path={ROUTES.GROUP} component={Group} />
+              <Route path={ROUTES.SHAREGREEMENT} component={Sharegreement} />
               <Route path={ROUTES.PUBLIC} component={PublicScreen} />
               <Route path={ROUTES.ITEM} component={ItemPage} />
               <Route path={ROUTES.PASSWORD_RESET} component={PasswordResetScreen} />
               <Route path={ROUTES.SIGN_OUT} component={SingOut} />
+
             </Switch>
           </UserGroupContext.Provider>
         </UserItemContext.Provider>

@@ -3,7 +3,7 @@ import { SubPageHeader } from '../../Components/Headers/SubPageHeader';
 import Input from 'antd/lib/input/Input';
 import TextArea from 'antd/lib/input/TextArea';
 import Button from 'antd/lib/button/button';
-import { GroupModel, User, GroupModelSend } from '../../Entities/Interfaces';
+import { User, GroupModelSend } from '../../Entities/Interfaces';
 import { SelectionList } from '../../Components/selectors/SelectionList';
 
 interface FormData {
@@ -30,7 +30,7 @@ const CreateGroup: React.FC<CreateGroupProps> = (props) => {
 
     useEffect(() => {
         getUserList().then(userList => setUserList(userList));
-    }, []);
+    }, [getUserList]);
 
     const updateFormData = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const fieldName = event.target.name;

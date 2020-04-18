@@ -2,11 +2,24 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument, GroupNameAndId, ItemModelSend, ItemPreview, ItemQuery, GroupModel, User, GroupModelSend, Sharegreement, SHAREG_STATUS } from '../Entities/Interfaces';
+import {
+    ItemModel,
+    ConversationInfo,
+    docToConvo,
+    UserItemsDocument,
+    GroupNameAndId,
+    ItemModelSend,
+    ItemQuery,
+    GroupModel,
+    User,
+    GroupModelSend,
+    SharegreementModel,
+    SHAREG_STATUS,
+} from '../Entities/Interfaces';
 import * as NAME from '../Constants/Names';
 import { toItem, userItemsMapper, toItemPreview, toGroup, toGroupDTO, toUser, toSharegreementDTO, toSharegreement } from './Mappers';
 import { UserItemsDocDTO, ItemPreviewDTO, GroupDTO } from './DTOs';
-import { ImagePack, DateRange } from '../Entities/Types';
+import { ImagePack } from '../Entities/Types';
 
 type Query<T = app.firestore.DocumentData> = app.firestore.Query;
 type DocumentData = app.firestore.DocumentData;
@@ -37,17 +50,25 @@ class Firebase {
         this.storage = app.storage();
     }
 
-    public createSharegreement(sharegreement: Partial<Sharegreement>): Promise<string> {
+    public createSharegreement(sharegreement: Partial<SharegreementModel>): Promise<string> {
         const docRef = this.db.collection(NAME.SHAREGREEMENTS).doc();
         const userId = this.auth.currentUser?.uid;
 
         const newShareg = toSharegreementDTO(
+            docRef.id,
             SHAREG_STATUS.PENDING_OWNER_DATE_CONFIRM,
             userId!,
             sharegreement,
             );
 
         return docRef.set(newShareg).then(() => Promise.resolve(docRef.id));
+    }
+
+    public async getSingleSharegreement(id: string): Promise<SharegreementModel> {
+        const docRef = this.db.collection(NAME.SHAREGREEMENTS).doc(id);
+        const doc = await docRef.get();
+
+        return toSharegreement(doc);
     }
 
     public queryItems = async (query: ItemQuery) => {
@@ -126,6 +147,7 @@ class Firebase {
             throw new Error('Cannot aquire current user ID');
         }
     }
+
     public userRef = (uid: string) => this.db.collection(NAME.USERS).doc(uid);
 
     public async fetchSingleItem(id: string): Promise<ItemModel> {

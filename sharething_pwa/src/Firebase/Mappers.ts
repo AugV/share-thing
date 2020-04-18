@@ -1,4 +1,4 @@
-import { UserItemsDocument, ItemModel, ItemPreview, GroupModel, User, GroupModelSend, Sharegreement } from '../Entities/Interfaces';
+import { UserItemsDocument, ItemModel, ItemPreview, GroupModel, User, GroupModelSend, SharegreementModel } from '../Entities/Interfaces';
 import { GroupDTO } from './DTOs';
 
 export const userItemsMapper = (doc: firebase.firestore.DocumentSnapshot) => {
@@ -91,9 +91,15 @@ export const toUser = (doc: firebase.firestore.DocumentSnapshot) => {
     }
 };
 
-export const toSharegreementDTO = (status: number, borrower: string, data: Partial<Sharegreement>): Sharegreement => {
+export const toSharegreementDTO = (
+        id: string,
+        status: number,
+        borrower: string,
+        data: Partial<SharegreementModel>,
+    ): SharegreementModel => {
 
     return {
+        id,
         itemId: data.itemId!,
         itemName: data.itemName!,
         owner: data.owner || 'tBvrnODI82T1zZeUUOrPc1SbXYt1',
@@ -104,10 +110,11 @@ export const toSharegreementDTO = (status: number, borrower: string, data: Parti
     };
 };
 
-export const toSharegreement = (doc: firebase.firestore.DocumentSnapshot): Sharegreement => {
+export const toSharegreement = (doc: firebase.firestore.DocumentSnapshot): SharegreementModel => {
     const docData = doc.data();
 
     return {
+        id: docData!.id,
         itemId: docData!.itemId!,
         itemName: docData!.itemName!,
         owner: docData!.owner,
