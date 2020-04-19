@@ -1,39 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import { SubPageHeader } from '../../Components/Headers/SubPageHeader';
+import React from 'react';
 import { SharegreementModel } from '../../Entities/Interfaces';
-import { useParams } from 'react-router-dom';
-import { Spin } from 'antd';
+import Title from 'antd/lib/typography/Title';
+import { Row, Col } from 'antd';
+import { SharegreementActions } from './SharegreementActions';
 
 interface SharegDetailsProps {
-    fetchData: (id: string) => Promise<SharegreementModel>;
+    sharegData: SharegreementModel;
 }
 
 const SharegreementDetails: React.FC<SharegDetailsProps> = (props) => {
-    const { fetchData: fetchSharegreement } = props;
-    const { id } = useParams();
-    const [sharegreement, setSharegreement] = useState<SharegreementModel | undefined>(undefined);
-
-    useEffect(() => {
-        if (id) {
-            fetchSharegreement(id).then(shareg => {
-                setSharegreement(shareg);
-            });
-        } else {
-            throw new Error('ID missing');
-        }
-
-    }, []);
+    const { sharegData } = props;
 
     return(
-        <React.Fragment>
-            {
-                !sharegreement
-                ? <Spin/>
-                : (
-                    <SubPageHeader title={sharegreement.itemName}/>
-                )
-            }
-        </React.Fragment>
+        <div>
+            <Title level={3}>{sharegData.itemName}</Title>
+            <Row>
+                <Col span={6}>Owner:</Col>
+                <Col span={6}>{sharegData.owner}</Col>
+            </Row>
+            <Row>
+                <Col span={6}>Borrower:</Col>
+                <Col span={6}>{sharegData.borrower}</Col>
+            </Row>
+            <Row>
+                <Col span={6}>Start:</Col>
+                <Col span={6}>{sharegData.startDate}</Col>
+            </Row>
+            <Row>
+                <Col span={6}>End:</Col>
+                <Col span={6}>{sharegData.endDate}</Col>
+            </Row>
+            <SharegreementActions status={sharegData.status} role={sharegData.role!}/>
+
+        </div>
     );
 };
 

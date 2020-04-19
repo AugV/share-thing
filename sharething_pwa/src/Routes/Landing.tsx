@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Switch, Route, Redirect } from 'react-router';
 import * as ROUTES from '../Constants/Routes';
 import LandingScreen from '../Pages/Landing';
@@ -22,9 +22,9 @@ const Landing: React.FC<FirebaseProps> = (props) => {
         <div>
             {redirectIfLoggedIn()}
             <Switch>
-            <Route path={ROUTES.SIGN_UP} component={SignUpScreen} />
-            <Route path={ROUTES.SIGN_IN} component={SignInScreen} />
-            <Route component={LandingScreen} />
+                <Route path={ROUTES.SIGN_UP} component={SignUpScreen} />
+                <Route path={ROUTES.SIGN_IN} component={SignInScreen} />
+                <Route component={LandingScreen} />
             </Switch>
         </div>
     );

@@ -1,4 +1,4 @@
-import { UserItemsDocument, ItemModel, ItemPreview, GroupModel, User, GroupModelSend, SharegreementModel } from '../Entities/Interfaces';
+import { UserItemsDocument, ItemModel, ItemPreview, GroupModel, User, GroupModelSend, SharegreementModel, Message } from '../Entities/Interfaces';
 import { GroupDTO } from './DTOs';
 
 export const userItemsMapper = (doc: firebase.firestore.DocumentSnapshot) => {
@@ -110,7 +110,7 @@ export const toSharegreementDTO = (
     };
 };
 
-export const toSharegreement = (doc: firebase.firestore.DocumentSnapshot): SharegreementModel => {
+export const toSharegreement = (userId: string, doc: firebase.firestore.DocumentSnapshot): SharegreementModel => {
     const docData = doc.data();
 
     return {
@@ -122,5 +122,33 @@ export const toSharegreement = (doc: firebase.firestore.DocumentSnapshot): Share
         startDate: docData!.startDate,
         endDate: docData!.endDate,
         status: docData!.status,
+        role: docData!.owner === userId ? 'owner' : 'borrower',
+    };
+};
+
+export const toMessageList = (
+    userId: string,
+    snapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>)
+    : Message[] => {
+    return snapshot.docs.map(doc => {
+        const docData = doc.data();
+        return {
+            id: doc.id,
+            author: docData.author,
+            text: docData.text,
+            date: docData.date,
+            type: docData.type,
+            position: docData.author === userId ? 'right' : 'left',
+        };
+    });
+};
+
+export const toMessageDTO = (userId: string, docId: string, text: string): Message => {
+    return {
+        id: docId,
+        author: userId,
+        text,
+        date: new Date(),
+        type: 'text',
     };
 };

@@ -9,6 +9,7 @@ import { SharegreementModel } from '../../Entities/Interfaces';
 
 import { MainNavBar } from '../../Components/NavBar/BottomNavBar';
 import { SharegreementList } from './SharegrementList';
+import { BasicHeader } from '../../Components/Headers/BasicHeader';
 
 interface Props {
     firebase: Firebase;
@@ -35,6 +36,7 @@ const SharegreementListViewComp = (props: Props) => {
 
     return(
       <div>
+          <BasicHeader title="Sharegreements"/>
           {loading && <Spinner animation="border" />}
           <Tabs defaultActiveKey="asOwner" id="uncontrolled-tab-example">
             {asOwnerConversations && (

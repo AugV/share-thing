@@ -1,36 +1,54 @@
-import React from 'react';
-import * as ROUTES from '../../Constants/Routes';
-import { SharegreementListView } from './SharegreementListView';
-import { Switch, Route } from 'react-router-dom';
-import { FirebaseProps } from '../../Entities/PropsInterfaces';
+import React, { useEffect, useState } from 'react';
+import { SubPageHeader } from '../../Components/Headers/SubPageHeader';
 import { SharegreementModel } from '../../Entities/Interfaces';
+import { useParams } from 'react-router-dom';
+import { Spin } from 'antd';
+import { Tabs, Tab } from 'react-bootstrap';
+import { Chat } from './Chat';
 import { SharegreementDetails } from './SharegreementDetails';
-import { withFirebase } from '../../Firebase';
 
-const SharegreementRouter: React.FC<FirebaseProps> = (props) => {
-    const { firebase } = props;
+interface SharegDetailsProps {
+    fetchData: (id: string) => Promise<SharegreementModel>;
+}
 
-    const getSharegreement = (id: string): Promise<SharegreementModel> => {
-        return firebase.getSingleSharegreement(id);
-    };
+const Sharegreement: React.FC<SharegDetailsProps> = (props) => {
+    const { fetchData } = props;
+    const { id } = useParams();
+    const [sharegreement, setSharegreement] = useState<SharegreementModel | undefined>(undefined);
 
-    return (
-        <Switch>
-        <Route
-            path={ROUTES.SHAREGREEMENT_LIST}
-            component={SharegreementListView}
-        />
-        <Route
-            path={ROUTES.SHAREGREEMENT_ID}
-            render={(propss) => (
-                <SharegreementDetails
-                    fetchData={getSharegreement}
-                    {...propss}
-                />
-            )}
-        />
-    </Switch>
+    useEffect(() => {
+        if (id) {
+            fetchData(id).then(shareg => {
+                setSharegreement(shareg);
+            });
+        } else {
+            throw new Error('ID missing');
+        }
+
+    }, []);
+
+    return(
+        <React.Fragment>
+            {
+                !sharegreement
+                ? <Spin/>
+                : (
+                    <>
+                    <SubPageHeader title={sharegreement.itemName}/>
+                    <Tabs defaultActiveKey="details" id="uncontrolled-tab-example">
+                        <Tab eventKey="details" title="Details" >
+                            <SharegreementDetails sharegData={sharegreement}/>
+                        </Tab>
+
+                        <Tab eventKey="chat" title="Chat">
+                            <Chat details={sharegreement}/>
+                        </Tab>
+                    </Tabs>
+                    </>
+                )
+            }
+        </React.Fragment>
     );
 };
 
-export const Sharegreement = withFirebase(SharegreementRouter);
+export { Sharegreement };
