@@ -2,7 +2,8 @@ import React from 'react';
 import { SharegreementModel } from '../../Entities/Interfaces';
 import Title from 'antd/lib/typography/Title';
 import { Row, Col } from 'antd';
-import { SharegreementActions } from './SharegreementActions';
+import { OwnerActions } from './OwnerActions';
+import { BorrowerActions } from './BorrowerActions';
 
 interface SharegDetailsProps {
     sharegData: SharegreementModel;
@@ -30,8 +31,8 @@ const SharegreementDetails: React.FC<SharegDetailsProps> = (props) => {
                 <Col span={6}>End:</Col>
                 <Col span={6}>{sharegData.endDate}</Col>
             </Row>
-            <SharegreementActions status={sharegData.status} role={sharegData.role!}/>
-
+            {sharegData.role === 'owner' && <OwnerActions sharegId={sharegData.id} status={sharegData.status} />}
+            {sharegData.role === 'borrower' && <BorrowerActions sharegId={sharegData.id} status={sharegData.status} />}
         </div>
     );
 };

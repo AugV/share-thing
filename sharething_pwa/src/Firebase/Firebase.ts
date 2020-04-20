@@ -18,7 +18,7 @@ import {
 import * as NAME from '../Constants/Names';
 import { toItem, userItemsMapper, toItemPreview, toGroup, toGroupDTO, toUser, toSharegreementDTO, toSharegreement, toMessageList, toMessageDTO } from './Mappers';
 import { UserItemsDocDTO, ItemPreviewDTO, GroupDTO } from './DTOs';
-import { ImagePack } from '../Entities/Types';
+import { ImagePack, DateRange } from '../Entities/Types';
 
 type Query<T = app.firestore.DocumentData> = app.firestore.Query;
 type DocumentData = app.firestore.DocumentData;
@@ -58,12 +58,13 @@ class Firebase {
         return docRef.set(newShareg).then(() => Promise.resolve(docRef.id));
     }
 
-    public async getSingleSharegreement(id: string): Promise<SharegreementModel> {
+    public getSingleSharegreement(id: string, listener: (shareg: SharegreementModel) => void): () => void {
         const docRef = this.db.collection(NAME.SHAREGREEMENTS).doc(id);
         const userId = this.auth.currentUser?.uid;
-        const doc = await docRef.get();
 
-        return toSharegreement(userId!, doc);
+        return docRef.onSnapshot(doc => {
+            listener(toSharegreement(userId!, doc));
+        });
     }
 
     public queryItems = async (query: ItemQuery) => {
@@ -288,6 +289,47 @@ class Firebase {
         return userList;
     }
 
+    public abortSharegreement(id: string): Promise<void> {
+        const docRef = this.db.collection(NAME.SHAREGREEMENTS).doc(id);
+
+        return docRef.update({ status: SHAREG_STATUS.ABORTED });
+    }
+
+    public advanceSharegStatus(id: string, currentStatus: SHAREG_STATUS): Promise<void> {
+        const docRef = this.db.collection(NAME.SHAREGREEMENTS).doc(id);
+
+        if (currentStatus === SHAREG_STATUS.PENDING_OWNER_DATE_CONFIRM) {
+            return docRef.update({ status: currentStatus + 2 });
+        } else {
+            return docRef.update({ status: currentStatus + 1 });
+        }
+    }
+
+    public declineSharegreement(id: string): Promise<void> {
+        const docRef = this.db.collection(NAME.SHAREGREEMENTS).doc(id);
+
+        return docRef.update({ status: SHAREG_STATUS.DECLINED });
+    }
+
+    public setSharegNewDates(id: string, role: string, dates: DateRange): Promise<void> {
+        const docRef = this.db.collection(NAME.SHAREGREEMENTS).doc(id);
+
+        if (role === 'owner') {
+            return docRef.update({
+                status: SHAREG_STATUS.PENDING_BORROWER_DATE_CONFIRM,
+                startDate: dates[0],
+                endDate: dates[1],
+            });
+        } else {
+            return docRef.update({
+                status: SHAREG_STATUS.PENDING_OWNER_DATE_CONFIRM,
+                startDate: dates[0],
+                endDate: dates[1],
+            });
+        }
+
+    }
+
     // TODO: not a void
     private updateUserGroups(groupId: string, users: User[]): void {
         const ref = this.db.collection(NAME.USER_GROUPS);
@@ -377,7 +419,6 @@ class Firebase {
 
         return st;
     };
-
 }
 
 export default Firebase;

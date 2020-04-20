@@ -8,7 +8,7 @@ import { Chat } from './Chat';
 import { SharegreementDetails } from './SharegreementDetails';
 
 interface SharegDetailsProps {
-    fetchData: (id: string) => Promise<SharegreementModel>;
+    fetchData: (id: string, listener: (sharegreement: SharegreementModel) => void) => () => void;
 }
 
 const Sharegreement: React.FC<SharegDetailsProps> = (props) => {
@@ -16,15 +16,12 @@ const Sharegreement: React.FC<SharegDetailsProps> = (props) => {
     const { id } = useParams();
     const [sharegreement, setSharegreement] = useState<SharegreementModel | undefined>(undefined);
 
-    useEffect(() => {
-        if (id) {
-            fetchData(id).then(shareg => {
-                setSharegreement(shareg);
-            });
-        } else {
-            throw new Error('ID missing');
-        }
+    const updateSharegreement = (sharegreement: SharegreementModel) => {
+        setSharegreement(sharegreement);
+    };
 
+    useEffect(() => {
+        return fetchData(id!, updateSharegreement);
     }, []);
 
     return(

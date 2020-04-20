@@ -10,8 +10,8 @@ import { withFirebase } from '../../Firebase';
 const SharegRouter: React.FC<FirebaseProps> = (props) => {
     const { firebase } = props;
 
-    const getSharegreement = (id: string): Promise<SharegreementModel> => {
-        return firebase.getSingleSharegreement(id);
+    const getSharegreement = (id: string, listener: (shareg: SharegreementModel) => void) => {
+        return firebase.getSingleSharegreement(id, listener);
     };
 
     return (
