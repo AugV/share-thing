@@ -1,41 +1,9 @@
 TO-DO list:
-- General
--- internationalization
--- change email to UID everywhere
--- introduce sass?
-
-- Firebase
--- Split object for better readability
--- Add image resizing extension
--- Introduce Batches and Transactions
-
-- Bugs
--- doesn't redirect to home if logged in and vice-versa
-
-- HomeScreen
--- first row as an add Item link
--- make max height img size
--- re-think edit and delete accordion
-
-- ItemDetails
--- make card centered
--- set img max width 
--- make it possible to display multiple photos
-
-- Firebase
--- make possibility to add multiple images 
--- make possibility to retrieve multiple images
-
-- ItemForm
--- make adding multiple images possible
--- make thumbnails of already added images
--- test mobile camera img adding
-
-- SharedItemScreen
--- make max height img size
-
-- Navbar
--- make account a dropdown with log-out option
--- look for a good option which would be easily usable on mobile
--- think through the names of pages
--- do not show pages and signout and account if not logged in
+-- FIX:
+	- after sign-up with newly created user crash
+	- Home header drop-down onclick close & position adjustment
+	- unify fonts and font sizes
+	
+-- FEAT
+	- delete Item
+	- delete Sharegreement
