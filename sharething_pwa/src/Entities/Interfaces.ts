@@ -10,6 +10,16 @@ interface StartEndDate {
     end: Date;
 }
 
+export interface ListItem {
+    id: string;
+    name: string;
+}
+
+export interface User {
+    id: string;
+    name: string;
+}
+
 export interface ItemModel {
     id: string;
     name: string;
@@ -19,6 +29,30 @@ export interface ItemModel {
     borrowed: false;
     borrowed_date?: StartEndDate[];
     groups: string[];
+}
+
+export interface SharegreementModel {
+    id: string;
+    itemId: string;
+    itemName: string;
+    owner: string;
+    startDate: string;
+    endDate: string;
+    borrower: string;
+    status: SHAREG_STATUS;
+    role?: string;
+}
+
+export enum SHAREG_STATUS {
+    DECLINED,
+    ABORTED,
+    PENDING_OWNER_DATE_CONFIRM,
+    PENDING_BORROWER_DATE_CONFIRM,
+    DATES_CONFIRMED,
+    OWNER_ITEM_DISPATCHED,
+    BORROWER_ITEM_DISPATCHED,
+    BORROWER_ITEM_RETURNED,
+    FINISHED,
 }
 
 export interface ItemModelSend {
@@ -31,18 +65,10 @@ export interface ItemModelSend {
     groups: string[];
 }
 
-export interface ConversationInfo {
-    id: string;
-    itemId: string;
-    itemImg: string;
-    itemName: string;
-    ownerId: string;
-    seekerId: string;
-}
-
 export interface Message {
     id: string;
-    position: string;
+    author: string;
+    position?: string;
     type: string;
     text: string;
     date: Date;
@@ -67,27 +93,16 @@ export interface UserItemsDocument {
     groupList: string[];
 }
 
-export function docToConvo(document: firebase.firestore.QueryDocumentSnapshot | firebase.firestore.DocumentSnapshot): ConversationInfo {
-    const convo: ConversationInfo = {
-        id: document.id,
-        itemId: document.data()!.itemId,
-        itemImg: document.data()!.itemImg,
-        itemName: document.data()!.itemName,
-        ownerId: document.data()!.ownerId,
-        seekerId: document.data()!.seekerId,
-    };
-
-    return convo;
+export interface GroupModel {
+    id: string;
+    name: string;
+    description: string;
+    admins: User[];
+    members: User[];
 }
 
-export function docToMessage(document: firebase.firestore.QueryDocumentSnapshot, userId: string): Message {
-    const message: Message = {
-        id: document.id,
-        position: userId === document.data().author ? 'right' : 'left',
-        type: 'text',
-        text: document.data().text,
-        date: document.data().time.toDate(),
-    };
-
-    return message;
+export interface GroupModelSend {
+    name: string;
+    description: string | undefined;
+    members: string[];
 }

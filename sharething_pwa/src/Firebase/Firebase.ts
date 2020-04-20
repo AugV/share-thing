@@ -2,11 +2,23 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import { ItemModel, ConversationInfo, docToConvo, UserItemsDocument, GroupNameAndId, ItemModelSend, ItemPreview, ItemQuery } from '../Entities/Interfaces';
+import {
+    ItemModel,
+    UserItemsDocument,
+    GroupNameAndId,
+    ItemModelSend,
+    ItemQuery,
+    GroupModel,
+    User,
+    GroupModelSend,
+    SharegreementModel,
+    SHAREG_STATUS,
+    Message,
+} from '../Entities/Interfaces';
 import * as NAME from '../Constants/Names';
-import { toItem, userItemsMapper, toItemPreview } from './Mappers';
-import { UserItemsDocDTO, ItemPreviewDTO } from './DTOs';
-import { ImagePack } from '../Entities/Types';
+import { toItem, userItemsMapper, toItemPreview, toGroup, toGroupDTO, toUser, toSharegreementDTO, toSharegreement, toMessageList, toMessageDTO } from './Mappers';
+import { UserItemsDocDTO, ItemPreviewDTO, GroupDTO } from './DTOs';
+import { ImagePack, DateRange } from '../Entities/Types';
 
 type Query<T = app.firestore.DocumentData> = app.firestore.Query;
 type DocumentData = app.firestore.DocumentData;
@@ -20,11 +32,6 @@ const firebaseConfig = {
     messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
 };
 
-interface Conversation {
-    conversationInfo: ConversationInfo;
-    messagesRef: app.firestore.CollectionReference;
-}
-
 class Firebase {
     public auth: app.auth.Auth;
     public db: app.firestore.Firestore;
@@ -35,6 +42,29 @@ class Firebase {
         this.auth = app.auth();
         this.db = app.firestore();
         this.storage = app.storage();
+    }
+
+    public createSharegreement(sharegreement: Partial<SharegreementModel>): Promise<string> {
+        const docRef = this.db.collection(NAME.SHAREGREEMENTS).doc();
+        const userId = this.auth.currentUser?.uid;
+
+        const newShareg = toSharegreementDTO(
+            docRef.id,
+            SHAREG_STATUS.PENDING_OWNER_DATE_CONFIRM,
+            userId!,
+            sharegreement,
+            );
+
+        return docRef.set(newShareg).then(() => Promise.resolve(docRef.id));
+    }
+
+    public getSingleSharegreement(id: string, listener: (shareg: SharegreementModel) => void): () => void {
+        const docRef = this.db.collection(NAME.SHAREGREEMENTS).doc(id);
+        const userId = this.auth.currentUser?.uid;
+
+        return docRef.onSnapshot(doc => {
+            listener(toSharegreement(userId!, doc));
+        });
     }
 
     public queryItems = async (query: ItemQuery) => {
@@ -72,7 +102,7 @@ class Firebase {
         return items;
     };
 
-    public getUserItemsDocument = (listener: any) => {
+    public getUserItemsDocument = (listener: (userItems: UserItemsDocument) => void) => {
         try {
             const userId = this.auth.currentUser?.uid;
             const docRef = this.db.collection(NAME.USER_ITEMS).doc(userId);
@@ -106,7 +136,14 @@ class Firebase {
     public resetPsw = (email: string) => this.auth.sendPasswordResetEmail(email);
     public updatePsw = (password: string) => {
         if (this.auth.currentUser) { this.auth.currentUser.updatePassword(password); } };
-    public getUserId = () => { if (this.auth.currentUser) { return this.auth.currentUser.uid; } };
+    public getUserId(): string {
+        if (this.auth.currentUser) {
+            return this.auth.currentUser.uid;
+        } else {
+            throw new Error('Cannot aquire current user ID');
+        }
+    }
+
     public userRef = (uid: string) => this.db.collection(NAME.USERS).doc(uid);
 
     public async fetchSingleItem(id: string): Promise<ItemModel> {
@@ -120,71 +157,101 @@ class Firebase {
         }
     }
 
+    public async fetchSingleGroup(id: string): Promise<GroupModel> {
+        try {
+            const docRef = this.db.collection(NAME.GROUPS).doc(id);
+            const doc = await docRef.get();
+
+            return toGroup(doc);
+        } catch (e) {
+            throw new Error(e);
+        }
+    }
+
+    public async createGroup(group: GroupModelSend): Promise<void> {
+        const docRef = this.db.collection(NAME.GROUPS).doc();
+        const currentUserId = this.getUserId();
+        const admin = {
+            id: currentUserId,
+            name: await this.getUserName(currentUserId),
+        };
+
+        const members = await Promise.all(group.members.map(async memberId => {
+            return {
+                id: memberId,
+                name: await this.getUserName(memberId),
+            };
+        }),
+        );
+
+        members.push(admin);
+
+        const newGroup: GroupDTO = toGroupDTO(docRef.id, admin, members, group);
+
+        this.updateUserGroups(docRef.id, members);
+
+        docRef.set(newGroup);
+    }
+
+    public async getUserName(userId: string): Promise<string> {
+        const userDoc = await this.db.collection(NAME.USERS).doc(userId).get();
+
+        if (userDoc && userDoc.data()) {
+            return userDoc.data()!.username;
+        } else {
+            return 'Anonymous';
+        }
+    }
+
     public getItems = () => this.db.collection(NAME.ITEMS);
 
     public getUserItems = () => {
         return this.db.collection(NAME.ITEMS).where('ownerId', '==', (this.auth.currentUser ? this.auth.currentUser.uid : 'n/a'));
     };
 
-    public createNewConversation = (item: ItemModel) => {
-        return new Promise<string>((resolve) => {this.db.collection(NAME.CONVERSATIONS)
-            .add({
-                itemId: item.id,
-                itemImg: item.images[0],
-                itemName: item.name,
-                ownerId: item.owner,
-                seekerId: this.getUserId(),
-            })
-            .then((ref: app.firestore.DocumentReference) => {
-                ref.collection(NAME.MESSAGES).add({}).then(() => {
-                    resolve(ref.id);
-                },
-                );
-                console.log('Conversation successfully created!');
-            })
-            .catch(function(error) {
-                console.error('Error writing document: ', error);
-                throw error;
-            }); });
-    };
+    public getOwnerSharegreements = () => {
+        const userId = this.auth.currentUser?.uid;
 
-    public getAsOwnerConversations = () => {
-        return this.db.collection(NAME.CONVERSATIONS)
-        .where('ownerId', '==', (this.auth.currentUser ? this.auth.currentUser.uid : 'n/a'));
-    };
-
-    public getAsSeekerConversations = () => {
-        return this.db.collection(NAME.CONVERSATIONS)
-        .where('seekerId', '==', (this.auth.currentUser ? this.auth.currentUser.uid : 'n/a'));
-    };
-
-    public getConvo = (convoId: string) => {
-        return new Promise<Conversation>((resolve) => {
-            this.db.collection(NAME.CONVERSATIONS).doc(convoId).get().then(doc => {
-                if (!doc.exists) {
-                    console.log('No such document!');
-                    return;
-                }
-
-                const conversation: Conversation = {
-                    conversationInfo: docToConvo(doc),
-                    messagesRef: doc.ref.collection(NAME.MESSAGES),
-                };
-
-                resolve(conversation);
-            }).catch(error => {
-                console.log('Error getting document:', error);
-            });
-        },
-            );
-    };
-
-    public sendMessage = (messageText: string, ref: firebase.firestore.CollectionReference) => {
-        ref.add({
-            author: this!.auth!.currentUser!.uid,
-            text: messageText,
-            time: new Date(),
+        return this.db.collection(NAME.SHAREGREEMENTS)
+        .where('owner', '==', userId).get()
+        .then(querySnaphot => {
+            return querySnaphot.docs.map(doc => toSharegreement(userId!, doc));
         });
+    };
+
+    public getBorrowerSharegreements = () => {
+        const userId = this.auth.currentUser?.uid;
+
+        return this.db.collection(NAME.SHAREGREEMENTS)
+        .where('borrower', '==', userId).get()
+        .then(querySnaphot => {
+            return querySnaphot.docs.map(doc => toSharegreement(userId!, doc));
+        });
+    };
+
+    public getChatMessages(id: string, messageListener: (messages: Message[]) => void): () => void {
+        const docRef = this.db.collection(NAME.SHAREGREEMENTS).doc(id);
+        const userId = this.auth.currentUser?.uid;
+
+        const messages = docRef.collection(NAME.MESSAGES).orderBy('date', 'asc');
+
+        return messages.onSnapshot(snapshot => {
+            if (snapshot.empty) {return null; }
+
+            const messageList = toMessageList(userId!, snapshot);
+
+            messageListener(messageList);
+        });
+    }
+
+    public sendMessage = (id: string, text: string) => {
+        const docRef = this.db.collection(NAME.SHAREGREEMENTS).doc(id);
+        const userId = this.auth.currentUser?.uid;
+        const messageRef = docRef.collection(NAME.MESSAGES).doc();
+
+        const message = toMessageDTO(userId!, messageRef.id, text);
+
+        messageRef.set(message);
     };
 
     public getUsersGroupNamesAndIds = async () => {
@@ -211,6 +278,68 @@ class Firebase {
             throw new Error(e);
         }
     };
+
+    public async getAllUsers(): Promise<User[]> {
+        const docRef = await this.db.collection(NAME.USERS).get();
+
+        const userList: User[] = docRef.docs.map(doc => {
+            return toUser(doc);
+        });
+
+        return userList;
+    }
+
+    public abortSharegreement(id: string): Promise<void> {
+        const docRef = this.db.collection(NAME.SHAREGREEMENTS).doc(id);
+
+        return docRef.update({ status: SHAREG_STATUS.ABORTED });
+    }
+
+    public advanceSharegStatus(id: string, currentStatus: SHAREG_STATUS): Promise<void> {
+        const docRef = this.db.collection(NAME.SHAREGREEMENTS).doc(id);
+
+        if (currentStatus === SHAREG_STATUS.PENDING_OWNER_DATE_CONFIRM) {
+            return docRef.update({ status: currentStatus + 2 });
+        } else {
+            return docRef.update({ status: currentStatus + 1 });
+        }
+    }
+
+    public declineSharegreement(id: string): Promise<void> {
+        const docRef = this.db.collection(NAME.SHAREGREEMENTS).doc(id);
+
+        return docRef.update({ status: SHAREG_STATUS.DECLINED });
+    }
+
+    public setSharegNewDates(id: string, role: string, dates: DateRange): Promise<void> {
+        const docRef = this.db.collection(NAME.SHAREGREEMENTS).doc(id);
+
+        if (role === 'owner') {
+            return docRef.update({
+                status: SHAREG_STATUS.PENDING_BORROWER_DATE_CONFIRM,
+                startDate: dates[0],
+                endDate: dates[1],
+            });
+        } else {
+            return docRef.update({
+                status: SHAREG_STATUS.PENDING_OWNER_DATE_CONFIRM,
+                startDate: dates[0],
+                endDate: dates[1],
+            });
+        }
+
+    }
+
+    // TODO: not a void
+    private updateUserGroups(groupId: string, users: User[]): void {
+        const ref = this.db.collection(NAME.USER_GROUPS);
+
+        users.map(user => {
+            ref.doc(user.id).update({
+                groups: app.firestore.FieldValue.arrayUnion(groupId),
+            }).catch(e => console.log(e));
+        });
+    }
 
     private updateItem = async (item: ItemModelSend) => {
         const itemDocRef = this.db.collection(NAME.ITEMS).doc(item.id);
@@ -290,7 +419,6 @@ class Firebase {
 
         return st;
     };
-
 }
 
 export default Firebase;

@@ -1,27 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import { ItemModel } from '../../Entities/Interfaces';
-import {  useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { Spin, Carousel, Button } from 'antd';
 import { SubPageHeader } from '../../Components/Headers/SubPageHeader';
 import './borrow-details.css';
 
 import Title from 'antd/lib/typography/Title';
 import Paragraph from 'antd/lib/typography/Paragraph';
+import { DateModal } from '../Sharegreement/DateModal';
+import { DateRange } from '../../Entities/Types';
+import { FirebaseProps } from '../../Entities/PropsInterfaces';
+import { withFirebase } from '../../Firebase';
+import { toSharegCreateReq } from '../../Entities/Mappers';
+import * as NAMES from '../../Constants/Routes';
 
 interface BorrowDetailsProps {
     getItemData: (id: string) => Promise<ItemModel>;
 }
 
-const BorrowDetails: React.FC<BorrowDetailsProps> = (props) => {
+const BorrowDetailsPage: React.FC<BorrowDetailsProps & FirebaseProps> = (props) => {
+    const { getItemData, firebase } = props;
     const [itemData, setItemData] = useState<ItemModel | undefined>(undefined);
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
     const { id } = useParams();
+    const history = useHistory();
 
     useEffect(() => {
         const itemId = id;
         if (typeof itemId === 'string') {
-            props.getItemData(itemId).then(item => setItemData(item));
+            getItemData(itemId).then(item => setItemData(item));
         }
-    }, [id]);
+    }, [id, getItemData]);
+
+    const closeModal = () => {
+        setModalVisible(false);
+    };
+
+    const createSharegreement = (dates: DateRange) => {
+        firebase.createSharegreement(toSharegCreateReq(itemData!, dates))
+        .then(sharegreementId => {
+            history.push(`${NAMES.SHAREGREEMENT}/${sharegreementId}`);
+        });
+    };
 
     return(
         <div>
@@ -32,7 +52,7 @@ const BorrowDetails: React.FC<BorrowDetailsProps> = (props) => {
             <React.Fragment>
                 <Carousel>
                     {itemData.images.map(image => (
-                        <img key={image} src={image}/>
+                        <img key={image} src={image} alt="N/A"/>
                     ))}
                 </Carousel>
                 <Title level={3}>{itemData.name}</Title>
@@ -45,15 +65,20 @@ const BorrowDetails: React.FC<BorrowDetailsProps> = (props) => {
                         size="large"
                         type="primary"
                         block={true}
+                        onClick={() => {setModalVisible(true); }}
                 >
                     Request Item
                 </Button>
             </React.Fragment>
         )
         }
-
+        <DateModal
+            visible={modalVisible}
+            closeModal={closeModal}
+            onModalSubmit={createSharegreement}
+        />
         </div>
     );
 };
 
-export { BorrowDetails };
+export const BorrowDetails = withFirebase(BorrowDetailsPage);

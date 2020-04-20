@@ -1,7 +1,7 @@
 import React from 'react';
 import { withFirebase } from '../../Firebase';
 import { ItemPreview } from '../../Entities/Interfaces';
-import { NewItemButton } from '../../Components/NewItemButton/NewItemButton';
+import { NewButton } from '../../Components/NewButton/NewButton';
 import { List } from '../../Components/List/List';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
 import { useHistory } from 'react-router-dom';
@@ -19,9 +19,13 @@ const MyItemsPageComp: React.FC<MyItemsProps & FirebaseProps> = (props) => {
         history.push(`${ROUTES.EDIT_ITEM}/${id}`);
     };
 
+    const createNewItem = () => {
+        history.push(ROUTES.ADD_ITEM);
+    };
+
     return (
           <div>
-            <NewItemButton/>
+            <NewButton title="New Item" onClick={createNewItem}/>
             <List
                   itemList={props.itemList}
                   onClickItem={onClickItem}
