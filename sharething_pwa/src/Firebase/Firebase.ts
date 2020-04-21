@@ -129,6 +129,7 @@ class Firebase {
     public createUserWithEmailAndPsw = (email: string, password: string) => {
         return this.auth.createUserWithEmailAndPassword(email, password);
     };
+
     public signInUserWithEmailAndPsw = (email: string, password: string) => {
         return this.auth.signInWithEmailAndPassword(email, password);
     };
@@ -144,7 +145,24 @@ class Firebase {
         }
     }
 
-    public userRef = (uid: string) => this.db.collection(NAME.USERS).doc(uid);
+    public initializeNewUser = (username: string): Promise<void> => {
+        const userId = this.auth.currentUser?.uid;
+        const batch = this.db.batch();
+
+        const userRef = this.db.collection(NAME.USERS).doc(userId);
+
+        batch.set(userRef, { id: userId, username });
+
+        const userItemsRef = this.db.collection(NAME.USER_ITEMS).doc(userId);
+
+        batch.set(userItemsRef, { });
+
+        const userGroupsRef = this.db.collection(NAME.USER_GROUPS).doc(userId);
+
+        batch.set(userGroupsRef, { });
+
+        return batch.commit();
+    };
 
     public async fetchSingleItem(id: string): Promise<ItemModel> {
         try {
@@ -176,13 +194,17 @@ class Firebase {
             name: await this.getUserName(currentUserId),
         };
 
-        const members = await Promise.all(group.members.map(async memberId => {
-            return {
-                id: memberId,
-                name: await this.getUserName(memberId),
-            };
-        }),
-        );
+        const members = [];
+
+        if (group.members) {
+            await Promise.all(group.members.map(async memberId => {
+                members.push({
+                    id: memberId,
+                    name: await this.getUserName(memberId),
+                });
+            }),
+            );
+        }
 
         members.push(admin);
 
@@ -208,6 +230,34 @@ class Firebase {
     public getUserItems = () => {
         return this.db.collection(NAME.ITEMS).where('ownerId', '==', (this.auth.currentUser ? this.auth.currentUser.uid : 'n/a'));
     };
+
+    public async deleteItem(id: string): Promise<void> {
+        const itemRef = this.db.collection(NAME.ITEMS).doc(id);
+
+        const itemIsBorrowed: boolean = (await itemRef.get()).data()!.borrowed;
+
+        if (itemIsBorrowed) {
+            return Promise.resolve();
+        }
+
+        const batch = this.db.batch();
+
+        batch.delete(itemRef);
+
+        const userId = this.auth.currentUser?.uid;
+        const userItemRef = this.db.collection(NAME.USER_ITEMS).doc(userId);
+        const userItemDoc = await userItemRef.get();
+        const userItems: ItemPreviewDTO[] = userItemDoc.data()!.owned_items;
+        const newUserItems = userItems.filter(item => item.id !== id);
+
+        batch.update(userItemRef, { owned_items: newUserItems });
+        await batch.commit();
+
+        (await this.storage.ref(`${NAME.IMAGE_STORAGE_BASE_PATH}/${id}`)
+            .listAll()).items.forEach(item => item.delete());
+
+        return Promise.resolve();
+    }
 
     public getOwnerSharegreements = () => {
         const userId = this.auth.currentUser?.uid;
@@ -259,6 +309,10 @@ class Firebase {
             const userId = this.auth.currentUser?.uid;
             const userGroupIdsRef = this.db.collection(NAME.USER_GROUPS).doc(userId);
             const userGroupIdsDoc = await userGroupIdsRef.get();
+
+            if (!userGroupIdsDoc.data() || !userGroupIdsDoc.data()!.groups) {
+                return [];
+            }
             const userGroupIds = userGroupIdsDoc.data()!.groups;
 
             const userGroups: GroupNameAndId[] = [];
@@ -395,7 +449,7 @@ class Firebase {
     };
 
     private uploadImages = async (id: string, images: ImagePack) => {
-        const rootImageRef = this.storage.ref(`${NAME.IMAGE_STORAGE_BASE_PATH}${id}/`);
+        const rootImageRef = this.storage.ref(`${NAME.IMAGE_STORAGE_BASE_PATH}/${id}`);
 
         return Promise.all(images.map((image, index) => {
             const imageRef = rootImageRef.child(index.toString());
@@ -409,7 +463,7 @@ class Firebase {
     };
 
     private getImageUrls = async (id: string) => {
-        const rootImageRef = this.storage.ref(`${NAME.IMAGE_STORAGE_BASE_PATH}${id}/`);
+        const rootImageRef = this.storage.ref(`${NAME.IMAGE_STORAGE_BASE_PATH}/${id}`);
 
         const st = await rootImageRef.listAll().then((res) => {
             return Promise.all(res.items.map(item => {

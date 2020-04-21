@@ -32,14 +32,14 @@ class SignUpFormBase extends Component {
 
         this.props.firebase.createUserWithEmailAndPsw(email, passwordOne)
             .then(authUser => {
-                const userId = authUser.user.uid;
-                this.props.firebase.userRef(userId).set({ username, userId });
+                return this.props.firebase.initializeNewUser(username);
             })
             .then(() => {
                 this.setState({ ...INITIAL_STATE });
                 this.props.history.push(ROUTES.MY_ITEMS);
             })
             .catch(error => { this.setState({ error }) });
+
 
         event.preventDefault();
     };

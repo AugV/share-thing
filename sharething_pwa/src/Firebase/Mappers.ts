@@ -4,6 +4,14 @@ import { GroupDTO } from './DTOs';
 export const userItemsMapper = (doc: firebase.firestore.DocumentSnapshot) => {
     try {
         const docData = doc.data();
+        if (!docData) {
+            return {
+                userOwnedItemList: [],
+                userLentItemList:  [],
+                userBorrowedItemList: [],
+                groupList: [],
+            };
+        }
         const userItems: UserItemsDocument = {
             userOwnedItemList: docData!.owned_items,
             userLentItemList:  docData!.lent_items,
@@ -71,7 +79,7 @@ export const toGroupDTO = (docId: string, admin: User, members: User[], groupDet
         id: docId!,
         admins: [admin],
         name: groupDetails.name!,
-        description: groupDetails.description!,
+        description: groupDetails.description ? groupDetails.description : 'No description',
         members,
     };
 
@@ -82,7 +90,7 @@ export const toUser = (doc: firebase.firestore.DocumentSnapshot) => {
     try {
         const docData = doc.data();
         const user: User = {
-            id: docData!.userId,
+            id: docData!.id,
             name: docData!.username,
         };
         return user;
