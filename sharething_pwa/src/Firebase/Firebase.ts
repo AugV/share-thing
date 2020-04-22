@@ -67,6 +67,32 @@ class Firebase {
         });
     }
 
+    public addItemToBorrowedItems() {    }
+
+    public addItemToLentItems(sharegreement: SharegreementModel): Promise<void> {
+        const userId = this.auth.currentUser?.uid;
+        const docRef = this.db.collection(NAME.USER_ITEMS).doc(userId);
+
+        return docRef.update({ lent_items: app.firestore.FieldValue.arrayUnion({
+            id: sharegreement.id,
+            name: sharegreement.itemName,
+            imageUrl: sharegreement.itemImg,
+            end_date: sharegreement.endDate,
+        }),
+        });
+    }
+
+    public async ownerItemReturned(sharegreement: SharegreementModel): Promise<void> {
+        const userId = this.auth.currentUser?.uid;
+        const docRef = this.db.collection(NAME.USER_ITEMS).doc(userId);
+
+        const userItemDoc = await docRef.get();
+        const userItems: ItemPreviewDTO[] = userItemDoc.data()!.lent_items;
+        const newUserItems = userItems.filter(item => item.id !== sharegreement.id);
+
+        return docRef.update({ lent_items: newUserItems });
+    }
+
     public queryItems = async (query: ItemQuery) => {
         const itemCollection = this.db.collection(NAME.ITEMS).limit(5);
 

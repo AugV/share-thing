@@ -31,8 +31,8 @@ const SharegreementDetails: React.FC<SharegDetailsProps> = (props) => {
                 <Col span={6}>End:</Col>
                 <Col span={6}>{sharegData.endDate}</Col>
             </Row>
-            {sharegData.role === 'owner' && <OwnerActions sharegId={sharegData.id} status={sharegData.status} />}
-            {sharegData.role === 'borrower' && <BorrowerActions sharegId={sharegData.id} status={sharegData.status} />}
+            {sharegData.role === 'owner' && <OwnerActions shareg={sharegData} status={sharegData.status} />}
+            {sharegData.role === 'borrower' && <BorrowerActions shareg={sharegData} status={sharegData.status} />}
         </div>
     );
 };

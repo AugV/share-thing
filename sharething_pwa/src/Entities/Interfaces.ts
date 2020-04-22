@@ -35,6 +35,7 @@ export interface SharegreementModel {
     id: string;
     itemId: string;
     itemName: string;
+    itemImg?: string;
     owner: string;
     startDate: string;
     endDate: string;
