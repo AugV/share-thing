@@ -99,6 +99,18 @@ const OwnerActionsComp: React.FC<SharegActionsProps & FirebaseProps> = (props) =
                         <p>Sharegreement is finished</p>
                     </>
                 );
+            case SHAREG_STATUS.ABORTED:
+                return (
+                    <>
+                        <p>Sharegreement was aborted</p>
+                    </>
+                );
+            case SHAREG_STATUS.DECLINED:
+                return (
+                    <>
+                        <p>Sharegreement was declined</p>
+                    </>
+                );
             default:
                 return null;
         }

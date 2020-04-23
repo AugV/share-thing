@@ -67,7 +67,18 @@ class Firebase {
         });
     }
 
-    public addItemToBorrowedItems() {    }
+    public addItemToBorrowedItems(sharegreement: SharegreementModel): Promise<void> {
+        const userId = this.auth.currentUser?.uid;
+        const docRef = this.db.collection(NAME.USER_ITEMS).doc(userId);
+
+        return docRef.update({ borrowed_items: app.firestore.FieldValue.arrayUnion({
+            id: sharegreement.id,
+            name: sharegreement.itemName,
+            imageUrl: sharegreement.itemImg,
+            end_date: sharegreement.endDate,
+        }),
+        });
+    }
 
     public addItemToLentItems(sharegreement: SharegreementModel): Promise<void> {
         const userId = this.auth.currentUser?.uid;
@@ -80,6 +91,17 @@ class Firebase {
             end_date: sharegreement.endDate,
         }),
         });
+    }
+
+    public async borrowerItemReturned(sharegreement: SharegreementModel): Promise<void> {
+        const userId = this.auth.currentUser?.uid;
+        const docRef = this.db.collection(NAME.USER_ITEMS).doc(userId);
+
+        const userItemDoc = await docRef.get();
+        const userItems: ItemPreviewDTO[] = userItemDoc.data()!.borrowed_items;
+        const newUserItems = userItems.filter(item => item.id !== sharegreement.id);
+
+        return docRef.update({ borrowed_items: newUserItems });
     }
 
     public async ownerItemReturned(sharegreement: SharegreementModel): Promise<void> {
@@ -239,6 +261,23 @@ class Firebase {
         this.updateUserGroups(docRef.id, members);
 
         docRef.set(newGroup);
+    }
+
+    public async updateGroup(group: Partial<GroupModelSend>): Promise<void> {
+        const docRef = this.db.collection(NAME.GROUPS).doc(group.id);
+        const newMembers: {id: string, name: string}[] = [];
+
+        if (group.members) {
+            await Promise.all(group.members.map(async memberId => {
+                newMembers.push({
+                    id: memberId,
+                    name: await this.getUserName(memberId),
+                });
+            }),
+            );
+        }
+
+        return docRef.update({ members: app.firestore.FieldValue.arrayUnion(newMembers) });
     }
 
     public async getUserName(userId: string): Promise<string> {
@@ -414,7 +453,7 @@ class Firebase {
     private updateUserGroups(groupId: string, users: User[]): void {
         const ref = this.db.collection(NAME.USER_GROUPS);
 
-        users.map(user => {
+        users.forEach(user => {
             ref.doc(user.id).update({
                 groups: app.firestore.FieldValue.arrayUnion(groupId),
             }).catch(e => console.log(e));

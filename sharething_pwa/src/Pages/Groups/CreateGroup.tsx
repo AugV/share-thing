@@ -44,7 +44,7 @@ const CreateGroup: React.FC<CreateGroupProps> = (props) => {
     };
 
     const saveGroup = () => {
-        const group: GroupModelSend =  {
+        const group: GroupModelSend = {
             name: formData.name!,
             description: formData.description,
             members: selectedMembers!,

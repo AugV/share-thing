@@ -20,6 +20,10 @@ const BorrowItems: React.FC<FirebaseProps> = (props) => {
         return props.firebase.fetchSingleItem(itemId);
     };
 
+    const getUserName = (userId: string) => {
+        return props.firebase.getUserName(userId);
+    };
+
     return (
             <Switch>
                 <Route
@@ -34,7 +38,13 @@ const BorrowItems: React.FC<FirebaseProps> = (props) => {
                 />
                 <Route
                     path={ROUTES.BORROW_DETAILS_ID}
-                    render={(propss) => (<BorrowDetails getItemData={fetchItem} {...propss}/>)}
+                    render={(propss) => (
+                        <BorrowDetails
+                            getItemData={fetchItem}
+                            getOwnerName={getUserName}
+                            {...propss}
+                        />
+                    )}
                 />
             </Switch>
     );

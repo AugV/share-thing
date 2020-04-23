@@ -2,6 +2,7 @@ import React from 'react';
 import { ItemPreview } from '../../Entities/Interfaces';
 import { ListItem } from './ListItem';
 import Spinner from 'react-bootstrap/Spinner';
+import './list-item.css';
 
 interface ListProps {
     itemList: ItemPreview[];

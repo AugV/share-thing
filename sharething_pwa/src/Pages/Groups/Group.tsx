@@ -27,6 +27,10 @@ const GroupRoutes: React.FC<FirebaseProps> = (props) => {
         return firebase.getAllUsers();
     };
 
+    const updateGroup = (group: Partial<GroupModelSend>) => {
+        return firebase.updateGroup(group);
+    };
+
     return(
         <Switch>
             <Route
@@ -46,7 +50,12 @@ const GroupRoutes: React.FC<FirebaseProps> = (props) => {
             <Route
                 path={ROUTES.GROUP_DETAILS_ID}
                 render={(propss) => (
-                    <GroupDetails {...propss} fetchData={fetchSingleGroup}/>
+                    <GroupDetails
+                        {...propss}
+                        fetchData={fetchSingleGroup}
+                        getUserList={getUserList}
+                        updateGroup={updateGroup}
+                    />
                     )}
             />
         </Switch>

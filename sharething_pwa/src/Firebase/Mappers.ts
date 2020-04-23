@@ -66,7 +66,7 @@ export const toGroup = (doc: firebase.firestore.DocumentSnapshot) => {
             name: docData!.name,
             description: docData!.description,
             admins: docData!.admins,
-            members: docData!.users,
+            members: docData!.members,
         };
         return group;
     } catch (e) {

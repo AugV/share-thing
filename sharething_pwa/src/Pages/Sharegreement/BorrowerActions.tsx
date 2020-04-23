@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SHAREG_STATUS } from '../../Entities/Interfaces';
+import { SHAREG_STATUS, SharegreementModel } from '../../Entities/Interfaces';
 import { Button } from 'antd';
 import { withFirebase } from '../../Firebase';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
@@ -7,30 +7,38 @@ import { DateModal } from './DateModal';
 import { DateRange } from '../../Entities/Types';
 
 interface SharegActionsProps {
-    sharegId: string;
+    shareg: SharegreementModel;
     status: number;
 }
 
 const BorrowerActionsComp: React.FC<SharegActionsProps & FirebaseProps> = (props) => {
-    const { sharegId, status, firebase } = props;
+    const { shareg, status, firebase } = props;
     const [modalVisible, setmodalVisible] = useState(false);
 
     const abortSharegreement = () => {
-        firebase.abortSharegreement(sharegId);
+        firebase.abortSharegreement(shareg.id);
     };
 
     const advanceStatus = () => {
-        firebase.advanceSharegStatus(sharegId, status);
+        firebase.advanceSharegStatus(shareg.id, status);
     };
 
     const declineSharegreement = () => {
-        firebase.declineSharegreement(sharegId);
+        firebase.declineSharegreement(shareg.id);
     };
 
     const offerNewDates = (dates: DateRange) => {
-        firebase.setSharegNewDates(sharegId, 'borrower', dates).then(() => {
+        firebase.setSharegNewDates(shareg.id, 'borrower', dates).then(() => {
             setmodalVisible(false);
         });
+    };
+
+    const itemIsBorrowed = () => {
+        firebase.addItemToBorrowedItems(shareg);
+    };
+
+    const itemReturned = () => {
+        firebase.borrowerItemReturned(shareg);
     };
 
     const renderBorrowerActions = () => {
@@ -66,13 +74,13 @@ const BorrowerActionsComp: React.FC<SharegActionsProps & FirebaseProps> = (props
                 return (
                     <>
                         <Button onClick={abortSharegreement}>Abort</Button>
-                        <Button onClick={advanceStatus}>Item Received</Button>
+                        <Button onClick={() => {advanceStatus(); itemIsBorrowed(); }}>Item Received</Button>
                     </>
                 );
             case SHAREG_STATUS.BORROWER_ITEM_DISPATCHED:
                 return (
                     <>
-                        <Button onClick={advanceStatus}>Item returned</Button>
+                        <Button onClick={() => {advanceStatus(); itemReturned(); }}>Item returned</Button>
                     </>
                 );
             case SHAREG_STATUS.BORROWER_ITEM_RETURNED:
@@ -84,7 +92,19 @@ const BorrowerActionsComp: React.FC<SharegActionsProps & FirebaseProps> = (props
             case SHAREG_STATUS.FINISHED:
                 return (
                     <>
-                        <p>Owner confirmed that item was returned</p>
+                        <p>Owner confirmed that item was returned Sharegreement is finished</p>
+                    </>
+                );
+            case SHAREG_STATUS.ABORTED:
+                return (
+                <>
+                    <p>Sharegreement was aborted</p>
+                </>
+                );
+            case SHAREG_STATUS.DECLINED:
+                return (
+                    <>
+                        <p>Sharegreement was declined</p>
                     </>
                 );
             default:

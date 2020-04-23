@@ -103,6 +103,7 @@ export interface GroupModel {
 }
 
 export interface GroupModelSend {
+    id?: string;
     name: string;
     description: string | undefined;
     members: string[];
