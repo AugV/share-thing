@@ -16,21 +16,28 @@ import * as NAMES from '../../Constants/Routes';
 
 interface BorrowDetailsProps {
     getItemData: (id: string) => Promise<ItemModel>;
+    getOwnerName: (userId: string) => Promise<string>;
 }
 
 const BorrowDetailsPage: React.FC<BorrowDetailsProps & FirebaseProps> = (props) => {
-    const { getItemData, firebase } = props;
+    const { getItemData, getOwnerName, firebase } = props;
     const [itemData, setItemData] = useState<ItemModel | undefined>(undefined);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [ownerName, setOwnername] = useState<string | undefined>(undefined);
     const { id } = useParams();
     const history = useHistory();
 
     useEffect(() => {
         const itemId = id;
         if (typeof itemId === 'string') {
-            getItemData(itemId).then(item => setItemData(item));
+            getItemData(itemId).then(item => {
+                setItemData(item);
+                getOwnerName(item.owner).then(name => {
+                    setOwnername(name);
+                });
+            });
         }
-    }, [id, getItemData]);
+    }, [id, getItemData, getOwnerName]);
 
     const closeModal = () => {
         setModalVisible(false);
@@ -45,11 +52,11 @@ const BorrowDetailsPage: React.FC<BorrowDetailsProps & FirebaseProps> = (props) 
 
     return(
         <div>
-        <SubPageHeader title="Overview"/>
         {!itemData ?
             <Spin/> :
-        (
-            <React.Fragment>
+            (
+                <React.Fragment>
+                <SubPageHeader title={itemData.name}/>
                 <Carousel>
                     {itemData.images.map(image => (
                         <img key={image} src={image} alt="N/A"/>
@@ -59,7 +66,7 @@ const BorrowDetailsPage: React.FC<BorrowDetailsProps & FirebaseProps> = (props) 
                 <div className="description">
                 <Paragraph ellipsis={{ expandable: true }} >{itemData.description}</Paragraph>
                 </div>
-                <Title level={4}>Owner: {itemData.owner}</Title>
+                {ownerName && <Title level={4}>Owner: {ownerName}</Title>}
                 <Button
                         style={{ position: 'fixed', bottom: '0', marginTop: '10px' }}
                         size="large"

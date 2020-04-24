@@ -9,6 +9,7 @@ export const toSharegCreateReq = (itemData: ItemModel, dates: DateRange): Partia
     return {
         itemId: itemData.id,
         itemName: itemData.name,
+        itemImg: itemData.images[0],
         owner: itemData.owner,
         startDate: dates[0],
         endDate: dates[1],

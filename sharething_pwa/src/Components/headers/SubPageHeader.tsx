@@ -4,6 +4,7 @@ import './headers.css';
 
 interface SubPageHeaderProps {
     title: string;
+    action?: JSX.Element;
 }
 
 const SubPageHeaderComponent: React.FC<SubPageHeaderProps> = (props) => (
@@ -15,6 +16,9 @@ const SubPageHeaderComponent: React.FC<SubPageHeaderProps> = (props) => (
             <div className="sub-page-title">
                 {props.title}
             </div>
+        </div>
+    <div className="action-icon">
+            {props.action}
         </div>
     </div>
 );

@@ -30,7 +30,7 @@ const ChatPage: React.FC<Props> = (props) => {
 
     useEffect(() => {
         return firebase.getChatMessages(id!, messageListener);
-    }, [firebase]);
+    }, [firebase, id]);
 
     useEffect(() => {
         scrollBottomDummy!.current!.scrollIntoView({ behavior: 'smooth' });

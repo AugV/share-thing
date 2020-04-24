@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import Search from 'antd/lib/input/Search';
 import { AddGroupBox } from '../../Components/AddGroupBox/AddGroupBox';
 import { useHistory } from 'react-router-dom';
@@ -16,8 +16,12 @@ interface SearchListProps {
 }
 
 const SearchPage: React.FC<SearchListProps> = (props) => {
+    const { onSearch } = props;
     const history = useHistory();
 
+    useEffect(() => {
+        onSearch({ name: null, groups: null });
+    }, []);
     const selectedGroups = useRef<GroupsQueryParam>(null);
 
     const onItemClick = (id: string) => {
@@ -30,7 +34,7 @@ const SearchPage: React.FC<SearchListProps> = (props) => {
 
     const search = (searchValue: string) => {
         const query = toItemQuery(searchValue, selectedGroups.current);
-        props.onSearch(query);
+        onSearch(query);
     };
 
     return(

@@ -7,11 +7,13 @@ import { ImageInput } from '../../Components/ImageUpload/Input';
 import { AddGroupBox } from '../../Components/AddGroupBox/AddGroupBox';
 import { Input, Button } from 'antd';
 import { ImagePack } from '../../Entities/Types';
+import { MdDeleteForever } from 'react-icons/md';
 const { TextArea } = Input;
 
 interface ItemFormProps {
     fetchData: (id?: string) => Promise<ItemModel>;
     saveData: (item: ItemModelSend) => void;
+    deleteData?: (id: string) => void;
     pageTitle: string;
 }
 
@@ -24,7 +26,7 @@ interface ItemTextFormData {
 const imageBoxPosition: string[] = ['0', '1', '2'];
 
 const ItemFormPage: React.FC<ItemFormProps> = (props) => {
-    const { fetchData, saveData, pageTitle } = props;
+    const { fetchData, saveData, deleteData, pageTitle } = props;
 
     const [textFormData, setTextFormData] = useState<ItemTextFormData | undefined>(undefined);
     const [preview, setPreview] = useState<string[]>([]);
@@ -96,6 +98,12 @@ const ItemFormPage: React.FC<ItemFormProps> = (props) => {
         saveData(completeItem);
     };
 
+    const deleteButton = () => (
+        <>
+            {deleteData && <MdDeleteForever onClick={() => deleteData(id!)} size={50}/>}
+        </>
+    );
+
     return(
         <>
             {
@@ -104,7 +112,7 @@ const ItemFormPage: React.FC<ItemFormProps> = (props) => {
 
                 (
                 <div>
-                    <SubPageHeader title={pageTitle}/>
+                    <SubPageHeader title={pageTitle} action={deleteButton()}/>
                     <div className="container" style={{ paddingBottom: '50px' }}>
 
                         <h3>Images</h3>

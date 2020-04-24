@@ -26,3 +26,7 @@
     font-size: 34px;
     line-height: 40px;
 }
+
+.action-icon {
+    float: right;
+}

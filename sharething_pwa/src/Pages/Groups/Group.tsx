@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import * as ROUTES from '../../Constants/Routes';
 import { GroupList } from './GroupList';
 import { CreateGroup } from './CreateGroup';
@@ -11,17 +11,24 @@ import { GroupModelSend } from '../../Entities/Interfaces';
 
 const GroupRoutes: React.FC<FirebaseProps> = (props) => {
     const { firebase } = props;
+    const history = useHistory();
 
     const fetchSingleGroup = (groupId: string) => {
         return firebase.fetchSingleGroup(groupId);
     };
 
     const createGroup = (group: GroupModelSend) => {
-        return firebase.createGroup(group);
+        return firebase.createGroup(group).then(() => {
+            history.push(ROUTES.GROUP_LIST);
+        });
     };
 
     const getUserList = () => {
         return firebase.getAllUsers();
+    };
+
+    const updateGroup = (group: Partial<GroupModelSend>) => {
+        return firebase.updateGroup(group);
     };
 
     return(
@@ -43,7 +50,12 @@ const GroupRoutes: React.FC<FirebaseProps> = (props) => {
             <Route
                 path={ROUTES.GROUP_DETAILS_ID}
                 render={(propss) => (
-                    <GroupDetails {...propss} fetchData={fetchSingleGroup}/>
+                    <GroupDetails
+                        {...propss}
+                        fetchData={fetchSingleGroup}
+                        getUserList={getUserList}
+                        updateGroup={updateGroup}
+                    />
                     )}
             />
         </Switch>

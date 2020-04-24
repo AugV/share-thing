@@ -4,6 +4,14 @@ import { GroupDTO } from './DTOs';
 export const userItemsMapper = (doc: firebase.firestore.DocumentSnapshot) => {
     try {
         const docData = doc.data();
+        if (!docData) {
+            return {
+                userOwnedItemList: [],
+                userLentItemList:  [],
+                userBorrowedItemList: [],
+                groupList: [],
+            };
+        }
         const userItems: UserItemsDocument = {
             userOwnedItemList: docData!.owned_items,
             userLentItemList:  docData!.lent_items,
@@ -58,7 +66,7 @@ export const toGroup = (doc: firebase.firestore.DocumentSnapshot) => {
             name: docData!.name,
             description: docData!.description,
             admins: docData!.admins,
-            members: docData!.users,
+            members: docData!.members,
         };
         return group;
     } catch (e) {
@@ -71,7 +79,7 @@ export const toGroupDTO = (docId: string, admin: User, members: User[], groupDet
         id: docId!,
         admins: [admin],
         name: groupDetails.name!,
-        description: groupDetails.description!,
+        description: groupDetails.description ? groupDetails.description : 'No description',
         members,
     };
 
@@ -82,7 +90,7 @@ export const toUser = (doc: firebase.firestore.DocumentSnapshot) => {
     try {
         const docData = doc.data();
         const user: User = {
-            id: docData!.userId,
+            id: docData!.id,
             name: docData!.username,
         };
         return user;
@@ -102,6 +110,7 @@ export const toSharegreementDTO = (
         id,
         itemId: data.itemId!,
         itemName: data.itemName!,
+        itemImg: data.itemImg,
         owner: data.owner || 'tBvrnODI82T1zZeUUOrPc1SbXYt1',
         borrower,
         startDate: data.startDate || '2020/05/05',
@@ -117,6 +126,7 @@ export const toSharegreement = (userId: string, doc: firebase.firestore.Document
         id: docData!.id,
         itemId: docData!.itemId!,
         itemName: docData!.itemName!,
+        itemImg: docData!.itemImg ? docData!.itemImg : 'No Image',
         owner: docData!.owner,
         borrower: docData!.borrower,
         startDate: docData!.startDate,

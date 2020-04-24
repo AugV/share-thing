@@ -35,6 +35,7 @@ export interface SharegreementModel {
     id: string;
     itemId: string;
     itemName: string;
+    itemImg?: string;
     owner: string;
     startDate: string;
     endDate: string;
@@ -102,6 +103,7 @@ export interface GroupModel {
 }
 
 export interface GroupModelSend {
+    id?: string;
     name: string;
     description: string | undefined;
     members: string[];

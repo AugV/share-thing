@@ -32,8 +32,8 @@ const GroupListComponent: React.FC<OwnProps> = (props) => {
                 size="large"
                 dataSource={userGroups}
                 renderItem={group => (
-                    <List.Item onClick={() => {openGroupDetails(group.id); }}>
-                        {group.name}
+                    <List.Item style={{ background: 'whitesmoke' }} onClick={() => {openGroupDetails(group.id); }}>
+                        <h2>{group.name}</h2>
                     </List.Item>
                     )
                 }

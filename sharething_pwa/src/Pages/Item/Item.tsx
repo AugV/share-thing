@@ -14,7 +14,12 @@ const Item: React.FC<FirebaseProps> = (props) => {
 
     const saveItem = (item: ItemModelSend) => {
         firebase.saveItem(item);
-        history.push(ROUTES.HOME);
+        history.push(ROUTES.MY_ITEMS);
+    };
+
+    const deleteItem = (id: string) => {
+        history.push(ROUTES.MY_ITEMS);
+        return firebase.deleteItem(id);
     };
 
     const initialData = async () => {
@@ -57,6 +62,7 @@ const Item: React.FC<FirebaseProps> = (props) => {
                                             fetchData={fetchItem as FetchData}
                                             pageTitle={'Edit Item'}
                                             saveData={saveItem}
+                                            deleteData={deleteItem}
                                         />
                                     )}
             />
