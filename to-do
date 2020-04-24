@@ -3,7 +3,11 @@ TO-DO list:
 	- after sign-up with newly created user crash
 	- Home header drop-down onclick close & position adjustment
 	- unify fonts and font sizes
+	- **NOT A BUG** storage folder naming has '/' suffix
+	- if no user items present spinner keeps on spinning
+	
 	
 -- FEAT
 	- delete Item
 	- delete Sharegreement
+	- style groupList items
