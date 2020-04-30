@@ -5,7 +5,7 @@ import { GroupModel, User, GroupModelSend } from '../../Entities/Interfaces';
 import { Spin, List, Button } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import Paragraph from 'antd/lib/typography/Paragraph';
-import { SelectionList } from '../../Components/selectors/SelectionList';
+import { SelectionList } from '../../Components/Selectors/SelectionList';
 
 interface GroupDetailsProps {
     fetchData: (id: string) => Promise<GroupModel>;

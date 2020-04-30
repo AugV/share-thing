@@ -8,7 +8,7 @@ import { GroupsQueryParam } from '../../Entities/Types';
 import { ItemQuery, ItemPreview } from '../../Entities/Interfaces';
 import { List } from '../../Components/List/List';
 import { MainNavBar } from '../../Components/NavBar/BottomNavBar';
-import { BasicHeader } from '../../Components/Headers/BasicHeader';
+import { Header } from '../../Components/Headers/Header';
 
 interface SearchListProps {
     items: ItemPreview[] | undefined;
@@ -39,7 +39,7 @@ const SearchPage: React.FC<SearchListProps> = (props) => {
 
     return(
         <div>
-            <BasicHeader title="Borrow"/>
+            <Header title="Borrow"/>
             <Search
                 placeholder="input search text"
                 onSearch={search}

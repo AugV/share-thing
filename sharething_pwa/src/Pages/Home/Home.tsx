@@ -1,19 +1,22 @@
 import React from 'react';
-import { Switch, Route } from 'react-router';
+import { Switch, Route, useHistory } from 'react-router';
 import * as ROUTES from '../../Constants/Routes';
 import { MyItemsPage } from './MyItems';
 import { MainNavBar } from '../../Components/NavBar/BottomNavBar';
-import { HomeHeader } from '../../Components/Headers/Header';
+import { HomeHeader } from '../../Components/Headers/HomeHeader';
 import { UserItemsDocument } from '../../Entities/Interfaces';
 import { LentItemsPage } from './LentItems';
 import { BorrowedItemsPage } from './BorrowedItems';
 import { withUserItems } from '../../Context/withUserItems';
+import { BsBoxArrowRight } from 'react-icons/bs';
+import { Typography } from 'antd';
 
 interface UserItems {
     userItems: UserItemsDocument;
 }
 
 const HomeRoutes: React.FC<UserItems> = (props) => {
+    const history = useHistory();
 
     const subPages: Map<string, string> = function getMapForDropdown(): Map<string, string> {
         const map = new Map();
@@ -23,11 +26,24 @@ const HomeRoutes: React.FC<UserItems> = (props) => {
         return map;
     }();
 
+    const signOutButton = () => (
+      <React.Fragment>
+          <BsBoxArrowRight onClick={signOut} size={50}/>
+      </React.Fragment>
+    );
+
+    const signOut = () => {
+        history.push(ROUTES.SIGN_OUT);
+    };
+
     const { userItems } = props;
 
     return (
     <div>
-      <HomeHeader subPages={subPages}/>
+      <HomeHeader
+        subPages={subPages}
+        action={signOutButton()}
+      />
       {userItems &&
         (
           <Switch>

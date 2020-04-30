@@ -4,7 +4,7 @@ import Input from 'antd/lib/input/Input';
 import TextArea from 'antd/lib/input/TextArea';
 import Button from 'antd/lib/button/button';
 import { User, GroupModelSend } from '../../Entities/Interfaces';
-import { SelectionList } from '../../Components/selectors/SelectionList';
+import { SelectionList } from '../../Components/Selectors/SelectionList';
 
 interface FormData {
     name: string | undefined;

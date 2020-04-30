@@ -1,15 +1,25 @@
 import React from 'react';
-import './headers.css';
-import { Dropdown } from '../Dropdown/Dropdown';
 
-interface HeaderProps {
-    subPages: Map<string, string>;
+interface BasicHeaderProps {
+    title: string;
+    action?: JSX.Element;
 }
 
-const HeaderComponent: React.FC<HeaderProps> = (props) => (
+const Header: React.FC<BasicHeaderProps> = (props) => (
     <div className="home-header">
-      <Dropdown selectionItems={props.subPages}/>
+        <div className="sub-page-title-box">
+            <div className="sub-page-title">
+                {props.title}
+            </div>
+            {props.action &&
+                (
+                    <div className="action-icon">
+                        {props.action}
+                    </div>
+                )
+            }
+        </div>
     </div>
 );
 
-export const HomeHeader = HeaderComponent;
+export { Header };

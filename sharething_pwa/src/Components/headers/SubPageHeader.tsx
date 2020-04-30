@@ -17,7 +17,7 @@ const SubPageHeaderComponent: React.FC<SubPageHeaderProps> = (props) => (
                 {props.title}
             </div>
         </div>
-    <div className="action-icon">
+        <div className="action-icon">
             {props.action}
         </div>
     </div>
