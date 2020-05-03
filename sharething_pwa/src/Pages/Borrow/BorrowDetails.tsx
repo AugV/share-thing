@@ -56,28 +56,36 @@ const BorrowDetailsPage: React.FC<BorrowDetailsProps & FirebaseProps> = (props) 
             <Spin/> :
             (
                 <React.Fragment>
-                <SubPageHeader title={itemData.name}/>
-                <Carousel>
-                    {itemData.images.map(image => (
-                        <img key={image} src={image} alt="N/A"/>
-                    ))}
-                </Carousel>
-                <Title level={3}>{itemData.name}</Title>
-                <div className="description">
-                <Paragraph ellipsis={{ expandable: true }} >{itemData.description}</Paragraph>
-                </div>
-                {ownerName && <Title level={4}>Owner: {ownerName}</Title>}
-                <Button
-                        style={{ position: 'fixed', bottom: '0', marginTop: '10px' }}
-                        size="large"
-                        type="primary"
-                        block={true}
-                        onClick={() => {setModalVisible(true); }}
-                >
-                    Request Item
-                </Button>
-            </React.Fragment>
-        )
+                    <SubPageHeader title="Item Details"/>
+
+                    <Carousel>
+                        {itemData.images.map(image => (
+                            <img key={image} src={image} alt="N/A"/>
+                        ))}
+                    </Carousel>
+
+                    <div className="details">
+                        <Title level={1}>{itemData.name}</Title>
+
+                        <div className="description">
+                        <Paragraph ellipsis={{ expandable: true }} >{itemData.description}</Paragraph>
+                        </div>
+
+                        {ownerName && <Title level={4}>owned by: {ownerName}</Title>}
+                    </div>
+
+                    <Button
+                            style={{ position: 'fixed', bottom: '0', marginTop: '10px' }}
+                            size="large"
+                            type="primary"
+                            block={true}
+                            onClick={() => {setModalVisible(true); }}
+                    >
+                        Request Item
+                    </Button>
+
+                </React.Fragment>
+            )
         }
         <DateModal
             visible={modalVisible}

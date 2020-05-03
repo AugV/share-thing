@@ -32,3 +32,8 @@
 .details {
     text-align: center;
 }
+
+.no-item-message {
+    text-align: center;
+    font-size: 27px;
+}

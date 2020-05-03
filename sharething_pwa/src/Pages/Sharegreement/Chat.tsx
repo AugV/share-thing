@@ -1,6 +1,6 @@
 import React, { useEffect, useState, CSSProperties, useRef } from 'react';
 import { withFirebase } from '../../Firebase';
-import { Message, SharegreementModel } from '../../Entities/Interfaces';
+import { Message, SharegResponse } from '../../Entities/Interfaces';
 import { Messages } from '../../Components/Messages';
 import { MessageInput } from '../../Components/MessageInput';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 import { Spin } from 'antd';
 
 interface ChatProps {
-    details: SharegreementModel;
+    details: SharegResponse;
 }
 
 type Props = ChatProps & FirebaseProps;

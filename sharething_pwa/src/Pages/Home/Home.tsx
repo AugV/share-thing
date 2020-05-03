@@ -9,7 +9,6 @@ import { LentItemsPage } from './LentItems';
 import { BorrowedItemsPage } from './BorrowedItems';
 import { withUserItems } from '../../Context/withUserItems';
 import { BsBoxArrowRight } from 'react-icons/bs';
-import { Typography } from 'antd';
 
 interface UserItems {
     userItems: UserItemsDocument;

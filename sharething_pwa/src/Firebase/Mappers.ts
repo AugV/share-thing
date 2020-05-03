@@ -1,21 +1,14 @@
-import { UserItemsDocument, ItemModel, ItemPreview, GroupModel, User, GroupModelSend, SharegreementModel, Message } from '../Entities/Interfaces';
+import { UserItemsDocument, ItemModel, ItemPreview, GroupModel, User, GroupModelSend, SharegResponse, Message, CreateSharegRequest } from '../Entities/Interfaces';
 import { GroupDTO } from './DTOs';
 
-export const userItemsMapper = (doc: firebase.firestore.DocumentSnapshot) => {
+export const toUserItems = (doc: firebase.firestore.DocumentSnapshot) => {
     try {
         const docData = doc.data();
-        if (!docData) {
-            return {
-                userOwnedItemList: [],
-                userLentItemList:  [],
-                userBorrowedItemList: [],
-                groupList: [],
-            };
-        }
+
         const userItems: UserItemsDocument = {
-            userOwnedItemList: docData!.owned_items,
-            userLentItemList:  docData!.lent_items,
-            userBorrowedItemList: docData!.borrowed_items,
+            userOwnedItemList: docData!.owned_items || [],
+            userLentItemList:  docData!.lent_items || [],
+            userBorrowedItemList: docData!.borrowed_items || [],
             groupList: docData!.groups,
         };
         return userItems;
@@ -102,24 +95,25 @@ export const toUser = (doc: firebase.firestore.DocumentSnapshot) => {
 export const toSharegreementDTO = (
         id: string,
         status: number,
-        borrower: string,
-        data: Partial<SharegreementModel>,
-    ): SharegreementModel => {
+        borrower: User,
+        owner: User,
+        shareg: CreateSharegRequest,
+    ): SharegResponse => {
 
     return {
         id,
-        itemId: data.itemId!,
-        itemName: data.itemName!,
-        itemImg: data.itemImg,
-        owner: data.owner || 'tBvrnODI82T1zZeUUOrPc1SbXYt1',
+        itemId: shareg.itemId!,
+        itemName: shareg.itemName!,
+        itemImg: shareg.itemImg,
+        owner,
         borrower,
-        startDate: data.startDate || '2020/05/05',
-        endDate: data.endDate || '2020/05/05',
+        startDate: shareg.startDate,
+        endDate: shareg.endDate,
         status,
     };
 };
 
-export const toSharegreement = (userId: string, doc: firebase.firestore.DocumentSnapshot): SharegreementModel => {
+export const toSharegreement = (userId: string, doc: firebase.firestore.DocumentSnapshot): SharegResponse => {
     const docData = doc.data();
 
     return {

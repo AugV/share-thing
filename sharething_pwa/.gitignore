@@ -23,3 +23,5 @@ chrome-user-data
 *.swp
 *.swo
 .env
+development.env
+production.env

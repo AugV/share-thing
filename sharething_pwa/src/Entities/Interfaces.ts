@@ -31,17 +31,26 @@ export interface ItemModel {
     groups: string[];
 }
 
-export interface SharegreementModel {
+export interface SharegResponse {
     id: string;
     itemId: string;
     itemName: string;
     itemImg?: string;
+    owner: User;
+    startDate: string;
+    endDate: string;
+    borrower: User;
+    status: SHAREG_STATUS;
+    role?: string;
+}
+
+export interface CreateSharegRequest {
+    itemId: string;
+    itemName: string;
+    itemImg: string;
     owner: string;
     startDate: string;
     endDate: string;
-    borrower: string;
-    status: SHAREG_STATUS;
-    role?: string;
 }
 
 export enum SHAREG_STATUS {

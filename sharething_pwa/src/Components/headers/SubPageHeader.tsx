@@ -1,6 +1,7 @@
 import React from 'react';
 import { BackArrow } from './BackArrow';
 import './headers.css';
+import { Typography } from 'antd';
 
 interface SubPageHeaderProps {
     title: string;
@@ -14,7 +15,7 @@ const SubPageHeaderComponent: React.FC<SubPageHeaderProps> = (props) => (
         </div>
         <div className="sub-page-title-box">
             <div className="sub-page-title">
-                {props.title}
+                <Typography>{props.title}</Typography>
             </div>
         </div>
         <div className="action-icon">

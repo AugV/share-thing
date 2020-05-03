@@ -6,12 +6,12 @@ import {
   Row,
   Col,
 } from 'react-bootstrap';
-import { SharegreementModel } from '../../Entities/Interfaces';
+import { SharegResponse } from '../../Entities/Interfaces';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../../Constants/Routes';
 
 interface Props {
-    sharegreements: SharegreementModel[];
+    sharegreements: SharegResponse[];
 }
 
 const SharegreementList: React.FC<Props> = (props) => {

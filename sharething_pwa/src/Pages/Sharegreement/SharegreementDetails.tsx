@@ -1,12 +1,12 @@
 import React from 'react';
-import { SharegreementModel } from '../../Entities/Interfaces';
+import { SharegResponse } from '../../Entities/Interfaces';
 import Title from 'antd/lib/typography/Title';
 import { Row, Col } from 'antd';
 import { OwnerActions } from './OwnerActions';
 import { BorrowerActions } from './BorrowerActions';
 
 interface SharegDetailsProps {
-    sharegData: SharegreementModel;
+    sharegData: SharegResponse;
 }
 
 const SharegreementDetails: React.FC<SharegDetailsProps> = (props) => {
@@ -17,11 +17,11 @@ const SharegreementDetails: React.FC<SharegDetailsProps> = (props) => {
             <Title level={3}>{sharegData.itemName}</Title>
             <Row>
                 <Col span={6}>Owner:</Col>
-                <Col span={6}>{sharegData.owner}</Col>
+                <Col span={6}>{sharegData.owner.name}</Col>
             </Row>
             <Row>
                 <Col span={6}>Borrower:</Col>
-                <Col span={6}>{sharegData.borrower}</Col>
+                <Col span={6}>{sharegData.borrower.name}</Col>
             </Row>
             <Row>
                 <Col span={6}>Start:</Col>
