@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Form, Button} from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
+import { Button } from 'antd';
 
 import { withFirebase } from '../../Firebase';
 import * as ROUTES from '../../Constants/Routes';
@@ -51,13 +52,12 @@ class PasswordResetFormBase extends Component {
       <Form onSubmit={this.onSubmit}>
         
         <Form.Group controlId="email">
-          <Form.Label>Email address</Form.Label>
           <Form.Control name="email" type="email" placeholder="Email Address" onChange={this.onChange} value={this.state.email} />
         </Form.Group>
 
-        <Button disabled={isInvalid} variant="primary" type="submit">
-          Reset My Password
-          </Button>
+        <Button disabled={isInvalid} type="primary">
+          Reset
+        </Button>
         {error && <p>{error.message}</p>}
       </Form>
     );

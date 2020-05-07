@@ -1,6 +1,6 @@
 import React from 'react';
-import './headers.css';
 import { Dropdown } from '../Dropdown/Dropdown';
+import './headers.css';
 
 interface HeaderProps {
     subPages: Map<string, string>;
