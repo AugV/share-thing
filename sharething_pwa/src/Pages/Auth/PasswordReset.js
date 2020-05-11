@@ -55,7 +55,7 @@ class PasswordResetFormBase extends Component {
           <Form.Control name="email" type="email" placeholder="Email Address" onChange={this.onChange} value={this.state.email} />
         </Form.Group>
 
-        <Button disabled={isInvalid} type="primary">
+        <Button disabled={isInvalid} type="primary" htmlType='submit'>
           Reset
         </Button>
         {error && <p>{error.message}</p>}

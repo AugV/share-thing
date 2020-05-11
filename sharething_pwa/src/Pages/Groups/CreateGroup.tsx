@@ -56,24 +56,27 @@ const CreateGroup: React.FC<CreateGroupProps> = (props) => {
     return(
         <React.Fragment>
             <SubPageHeader title="New Group"/>
+            <div style={{ padding: '10px' }}>
 
-            <h3>Name</h3>
-            <Input name="name" value={formData.name} onChange={updateFormData} placeholder="Group name" />
-            <h3>Description</h3>
-            <TextArea
-                autoSize={true}
-                name="description"
-                placeholder="Description"
-                value={formData.description}
-                onChange={updateFormData}
-            />
+                <h3>Name</h3>
+                <Input name="name" value={formData.name} onChange={updateFormData} placeholder="Group name" />
+                <h3>Description</h3>
+                <TextArea
+                    autoSize={true}
+                    name="description"
+                    placeholder="Description"
+                    value={formData.description}
+                    onChange={updateFormData}
+                />
 
-            <SelectionList
-                header="Members"
-                listItems={userList}
-                defaultListItems={selectedMembers}
-                handleChange={handleMemberChange}
-            />
+                <SelectionList
+                    header="Members"
+                    listItems={userList}
+                    defaultListItems={selectedMembers}
+                    handleChange={handleMemberChange}
+                />
+
+            </div>
 
             <Button
                 style={{ position: 'fixed', bottom: '0', marginTop: '10px' }}

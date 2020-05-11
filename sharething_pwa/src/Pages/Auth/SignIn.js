@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Form, Button} from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 
 import { SignUpLink } from './SignUp';
 import { withFirebase } from '../../Firebase';
 import * as ROUTES from '../../Constants/Routes';
 import { PasswordResetLink } from "./PasswordReset";
 
+import { Button } from 'antd';
+
 const SignInScreen = () => (
-  <div>
+  <div style={{padding: '10px'}}>
     <h1>Sign-in</h1>
     <SignInForm />
     <SignUpLink />
@@ -55,6 +57,7 @@ class SignInFormBase extends Component {
     const isInvalid = password === '' || email === '';
 
     return (
+      <div >
         <Form onSubmit={this.onSubmit}>
           <Form.Group controlId="email">
             <Form.Label>Email address</Form.Label>
@@ -66,11 +69,12 @@ class SignInFormBase extends Component {
             <Form.Control name="password" type="password" placeholder="Password" onChange={this.onChange} value={password} />
           </Form.Group>
 
-          <Button disabled={isInvalid} variant="primary" type="submit">
+          <Button disabled={isInvalid} type="primary" htmlType='submit'>
             Sign-In
           </Button>
           {error && <p>{error.message}</p>}
         </Form>
+      </div>
     );
   }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Switch, Route, useHistory } from 'react-router';
 import * as ROUTES from '../../Constants/Routes';
 import { MyItemsPage } from './MyItems';
@@ -53,7 +53,7 @@ const HomeRoutes: React.FC<UserItems> = (props) => {
     };
 
     const menu = (
-      <Menu  onClick={handleSettingsMenuClick}>
+      <Menu onClick={handleSettingsMenuClick}>
         <Menu.Item key="1" style={{ fontSize: '20pt', marginBottom: '5px' }}>
           Account
         </Menu.Item>

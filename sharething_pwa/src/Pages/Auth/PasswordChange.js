@@ -51,7 +51,7 @@ class PasswordChangeForm extends Component {
           <Form.Control name="passwordTwo" type="password" placeholder="Confirm New Password" onChange={this.onChange} value={passwordTwo} />
         </Form.Group>
 
-        <Button disabled={isInvalid} type="primary">
+        <Button disabled={isInvalid} type="primary" htmlType='submit'>
           Change
         </Button>
         {error && <p>{error.message}</p>}
