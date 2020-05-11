@@ -5,11 +5,11 @@ import {
   Tabs,
   Tab,
 } from 'react-bootstrap';
-import { SharegreementModel } from '../../Entities/Interfaces';
+import { SharegResponse } from '../../Entities/Interfaces';
 
 import { MainNavBar } from '../../Components/NavBar/BottomNavBar';
 import { SharegreementList } from './SharegrementList';
-import { BasicHeader } from '../../Components/Headers/BasicHeader';
+import { Header } from '../../Components/Headers/Header';
 
 interface Props {
     firebase: Firebase;
@@ -17,8 +17,8 @@ interface Props {
 
 const SharegreementListViewComp = (props: Props) => {
     const [loading, setLoading] = useState<boolean>(true);
-    const [asOwnerConversations, setAsOwnerConversations] = useState<SharegreementModel[] | null>(null);
-    const [asSeekerConversations, setAsSeekerConversations] = useState<SharegreementModel[] | null>(null);
+    const [asOwnerConversations, setAsOwnerConversations] = useState<SharegResponse[] | null>(null);
+    const [asSeekerConversations, setAsSeekerConversations] = useState<SharegResponse[] | null>(null);
 
     useEffect(() => {
         props.firebase.getOwnerSharegreements().then(sharegreements => {
@@ -36,7 +36,7 @@ const SharegreementListViewComp = (props: Props) => {
 
     return(
       <div>
-          <BasicHeader title="Sharegreements"/>
+          <Header title="Sharegreements"/>
           {loading && <Spinner animation="border" />}
           <Tabs defaultActiveKey="asOwner" id="uncontrolled-tab-example">
             {asOwnerConversations && (

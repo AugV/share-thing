@@ -3,14 +3,14 @@ import * as ROUTES from '../../Constants/Routes';
 import { SharegreementListView } from './SharegreementListView';
 import { Switch, Route } from 'react-router-dom';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
-import { SharegreementModel } from '../../Entities/Interfaces';
+import { SharegResponse } from '../../Entities/Interfaces';
 import { Sharegreement } from './Sharegreement';
 import { withFirebase } from '../../Firebase';
 
 const SharegRouter: React.FC<FirebaseProps> = (props) => {
     const { firebase } = props;
 
-    const getSharegreement = (id: string, listener: (shareg: SharegreementModel) => void) => {
+    const getSharegreement = (id: string, listener: (shareg: SharegResponse) => void) => {
         return firebase.getSingleSharegreement(id, listener);
     };
 

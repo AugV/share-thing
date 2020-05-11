@@ -1,6 +1,7 @@
 import React from 'react';
 import './dropdowns.css';
 import { Link, useLocation } from 'react-router-dom';
+import { Typography } from 'antd';
 
 interface DropDownProps {
     selectionItems: Map<string, string>;
@@ -14,8 +15,10 @@ const DropdownComponent: React.FC<DropDownProps> = (props) => {
     return(
         <div className="dropdown">
             <button className="dropbtn">
-                <span style={{ fontSize: '20px' }}>&#x25bc;</span>
-               {props.selectionItems.get(location.pathname)}
+                <Typography>
+                    <span style={{ fontSize: '20px' }}>&#x25bc;</span>
+                    {props.selectionItems.get(location.pathname)}
+                </Typography>
             </button>
             <div className="dropdown-content">
             {

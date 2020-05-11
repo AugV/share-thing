@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Form, Button} from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
+import { Button } from 'antd';
 import { withFirebase } from '../../Firebase';
 
 const INITIAL_STATE = {
@@ -50,8 +51,8 @@ class PasswordChangeForm extends Component {
           <Form.Control name="passwordTwo" type="password" placeholder="Confirm New Password" onChange={this.onChange} value={passwordTwo} />
         </Form.Group>
 
-        <Button disabled={isInvalid} variant="primary" type="submit">
-          Change My Password
+        <Button disabled={isInvalid} type="primary" htmlType='submit'>
+          Change
         </Button>
         {error && <p>{error.message}</p>}
       </Form>

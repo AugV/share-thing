@@ -1,11 +1,11 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router';
 import * as ROUTES from '../Constants/Routes';
-import LandingScreen from '../Pages/Landing';
 import SignInScreen from '../Pages/Auth/SignIn';
 import SignUpScreen from '../Pages/Auth/SignUp';
 import { withFirebase } from '../Firebase';
 import { FirebaseProps } from '../Entities/PropsInterfaces';
+import { LandingScreen } from '../Pages/Landing';
 
 const Landing: React.FC<FirebaseProps> = (props) => {
     const { firebase } = props;

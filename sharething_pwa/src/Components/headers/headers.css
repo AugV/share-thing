@@ -14,13 +14,12 @@
 
 .sub-page-title-box {
     display: inline-block;
-    margin-left: 10%;
+    margin-left: 20px;
     height: 100%;
 }
 
 .sub-page-title {
     margin-top: 5px;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 34px;

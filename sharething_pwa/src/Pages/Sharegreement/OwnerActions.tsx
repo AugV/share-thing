@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SHAREG_STATUS, SharegreementModel } from '../../Entities/Interfaces';
+import { SHAREG_STATUS, SharegResponse } from '../../Entities/Interfaces';
 import { Button } from 'antd';
 import { withFirebase } from '../../Firebase';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
@@ -7,7 +7,7 @@ import { DateModal } from './DateModal';
 import { DateRange } from '../../Entities/Types';
 
 interface SharegActionsProps {
-    shareg: SharegreementModel;
+    shareg: SharegResponse;
     status: number;
 }
 
@@ -60,13 +60,13 @@ const OwnerActionsComp: React.FC<SharegActionsProps & FirebaseProps> = (props) =
                 return (
                     <>
                         <p>Waiting for a borrower to confirm the offered date</p>
-                        <Button onClick={declineSharegreement}>Decline</Button>
+                        <Button type="link" onClick={declineSharegreement}>Decline</Button>
                     </>
                 );
             case SHAREG_STATUS.DATES_CONFIRMED:
                 return (
                     <>
-                        <Button onClick={abortSharegreement}>Abort</Button>
+                        <Button type="link" onClick={abortSharegreement}>Abort</Button>
                         <Button onClick={() => {advanceStatus(); itemIsLent(); }}>Item given</Button>
                     </>
                 );
@@ -87,7 +87,7 @@ const OwnerActionsComp: React.FC<SharegActionsProps & FirebaseProps> = (props) =
             case SHAREG_STATUS.BORROWER_ITEM_RETURNED:
                 return (
                     <>
-                        <Button onClick={abortSharegreement}>Abort</Button>
+                        <Button type="link" onClick={abortSharegreement}>Abort</Button>
                         <Button onClick={() => {advanceStatus(); itemReturned(); }}>
                             Confirm Item Returned & Finish Sharegreement
                         </Button>

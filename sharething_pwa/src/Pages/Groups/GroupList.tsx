@@ -3,7 +3,7 @@ import { GroupNameAndId } from '../../Entities/Interfaces';
 import { withUserGroups } from '../../Context/withUserGroup';
 import { MainNavBar } from '../../Components/NavBar/BottomNavBar';
 import List from 'antd/lib/list';
-import { BasicHeader } from '../../Components/Headers/BasicHeader';
+import { Header } from '../../Components/Headers/Header';
 import { NewButton } from '../../Components/NewButton/NewButton';
 import { useHistory } from 'react-router-dom';
 import * as ROUTES from '../../Constants/Routes';
@@ -26,7 +26,7 @@ const GroupListComponent: React.FC<OwnProps> = (props) => {
 
     return(
         <React.Fragment>
-            <BasicHeader title="Groups"/>
+            <Header title="Groups"/>
             <NewButton title="New Group" onClick={createNewGroup} />
             <List
                 size="large"

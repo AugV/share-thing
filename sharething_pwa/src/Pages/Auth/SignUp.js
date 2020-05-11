@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Form, Button } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
+import { Button } from 'antd';
 
 import * as ROUTES from '../../Constants/Routes';
 
 import { withFirebase } from '../../Firebase';
 
 const SignUpScreen = () => (
-    <div>
+    <div style={{padding: '10px'}}>
         <h1>Sign-Up</h1>
         <SignUpForm />
     </div>
@@ -85,7 +86,7 @@ class SignUpFormBase extends Component {
                         <Form.Control name="passwordTwo" type="password" placeholder="Confirm Password" onChange={this.onChange} value={passwordTwo} />
                     </Form.Group>
 
-                    <Button disabled={isInvalid} variant="primary" type="submit">
+                    <Button disabled={isInvalid} type="primary" htmlType='submit'>
                         Sign-Up
                      </Button>
                     {error && <p>{error.message}</p>}

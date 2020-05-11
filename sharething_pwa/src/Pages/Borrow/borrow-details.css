@@ -1,3 +1,8 @@
+.details {
+    margin: 5px;
+    text-align: left;
+}
+
 .description {
     word-wrap: break-word;
 }

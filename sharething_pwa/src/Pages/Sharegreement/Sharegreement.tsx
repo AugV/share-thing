@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SubPageHeader } from '../../Components/Headers/SubPageHeader';
-import { SharegreementModel } from '../../Entities/Interfaces';
+import { SharegResponse } from '../../Entities/Interfaces';
 import { useParams } from 'react-router-dom';
 import { Spin } from 'antd';
 import { Tabs, Tab } from 'react-bootstrap';
@@ -8,15 +8,15 @@ import { Chat } from './Chat';
 import { SharegreementDetails } from './SharegreementDetails';
 
 interface SharegDetailsProps {
-    fetchData: (id: string, listener: (sharegreement: SharegreementModel) => void) => () => void;
+    fetchData: (id: string, listener: (sharegreement: SharegResponse) => void) => () => void;
 }
 
 const Sharegreement: React.FC<SharegDetailsProps> = (props) => {
     const { fetchData } = props;
     const { id } = useParams();
-    const [sharegreement, setSharegreement] = useState<SharegreementModel | undefined>(undefined);
+    const [sharegreement, setSharegreement] = useState<SharegResponse | undefined>(undefined);
 
-    const updateSharegreement = (sharegreement: SharegreementModel) => {
+    const updateSharegreement = (sharegreement: SharegResponse) => {
         setSharegreement(sharegreement);
     };
 

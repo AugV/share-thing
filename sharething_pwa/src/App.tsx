@@ -5,7 +5,6 @@ import * as ROUTES from './Constants/Routes';
 import { withAuthentication } from './Utils';
 import { Private } from './Routes/Private';
 import { LandingRoutes } from './Routes/Landing';
-// import LandingRoutes from './Routes/Landing';
 
 const App: React.FC = () => {
     return(

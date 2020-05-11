@@ -11,12 +11,13 @@ import {
     GroupModel,
     User,
     GroupModelSend,
-    SharegreementModel,
+    SharegResponse,
     SHAREG_STATUS,
     Message,
+    CreateSharegRequest,
 } from '../Entities/Interfaces';
 import * as NAME from '../Constants/Names';
-import { toItem, userItemsMapper, toItemPreview, toGroup, toGroupDTO, toUser, toSharegreementDTO, toSharegreement, toMessageList, toMessageDTO } from './Mappers';
+import { toItem, toUserItems, toItemPreview, toGroup, toGroupDTO, toUser, toSharegreementDTO, toSharegreement, toMessageList, toMessageDTO } from './Mappers';
 import { UserItemsDocDTO, ItemPreviewDTO, GroupDTO } from './DTOs';
 import { ImagePack, DateRange } from '../Entities/Types';
 
@@ -44,21 +45,32 @@ class Firebase {
         this.storage = app.storage();
     }
 
-    public createSharegreement(sharegreement: Partial<SharegreementModel>): Promise<string> {
+    public async createSharegreement(sharegreement: CreateSharegRequest): Promise<string> {
         const docRef = this.db.collection(NAME.SHAREGREEMENTS).doc();
         const userId = this.auth.currentUser?.uid;
+
+        const borrower: User = {
+            id: userId!,
+            name: await this.getUserName(userId!),
+        };
+
+        const owner: User = {
+            id: sharegreement.owner,
+            name: await this.getUserName(sharegreement.owner),
+        };
 
         const newShareg = toSharegreementDTO(
             docRef.id,
             SHAREG_STATUS.PENDING_OWNER_DATE_CONFIRM,
-            userId!,
+            borrower,
+            owner,
             sharegreement,
             );
 
         return docRef.set(newShareg).then(() => Promise.resolve(docRef.id));
     }
 
-    public getSingleSharegreement(id: string, listener: (shareg: SharegreementModel) => void): () => void {
+    public getSingleSharegreement(id: string, listener: (shareg: SharegResponse) => void): () => void {
         const docRef = this.db.collection(NAME.SHAREGREEMENTS).doc(id);
         const userId = this.auth.currentUser?.uid;
 
@@ -67,7 +79,7 @@ class Firebase {
         });
     }
 
-    public addItemToBorrowedItems(sharegreement: SharegreementModel): Promise<void> {
+    public addItemToBorrowedItems(sharegreement: SharegResponse): Promise<void> {
         const userId = this.auth.currentUser?.uid;
         const docRef = this.db.collection(NAME.USER_ITEMS).doc(userId);
 
@@ -80,7 +92,7 @@ class Firebase {
         });
     }
 
-    public addItemToLentItems(sharegreement: SharegreementModel): Promise<void> {
+    public addItemToLentItems(sharegreement: SharegResponse): Promise<void> {
         const userId = this.auth.currentUser?.uid;
         const docRef = this.db.collection(NAME.USER_ITEMS).doc(userId);
 
@@ -93,7 +105,7 @@ class Firebase {
         });
     }
 
-    public async borrowerItemReturned(sharegreement: SharegreementModel): Promise<void> {
+    public async borrowerItemReturned(sharegreement: SharegResponse): Promise<void> {
         const userId = this.auth.currentUser?.uid;
         const docRef = this.db.collection(NAME.USER_ITEMS).doc(userId);
 
@@ -104,7 +116,7 @@ class Firebase {
         return docRef.update({ borrowed_items: newUserItems });
     }
 
-    public async ownerItemReturned(sharegreement: SharegreementModel): Promise<void> {
+    public async ownerItemReturned(sharegreement: SharegResponse): Promise<void> {
         const userId = this.auth.currentUser?.uid;
         const docRef = this.db.collection(NAME.USER_ITEMS).doc(userId);
 
@@ -156,7 +168,7 @@ class Firebase {
             const docRef = this.db.collection(NAME.USER_ITEMS).doc(userId);
 
             return docRef.onSnapshot((doc) => {
-                const userList: UserItemsDocument = userItemsMapper(doc);
+                const userList: UserItemsDocument = toUserItems(doc);
 
                 listener(userList);
             });

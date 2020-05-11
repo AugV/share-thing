@@ -1,19 +1,24 @@
 import React from 'react';
-import { Switch, Route } from 'react-router';
+import { Switch, Route, useHistory } from 'react-router';
 import * as ROUTES from '../../Constants/Routes';
 import { MyItemsPage } from './MyItems';
 import { MainNavBar } from '../../Components/NavBar/BottomNavBar';
-import { HomeHeader } from '../../Components/Headers/Header';
+import { HomeHeader } from '../../Components/Headers/HomeHeader';
 import { UserItemsDocument } from '../../Entities/Interfaces';
 import { LentItemsPage } from './LentItems';
 import { BorrowedItemsPage } from './BorrowedItems';
 import { withUserItems } from '../../Context/withUserItems';
+import { BsFillGearFill } from 'react-icons/bs';
+import { Dropdown, Menu, Button } from 'antd';
+
+import { ClickParam } from 'antd/lib/menu';
 
 interface UserItems {
     userItems: UserItemsDocument;
 }
 
 const HomeRoutes: React.FC<UserItems> = (props) => {
+    const history = useHistory();
 
     const subPages: Map<string, string> = function getMapForDropdown(): Map<string, string> {
         const map = new Map();
@@ -23,11 +28,50 @@ const HomeRoutes: React.FC<UserItems> = (props) => {
         return map;
     }();
 
+    const settingsMenuDropDown = () => (
+      <React.Fragment>
+        <Dropdown overlay={menu} trigger={['click']}>
+          <Button style={{ background: 'lightgrey', height: '50px' }} >
+            <BsFillGearFill size={30} />
+          </Button>
+        </Dropdown>
+      </React.Fragment>
+    );
+
+    const handleSettingsMenuClick = (e: ClickParam) => {
+        switch (e.key) {
+            case '1':
+                history.push(ROUTES.ACCOUNT);
+                break;
+            case '2':
+                history.push(ROUTES.SIGN_OUT);
+                break;
+            default:
+                history.push(ROUTES.ACCOUNT);
+                break;
+        }
+    };
+
+    const menu = (
+      <Menu onClick={handleSettingsMenuClick}>
+        <Menu.Item key="1" style={{ fontSize: '20pt', marginBottom: '5px' }}>
+          Account
+        </Menu.Item>
+        <Menu.Divider/>
+        <Menu.Item key="2" style={{ fontSize: '20pt', marginBottom: '5px' }}>
+          Sign out
+        </Menu.Item>
+      </Menu>
+    );
+
     const { userItems } = props;
 
     return (
     <div>
-      <HomeHeader subPages={subPages}/>
+      <HomeHeader
+        subPages={subPages}
+        action={settingsMenuDropDown()}
+      />
       {userItems &&
         (
           <Switch>
