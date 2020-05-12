@@ -128,7 +128,7 @@ export const toSharegreement = (userId: string, doc: firebase.firestore.Document
         startDate: docData!.startDate,
         endDate: docData!.endDate,
         status: docData!.status,
-        role: docData!.owner === userId ? 'owner' : 'borrower',
+        role: docData!.ownerId === userId ? 'owner' : 'borrower',
     };
 };
 
