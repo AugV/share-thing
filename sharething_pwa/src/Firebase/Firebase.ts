@@ -340,7 +340,7 @@ class Firebase {
         const userId = this.auth.currentUser?.uid;
 
         return this.db.collection(NAME.SHAREGREEMENTS)
-        .where('owner', '==', userId).get()
+        .where('ownerId', '==', userId).get()
         .then(querySnaphot => {
             return querySnaphot.docs.map(doc => toSharegreement(userId!, doc));
         });
@@ -350,7 +350,7 @@ class Firebase {
         const userId = this.auth.currentUser?.uid;
 
         return this.db.collection(NAME.SHAREGREEMENTS)
-        .where('borrower', '==', userId).get()
+        .where('borrowerId', '==', userId).get()
         .then(querySnaphot => {
             return querySnaphot.docs.map(doc => toSharegreement(userId!, doc));
         });

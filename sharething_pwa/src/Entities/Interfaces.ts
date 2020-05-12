@@ -37,9 +37,11 @@ export interface SharegResponse {
     itemName: string;
     itemImg?: string;
     owner: User;
+    ownerId?: string;
     startDate: string;
     endDate: string;
     borrower: User;
+    borrowerId?: string;
     status: SHAREG_STATUS;
     role?: string;
 }
