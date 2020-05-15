@@ -86,7 +86,7 @@ class Firebase {
         return docRef.update({ borrowed_items: app.firestore.FieldValue.arrayUnion({
             id: sharegreement.id,
             name: sharegreement.itemName,
-            imageUrl: sharegreement.itemImg,
+            image_url: sharegreement.itemImg,
             end_date: sharegreement.endDate,
         }),
         });
@@ -99,7 +99,7 @@ class Firebase {
         return docRef.update({ lent_items: app.firestore.FieldValue.arrayUnion({
             id: sharegreement.id,
             name: sharegreement.itemName,
-            imageUrl: sharegreement.itemImg,
+            image_url: sharegreement.itemImg,
             end_date: sharegreement.endDate,
         }),
         });
