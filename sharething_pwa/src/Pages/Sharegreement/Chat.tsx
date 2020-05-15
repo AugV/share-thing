@@ -6,6 +6,7 @@ import { MessageInput } from '../../Components/MessageInput';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
 import { useParams } from 'react-router-dom';
 import { Spin } from 'antd';
+import './chat-input.css';
 
 interface ChatProps {
     details: SharegResponse;
@@ -53,7 +54,7 @@ const ChatPage: React.FC<Props> = (props) => {
 
             <div ref={scrollBottomDummy}/>
 
-            <div className="fixed-bottom">
+            <div className="chat-input">
                 <MessageInput submit={sendMessage}/>
             </div>
         </div>

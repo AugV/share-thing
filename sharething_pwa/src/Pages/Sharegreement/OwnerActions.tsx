@@ -3,7 +3,7 @@ import { SHAREG_STATUS, SharegResponse } from '../../Entities/Interfaces';
 import { Button } from 'antd';
 import { withFirebase } from '../../Firebase';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
-import { DateModal } from './DateModal';
+import { DateModal } from '../../Components/DatePicker/DateModal';
 import { DateRange } from '../../Entities/Types';
 
 interface SharegActionsProps {

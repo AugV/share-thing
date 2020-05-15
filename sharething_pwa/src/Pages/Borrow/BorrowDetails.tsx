@@ -7,7 +7,7 @@ import './borrow-details.css';
 
 import Title from 'antd/lib/typography/Title';
 import Paragraph from 'antd/lib/typography/Paragraph';
-import { DateModal } from '../Sharegreement/DateModal';
+import { DateModal } from '../../Components/DatePicker/DateModal';
 import { DateRange } from '../../Entities/Types';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
 import { withFirebase } from '../../Firebase';

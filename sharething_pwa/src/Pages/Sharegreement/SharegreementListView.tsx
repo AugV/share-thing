@@ -38,6 +38,7 @@ const SharegreementListViewComp = (props: Props) => {
       <div>
           <Header title="Sharegreements"/>
           {loading && <Spinner animation="border" />}
+          {asOwnerConversations && <SharegreementList sharegreements={asOwnerConversations!}/>}
           <Tabs defaultActiveKey="asOwner" id="uncontrolled-tab-example">
             {asOwnerConversations && (
               <Tab eventKey="asOwner" title="As Owner" >
@@ -50,6 +51,7 @@ const SharegreementListViewComp = (props: Props) => {
               </Tab>
             )}
           </Tabs>
+
           <MainNavBar activeIcon="shareg"/>
         </div>
     );
