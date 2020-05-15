@@ -155,9 +155,11 @@ class Firebase {
 
         const queryResult = await dbQuery.get();
 
-        const items = queryResult.docs.map((doc) => {
-            return toItemPreview(doc);
-        });
+        const userId = this.auth.currentUser?.uid;
+
+        const items = queryResult.docs
+            .filter(doc => doc.data().owner !== userId)
+            .map((doc) => toItemPreview(doc));
 
         return items;
     };

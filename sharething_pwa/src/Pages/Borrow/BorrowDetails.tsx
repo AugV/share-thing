@@ -13,6 +13,7 @@ import { FirebaseProps } from '../../Entities/PropsInterfaces';
 import { withFirebase } from '../../Firebase';
 import { toSharegCreateReq } from '../../Entities/Mappers';
 import * as NAMES from '../../Constants/Routes';
+import { DateRangePicker } from 'rsuite';
 
 interface BorrowDetailsProps {
     getItemData: (id: string) => Promise<ItemModel>;

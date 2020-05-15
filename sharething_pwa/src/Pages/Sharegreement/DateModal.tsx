@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import { Modal, DatePicker } from 'antd';
+import React from 'react';
 import { DateRange } from '../../Entities/Types';
-const { RangePicker } = DatePicker;
+
+import { DateRangePicker, Modal } from 'rsuite';
+
+import 'rsuite/dist/styles/rsuite-default.css';
+import { ValueType } from 'rsuite/lib/DateRangePicker';
 
 interface DateModalProps {
     visible: boolean;
@@ -11,29 +14,67 @@ interface DateModalProps {
 
 const DateModal: React.FC<DateModalProps> = (props) => {
     const { visible: showModal, closeModal, onModalSubmit } = props;
-    const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
 
-    const selectedDateChanges = (momentDate: unknown, dates: DateRange) => {
-        setDateRange(dates);
-    };
-
-    const modalSubmit = () => {
-        if (dateRange) {
-            onModalSubmit(dateRange);
+    const modalSubmit = (dates: ValueType) => {
+        if (dates.length > 1) {
+            const startDate = formatDate(dates[0]!);
+            const endDate = formatDate(dates[1]!);
+            onModalSubmit([startDate, endDate]);
         } else {
             closeModal();
         }
     };
 
+    function formatDate(date: Date): string {
+        const d = new Date(date);
+        let month = '' + (d.getMonth() + 1);
+        let day = '' + d.getDate();
+        const year = d.getFullYear();
+
+        if (month.length < 2) {
+            month = '0' + month;
+        }
+        if (day.length < 2) {
+            day = '0' + day;
+        }
+
+        return [year, month, day].join('/');
+    }
+
     return(
         <Modal
-            title="Pick a date range"
-            centered={true}
-            visible={showModal}
-            onOk={() => modalSubmit()}
-            onCancel={() => closeModal()}
+            show={showModal}
+            size="sm"
+            onHide={() => closeModal()}
         >
-            <RangePicker onChange={selectedDateChanges} size="large" showTime={true} format="YYYY/MM/DD"/>
+             <Modal.Title>
+                Select date
+            </Modal.Title>
+            <Modal.Body>
+            <div className="field only-date">
+                <DateRangePicker
+                    onOk={modalSubmit}
+                    isoWeek={true}
+                    showOneCalendar={true}
+                    format="YYYY-MM-DD"
+                    locale={{
+                        sunday: 'Su',
+                        monday: 'Mo',
+                        tuesday: 'Tu',
+                        wednesday: 'We',
+                        thursday: 'Th',
+                        friday: 'Fr',
+                        saturday: 'Sa',
+                        ok: 'OK',
+                        today: 'Today',
+                        yesterday: 'Yesterday',
+                        last7Days: 'Last 7 days',
+                    }}
+                    ranges={[]}
+                />
+                </div>
+          </Modal.Body>
+
         </Modal>
     );
 };
