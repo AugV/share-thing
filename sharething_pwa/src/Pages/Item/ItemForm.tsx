@@ -144,7 +144,7 @@ const ItemFormPage: React.FC<ItemFormProps> = (props) => {
                     </div>
 
                     <Button
-                        style={{ position: 'fixed', bottom: '0', marginTop: '10px' }}
+                        style={{ maxWidth: '750px', position: 'fixed', bottom: '0', marginTop: '10px' }}
                         size="large"
                         type="primary"
                         block={true}

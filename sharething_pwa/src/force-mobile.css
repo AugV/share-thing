@@ -1,0 +1,16 @@
+[class*="force-mobile"] {
+    background-color: white;
+    height: 100vh;
+  }
+
+@media only screen and (min-width: 768px) {
+    .force-mobile{
+        width: 750px;
+        max-width: 750px;
+        margin:0 auto;
+        background-color: white;
+        height: 100vh;
+        -webkit-box-shadow: 0 0 10px;
+        box-shadow: 0 0 10px;
+    }
+}
