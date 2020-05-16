@@ -5,7 +5,7 @@ import { Messages } from '../../Components/Messages';
 import { MessageInput } from '../../Components/MessageInput';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
 import { useParams } from 'react-router-dom';
-import { Spin } from 'antd';
+import { Spin, Typography } from 'antd';
 import './chat-input.css';
 
 interface ChatProps {
@@ -39,17 +39,18 @@ const ChatPage: React.FC<Props> = (props) => {
 
     return(
         <div>
-            <div className="sticky-top" >
-                <h2>{details && details.itemName}</h2>
-            </div>
             {
-            !messages
-            ? <Spin/>
-            : (
-                <div style={messageList}>
-                    <Messages messages={messages}/>
-                </div>
-            )
+                !messages
+                ?  <div className="no-item-message">
+                        <Typography>
+                            No items to display
+                        </Typography>
+                    </div>
+                : (
+                    <div style={messageList}>
+                        <Messages messages={messages}/>
+                    </div>
+                )
             }
 
             <div ref={scrollBottomDummy}/>

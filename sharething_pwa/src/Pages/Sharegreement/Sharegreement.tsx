@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { SubPageHeader } from '../../Components/Headers/SubPageHeader';
 import { SharegResponse } from '../../Entities/Interfaces';
 import { useParams } from 'react-router-dom';
-import { Spin } from 'antd';
-import { Tabs, Tab } from 'react-bootstrap';
+import { Spin, Tabs } from 'antd';
+
 import { Chat } from './Chat';
 import { SharegreementDetails } from './SharegreementDetails';
+
+const { TabPane } = Tabs;
 
 interface SharegDetailsProps {
     fetchData: (id: string, listener: (sharegreement: SharegResponse) => void) => () => void;
@@ -32,15 +34,17 @@ const Sharegreement: React.FC<SharegDetailsProps> = (props) => {
                 : (
                     <>
                     <SubPageHeader title={sharegreement.itemName}/>
-                    <Tabs defaultActiveKey="details" id="uncontrolled-tab-example">
-                        <Tab eventKey="details" title="Details" >
+                    <div style={{ margin: '10px' }}>
+                    <Tabs defaultActiveKey="details" animated={false}>
+                        <TabPane key="details" tab="Details" >
                             <SharegreementDetails sharegData={sharegreement}/>
-                        </Tab>
+                        </TabPane>
 
-                        <Tab eventKey="chat" title="Chat">
+                        <TabPane key="chat" tab="Chat">
                             <Chat details={sharegreement}/>
-                        </Tab>
+                        </TabPane>
                     </Tabs>
+                    </div>
                     </>
                 )
             }
