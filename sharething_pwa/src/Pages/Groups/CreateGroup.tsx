@@ -5,6 +5,7 @@ import TextArea from 'antd/lib/input/TextArea';
 import Button from 'antd/lib/button/button';
 import { User, GroupModelSend } from '../../Entities/Interfaces';
 import { SelectionList } from '../../Components/Selectors/SelectionList';
+import i18n from 'i18next';
 
 interface FormData {
     name: string | undefined;
@@ -55,22 +56,23 @@ const CreateGroup: React.FC<CreateGroupProps> = (props) => {
 
     return(
         <React.Fragment>
-            <SubPageHeader title="New Group"/>
+            <SubPageHeader title={i18n.t('createGroup')}/>
             <div style={{ padding: '10px' }}>
 
-                <h3>Name</h3>
-                <Input name="name" value={formData.name} onChange={updateFormData} placeholder="Group name" />
-                <h3>Description</h3>
+                <h3>{i18n.t('groupName')}</h3>
+                <Input name="name" value={formData.name} onChange={updateFormData} placeholder={i18n.t('enterGroupName')} />
+
+                <h3>{i18n.t('groupDescription')}</h3>
                 <TextArea
                     autoSize={true}
                     name="description"
-                    placeholder="Description"
+                    placeholder={i18n.t('enterGroupDescription')}
                     value={formData.description}
                     onChange={updateFormData}
                 />
 
                 <SelectionList
-                    header="Members"
+                    header={i18n.t('groupMembers')}
                     listItems={userList}
                     defaultListItems={selectedMembers}
                     handleChange={handleMemberChange}

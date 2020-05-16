@@ -6,6 +6,7 @@ import { MainNavBar } from '../../Components/NavBar/BottomNavBar';
 import { SharegreementList } from './SharegrementList';
 import { Header } from '../../Components/Headers/Header';
 import { Spin, Tabs } from 'antd';
+import i18n from 'i18next';
 
 const { TabPane } = Tabs;
 
@@ -34,17 +35,17 @@ const SharegreementListViewComp = (props: Props) => {
 
     return(
       <div>
-      <Header title="Sharegreements"/>
+      <Header title={i18n.t('sharegreements')}/>
       <div style={{ margin: '5px' }}>
-          {loading && <Spin />}
+          {loading && <Spin style={{ position: 'fixed', top: '50%', left: '50%' }}/>}
           <Tabs defaultActiveKey="asOwner">
             {asOwnerConversations && (
-              <TabPane key="asOwner" tab="As Owner" >
+              <TabPane key="asOwner" tab={i18n.t('asOwner')} >
                   <SharegreementList sharegreements={asOwnerConversations}/>
               </TabPane>
             )}
             {asSeekerConversations && (
-              <TabPane key="asSeeker" tab="As Seeker">
+              <TabPane key="asSeeker" tab={i18n.t('asBorrower')}>
                   <SharegreementList sharegreements={asSeekerConversations}/>
               </TabPane>
             )}

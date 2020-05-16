@@ -6,17 +6,22 @@ import { SignUpLink } from './SignUp';
 import { withFirebase } from '../../Firebase';
 import * as ROUTES from '../../Constants/Routes';
 import { PasswordResetLink } from "./PasswordReset";
+import { withTranslation, useTranslation } from 'react-i18next';
 
 import { Button } from 'antd';
 
-const SignInScreen = () => (
-  <div style={{padding: '10px'}}>
-    <h1>Sign-in</h1>
-    <SignInForm />
-    <SignUpLink />
-    <PasswordResetLink />
-  </div>
-);
+const SignInScreen = () => {
+  const { t, i18n } = useTranslation();
+
+  return ( 
+    <div style={{padding: '10px'}}>
+      <h1>{t('signIn')}</h1>
+      <SignInForm />
+      <SignUpLink />
+      <PasswordResetLink />
+    </div>
+  )
+};
 
 const INITIAL_STATE = {
   email: '',
@@ -31,12 +36,10 @@ class SignInFormBase extends Component {
   }
 
   onSubmit = event => {
-    console.log("signInFormBase - OnSubmit()")
     const { email, password } = this.state;
     this.props.firebase
       .signInUserWithEmailAndPsw(email, password)
       .then(() => {
-        console.log("SignInFormBase signin callback")
         this.setState({ ...INITIAL_STATE });
         this.props.history.push(ROUTES.MY_ITEMS);
       })
@@ -60,17 +63,17 @@ class SignInFormBase extends Component {
       <div >
         <Form onSubmit={this.onSubmit}>
           <Form.Group controlId="email">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control name="email" type="email" placeholder="Enter email" onChange={this.onChange} value={email} />
+            <Form.Label>{this.props.t('emailAddress')}</Form.Label>
+            <Form.Control name="email" type="email" placeholder={this.props.t('enterEmail')} onChange={this.onChange} value={email} />
           </Form.Group>
 
           <Form.Group controlId="password">
-            <Form.Label>Password</Form.Label>
-            <Form.Control name="password" type="password" placeholder="Password" onChange={this.onChange} value={password} />
+            <Form.Label>{this.props.t('password')}</Form.Label>
+            <Form.Control name="password" type="password" placeholder={this.props.t('enterPassword')} onChange={this.onChange} value={password} />
           </Form.Group>
 
           <Button disabled={isInvalid} type="primary" htmlType='submit'>
-            Sign-In
+          {this.props.t('signIn')}
           </Button>
           {error && <p>{error.message}</p>}
         </Form>
@@ -79,6 +82,6 @@ class SignInFormBase extends Component {
   }
 }
 
-const SignInForm = withRouter(withFirebase(SignInFormBase));
+const SignInForm = withTranslation()(withRouter(withFirebase(SignInFormBase)));
 
 export default SignInScreen;

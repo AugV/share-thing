@@ -13,7 +13,7 @@ import { FirebaseProps } from '../../Entities/PropsInterfaces';
 import { withFirebase } from '../../Firebase';
 import { toSharegCreateReq } from '../../Entities/Mappers';
 import * as NAMES from '../../Constants/Routes';
-import { DateRangePicker } from 'rsuite';
+import i18n from 'i18next';
 
 interface BorrowDetailsProps {
     getItemData: (id: string) => Promise<ItemModel>;
@@ -54,10 +54,10 @@ const BorrowDetailsPage: React.FC<BorrowDetailsProps & FirebaseProps> = (props) 
     return(
         <div>
         {!itemData ?
-            <Spin/> :
+            <Spin style={{ position: 'fixed', top: '50%', left: '50%' }} /> :
             (
                 <React.Fragment>
-                    <SubPageHeader title="Item Details"/>
+                    <SubPageHeader title={i18n.t('itemDetails')}/>
 
                     <Carousel>
                         {itemData.images.map(image => (
@@ -72,7 +72,7 @@ const BorrowDetailsPage: React.FC<BorrowDetailsProps & FirebaseProps> = (props) 
                         <Paragraph ellipsis={{ expandable: true }} >{itemData.description}</Paragraph>
                         </div>
 
-                        {ownerName && <Title level={4}>owned by: {ownerName}</Title>}
+                        {ownerName && <Title level={4}>{i18n.t('ownedBy')}: {ownerName}</Title>}
                     </div>
 
                     <Button
@@ -82,7 +82,7 @@ const BorrowDetailsPage: React.FC<BorrowDetailsProps & FirebaseProps> = (props) 
                         block={true}
                         onClick={() => {setModalVisible(true); }}
                     >
-                        Request Item
+                        {i18n.t('requestItem')}
                     </Button>
 
                 </React.Fragment>

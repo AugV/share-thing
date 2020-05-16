@@ -2,6 +2,7 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import { Select, Spin, Skeleton } from 'antd';
 import { ListItem } from '../../Entities/Interfaces';
+import i18n from 'i18next';
 
 const { Option } = Select;
 
@@ -29,7 +30,7 @@ const SelectionList: React.FC<SelectionListProps> = (props) => {
             mode="multiple"
             size="large"
             style={{ width: '100%' }}
-            placeholder={`Select ${header}`}
+            placeholder={`${i18n.t('select')} ${header}`}
             defaultValue={defaultListItems}
             onChange={handleChange}
             optionLabelProp="label"

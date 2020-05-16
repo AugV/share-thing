@@ -1,6 +1,7 @@
 import React from 'react';
 import './new-button.css';
 import { BsPlus } from 'react-icons/bs';
+import { Typography } from 'antd';
 
 interface NewButtonProps {
     title: string;
@@ -12,8 +13,10 @@ const NewButton: React.FC<NewButtonProps> = (props) => {
 
     return(
         <div className="btn" onClick={onClick}>
-            <BsPlus fontSize="50px"/>
-            {title}
+            <Typography>
+                <BsPlus fontSize="50px"/>
+                {title}
+            </Typography>
         </div>
     );
 };

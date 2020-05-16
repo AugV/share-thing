@@ -2,17 +2,21 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Form } from 'react-bootstrap';
 import { Button } from 'antd';
-
 import * as ROUTES from '../../Constants/Routes';
+import { withTranslation, useTranslation } from 'react-i18next';
 
 import { withFirebase } from '../../Firebase';
 
-const SignUpScreen = () => (
-    <div style={{padding: '10px'}}>
-        <h1>Sign-Up</h1>
-        <SignUpForm />
-    </div>
-);
+const SignUpScreen = () => {
+    const { t, i18n } = useTranslation();
+
+    return(
+        <div style={{padding: '10px'}}>
+            <h1>{t('signUp')}</h1>
+            <SignUpForm />
+        </div>
+    )
+};
 
 const INITIAL_STATE = {
     username: '',
@@ -67,27 +71,27 @@ class SignUpFormBase extends Component {
                 <Form onSubmit={this.onSubmit}>
                     
                     <Form.Group controlId="username">
-                        <Form.Label>Username</Form.Label>
-                        <Form.Control name="username" type="text" placeholder="Enter username" onChange={this.onChange} value={username} />
+                        <Form.Label>{this.props.t('username')}</Form.Label>
+                        <Form.Control name="username" type="text" placeholder={this.props.t('enterUsername')} onChange={this.onChange} value={username} />
                     </Form.Group>
 
                     <Form.Group controlId="email">
-                        <Form.Label>Email address</Form.Label>
-                        <Form.Control name="email" type="email" placeholder="Enter email" onChange={this.onChange} value={email} />
+                        <Form.Label>{this.props.t('emailAddress')}</Form.Label>
+                        <Form.Control name="email" type="email" placeholder={this.props.t('enterEmail')} onChange={this.onChange} value={email} />
                     </Form.Group>
 
                     <Form.Group controlId="passwordOne">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control name="passwordOne" type="password" placeholder="Password" onChange={this.onChange} value={passwordOne} />
+                        <Form.Label>{this.props.t('password')}</Form.Label>
+                        <Form.Control name="passwordOne" type="password" placeholder={this.props.t('enterPassword')} onChange={this.onChange} value={passwordOne} />
                     </Form.Group>
 
                     <Form.Group controlId="passwordTwo">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control name="passwordTwo" type="password" placeholder="Confirm Password" onChange={this.onChange} value={passwordTwo} />
+                        <Form.Label>{this.props.t('repeatPassword')}</Form.Label>
+                        <Form.Control name="passwordTwo" type="password" placeholder={this.props.t('repeatPassword')} onChange={this.onChange} value={passwordTwo} />
                     </Form.Group>
 
                     <Button disabled={isInvalid} type="primary" htmlType='submit'>
-                        Sign-Up
+                    {this.props.t('signUp')}
                      </Button>
                     {error && <p>{error.message}</p>}
                 </Form>
@@ -96,13 +100,16 @@ class SignUpFormBase extends Component {
     }
 }
 
-const SignUpLink = () => (
+const SignUpLink = () => { 
+    const { t, i18n } = useTranslation();
+    return (
     <p>
-        Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
+        {t('dontHaveAccount')}<Link to={ROUTES.SIGN_UP}>{t('signUp')}</Link>
     </p>
-);
+)
+};
 
-const SignUpForm = withRouter(withFirebase(SignUpFormBase));
+const SignUpForm = withTranslation()(withRouter(withFirebase(SignUpFormBase)));
 
 export default SignUpScreen;
 

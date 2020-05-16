@@ -1,21 +1,35 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../Constants/Routes';
-import { Row, Col } from 'antd';
+import { useTranslation } from 'react-i18next';
+import { Typography, Button } from 'antd';
 
 const LandingScreen: React.FC = () => {
+    const { t, i18n } = useTranslation();
+
+    const switchLanguage = () => {
+        i18n.language === 'en' ? i18n.changeLanguage('lt') : i18n.changeLanguage('en');
+    };
+
     return (
-    <div style={{ textAlign: 'center', marginTop: '100px' }}>
+      <div style={{ textAlign: 'center', paddingTop: '100px' }}>
 
-      <Link to={ROUTES.SIGN_IN}>
-        <h2>Sing-in</h2>
-      </Link>
+        <Typography.Title>Sharething</Typography.Title>
+        <br/>
 
-      <Link to={ROUTES.SIGN_UP}>
-        <h2>Sing-up</h2>
-      </Link>
+        <Link to={ROUTES.SIGN_IN}>
+          <Typography.Title level={4}>{t('signIn')}</Typography.Title>
+        </Link>
 
-    </div>
+        <Link to={ROUTES.SIGN_UP}>
+          <Typography.Title level={4}>{t('signUp')}</Typography.Title>
+        </Link>
+
+        <br/>
+        <br/>
+        <Button onClick={switchLanguage}>{t(i18n.language)}</Button>
+
+      </div>
     );
 };
 

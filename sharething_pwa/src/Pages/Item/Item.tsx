@@ -5,6 +5,7 @@ import * as ROUTES from '../../Constants/Routes';
 import { ItemForm } from './ItemForm';
 import { ItemModel, ItemModelSend } from '../../Entities/Interfaces';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
+import i18n from 'i18next';
 
 type FetchData = (id?: string | undefined) => Promise<ItemModel>;
 
@@ -49,7 +50,7 @@ const Item: React.FC<FirebaseProps> = (props) => {
                                         <ItemForm
                                             {...propss}
                                             fetchData={initialData}
-                                            pageTitle={'Add Item'}
+                                            pageTitle={i18n.t('addItem')}
                                             saveData={saveItem}
                                         />
                                     )}
@@ -60,7 +61,7 @@ const Item: React.FC<FirebaseProps> = (props) => {
                                         <ItemForm
                                             {...propss}
                                             fetchData={fetchItem as FetchData}
-                                            pageTitle={'Edit Item'}
+                                            pageTitle={i18n.t('editItem')}
                                             saveData={saveItem}
                                             deleteData={deleteItem}
                                         />

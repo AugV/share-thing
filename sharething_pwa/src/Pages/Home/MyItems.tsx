@@ -6,6 +6,7 @@ import { List } from '../../Components/List/List';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
 import { useHistory } from 'react-router-dom';
 import * as ROUTES from '../../Constants/Routes';
+import i18n from 'i18next';
 
 interface MyItemsProps {
     itemList: ItemPreview[];
@@ -25,7 +26,7 @@ const MyItemsPageComp: React.FC<MyItemsProps & FirebaseProps> = (props) => {
 
     return (
           <div>
-            <NewButton title="New Item" onClick={createNewItem}/>
+            <NewButton title={i18n.t('addItem')} onClick={createNewItem}/>
             <List
                   itemList={props.itemList}
                   onClickItem={onClickItem}

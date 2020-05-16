@@ -5,7 +5,8 @@ import { Messages } from '../../Components/Messages';
 import { MessageInput } from '../../Components/MessageInput';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
 import { useParams } from 'react-router-dom';
-import { Spin, Typography } from 'antd';
+import { Typography } from 'antd';
+import i18n from 'i18next';
 import './chat-input.css';
 
 interface ChatProps {
@@ -41,11 +42,13 @@ const ChatPage: React.FC<Props> = (props) => {
         <div>
             {
                 !messages
-                ?  <div className="no-item-message">
+                ?  (
+                    <div className="no-item-message">
                         <Typography>
-                            No items to display
+                            {i18n.t('noData')}
                         </Typography>
                     </div>
+                    )
                 : (
                     <div style={messageList}>
                         <Messages messages={messages}/>

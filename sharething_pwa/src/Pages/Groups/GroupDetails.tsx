@@ -48,7 +48,7 @@ const GroupDetails: React.FC<GroupDetailsProps> = (props) => {
         <React.Fragment>
             {
                 !group
-                ? <Spin/>
+                ? <Spin style={{ position: 'fixed', top: '50%', left: '50%' }}/>
                 : (
                     <div>
                         <SubPageHeader title={group.name}/>

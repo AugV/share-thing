@@ -9,6 +9,7 @@ import {
 import { SharegResponse } from '../../Entities/Interfaces';
 import { Link, useHistory } from 'react-router-dom';
 import * as ROUTES from '../../Constants/Routes';
+import i18n from 'i18next';
 
 interface Props {
     sharegreements: SharegResponse[];
@@ -29,7 +30,7 @@ const SharegreementList: React.FC<Props> = (props) => {
             <Container>
                 <Row key={index} onClick={() => {onClick(shareg.id); }}>
                 <Col>{shareg.itemName}</Col>
-                <Link to={`${ROUTES.SHAREGREEMENT}/${shareg.id}`}>Go to sharegreement</Link>
+                <Link to={`${ROUTES.SHAREGREEMENT}/${shareg.id}`}>{i18n.t('goToSharegreement')}</Link>
                 </Row>
             </Container>
             </Card.Header>

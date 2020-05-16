@@ -5,6 +5,7 @@ import { withFirebase } from '../../Firebase';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
 import { DateModal } from '../../Components/DatePicker/DateModal';
 import { DateRange } from '../../Entities/Types';
+import i18n from 'i18next';
 
 interface SharegActionsProps {
     shareg: SharegResponse;
@@ -46,9 +47,10 @@ const OwnerActionsComp: React.FC<SharegActionsProps & FirebaseProps> = (props) =
             case SHAREG_STATUS.PENDING_OWNER_DATE_CONFIRM:
                 return (
                     <>
-                        <Button onClick={declineSharegreement}>Decline</Button>
-                        <Button onClick={advanceStatus} >Confirm</Button>
-                        <Button onClick={() => setmodalVisible(true)}>Another date</Button>
+                        <p>{i18n.t('borroweWantsToBorrow')}</p>
+                        <Button onClick={declineSharegreement}>{i18n.t('decline')}</Button>
+                        <Button onClick={advanceStatus}>{i18n.t('confirm')}</Button>
+                        <Button onClick={() => setmodalVisible(true)}>{i18n.t('anotherDate')}</Button>
                         <DateModal
                             visible={modalVisible}
                             closeModal={() => setmodalVisible(false)}
@@ -59,56 +61,56 @@ const OwnerActionsComp: React.FC<SharegActionsProps & FirebaseProps> = (props) =
             case SHAREG_STATUS.PENDING_BORROWER_DATE_CONFIRM:
                 return (
                     <>
-                        <p>Waiting for a borrower to confirm the offered date</p>
-                        <Button type="link" onClick={declineSharegreement}>Decline</Button>
+                        <p>{i18n.t('waitingForBorrowerToConfirm')}</p>
+                        <Button type="link" onClick={declineSharegreement}>{i18n.t('decline')}</Button>
                     </>
                 );
             case SHAREG_STATUS.DATES_CONFIRMED:
                 return (
                     <>
-                        <Button type="link" onClick={abortSharegreement}>Abort</Button>
-                        <Button onClick={() => {advanceStatus(); itemIsLent(); }}>Item given</Button>
+                        <Button type="link" onClick={abortSharegreement}>{i18n.t('abort')}</Button>
+                        <Button onClick={() => {advanceStatus(); itemIsLent(); }}>{i18n.t('itemGiven')}</Button>
                     </>
                 );
             case SHAREG_STATUS.OWNER_ITEM_DISPATCHED:
                 return (
                     <>
-                        <p>Waiting for borrower to confirm that he received the item</p>
-                        <Button onClick={() => {abortSharegreement(); itemReturned(); }}>Abort</Button>
+                        <p>{i18n.t('waitingBorrowerReceived')}</p>
+                        <Button onClick={() => {abortSharegreement(); itemReturned(); }}>{i18n.t('abort')}</Button>
                     </>
                 );
             case SHAREG_STATUS.BORROWER_ITEM_DISPATCHED:
                 return (
                     <>
-                        <p>Waiting for borrower to return the item</p>
-                        <Button onClick={() => {abortSharegreement(); itemReturned(); }}>Abort</Button>
+                        <p>{i18n.t('waitingBorrowerReturn')}</p>
+                        <Button onClick={() => {abortSharegreement(); itemReturned(); }}>{i18n.t('abort')}</Button>
                     </>
                 );
             case SHAREG_STATUS.BORROWER_ITEM_RETURNED:
                 return (
                     <>
-                        <Button type="link" onClick={abortSharegreement}>Abort</Button>
+                        <Button type="link" onClick={abortSharegreement}>{i18n.t('abort')}</Button>
                         <Button onClick={() => {advanceStatus(); itemReturned(); }}>
-                            Confirm Item Returned & Finish Sharegreement
+                            {i18n.t('confirmAndFinish')}
                         </Button>
                     </>
                 );
             case SHAREG_STATUS.FINISHED:
                 return (
                     <>
-                        <p>Sharegreement is finished</p>
+                        <p>{i18n.t('finished')}</p>
                     </>
                 );
             case SHAREG_STATUS.ABORTED:
                 return (
                     <>
-                        <p>Sharegreement was aborted</p>
+                        <p>{i18n.t('aborted')}</p>
                     </>
                 );
             case SHAREG_STATUS.DECLINED:
                 return (
                     <>
-                        <p>Sharegreement was declined</p>
+                        <p>{i18n.t('declined')}</p>
                     </>
                 );
             default:
