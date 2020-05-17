@@ -5,6 +5,8 @@ import { DateRangePicker, Modal } from 'rsuite';
 
 import 'rsuite/dist/styles/rsuite-default.css';
 import { ValueType } from 'rsuite/lib/DateRangePicker';
+import { Typography } from 'antd';
+import i18n from 'i18next';
 
 interface DateModalProps {
     visible: boolean;
@@ -47,31 +49,31 @@ const DateModal: React.FC<DateModalProps> = (props) => {
             size="sm"
             onHide={() => closeModal()}
         >
-             <Modal.Title>
-                Select date
-            </Modal.Title>
             <Modal.Body>
-            <div className="field only-date">
-                <DateRangePicker
-                    onOk={modalSubmit}
-                    isoWeek={true}
-                    showOneCalendar={true}
-                    format="YYYY-MM-DD"
-                    locale={{
-                        sunday: 'Su',
-                        monday: 'Mo',
-                        tuesday: 'Tu',
-                        wednesday: 'We',
-                        thursday: 'Th',
-                        friday: 'Fr',
-                        saturday: 'Sa',
-                        ok: 'OK',
-                        today: 'Today',
-                        yesterday: 'Yesterday',
-                        last7Days: 'Last 7 days',
-                    }}
-                    ranges={[]}
-                />
+                <Typography.Title level={4}>
+                    {i18n.t('selectDate')}
+                </Typography.Title>
+                <div className="field only-date">
+                    <DateRangePicker
+                        onOk={modalSubmit}
+                        isoWeek={true}
+                        showOneCalendar={true}
+                        format="YYYY-MM-DD"
+                        locale={{
+                            sunday: `${i18n.t('sunday')}`,
+                            monday: `${i18n.t('monday')}`,
+                            tuesday: `${i18n.t('tuesday')}`,
+                            wednesday: `${i18n.t('wednesday')}`,
+                            thursday: `${i18n.t('thursday')}`,
+                            friday: `${i18n.t('friday')}`,
+                            saturday: `${i18n.t('saturday')}`,
+                            ok: `${i18n.t('ok')}`,
+                            today: `${i18n.t('today')}`,
+                            yesterday: `${i18n.t('yesterday')}`,
+                            last7Days: `${i18n.t('last7Days')}`,
+                        }}
+                        ranges={[]}
+                    />
                 </div>
           </Modal.Body>
 

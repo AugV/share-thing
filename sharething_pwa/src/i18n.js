@@ -99,7 +99,20 @@ const resources = {
         "addMembers": "Add members",
         "groupMemberList": "Group member list",
         "addGroupMembers": "Add group members",
-    }
+
+        "selectDate": "Select date",
+        "monday": "Mo",
+        "sunday": "Su",
+        "tuesday": "Tu",
+        "wednesday": "We",
+        "thursday": "Th",
+        "friday": "Fr",
+        "saturday": "Sa",
+        "ok": "OK",
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "last7Days": "Last 7 days",
+  }
   },
   lt: {
     translation: {
@@ -195,6 +208,19 @@ const resources = {
         "addMembers": "Pridėti narius",
         "groupMemberList": "Grupės narių sąrašas",
         "addGroupMembers": "Pridėti grupės narius",
+
+        "selectDate": "Pasirinkti datą",
+        "monday": "Pr",
+        "sunday": "Sk",
+        "tuesday": "An",
+        "wednesday": "Tr",
+        "thursday": "Kt",
+        "friday": "Pn",
+        "saturday": "Št",
+        "ok": "OK",
+        "today": "Šiandien",
+        "yesterday": "Vakar",
+        "last7Days": "Paskutinios 7 dienos",
     }
   }
 };

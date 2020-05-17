@@ -8,6 +8,6 @@
 }
 
 .details-image{
-    object-fit: scale-down;
-    height: 300px;
+    object-fit: contain;
+    height: 500px;
 }

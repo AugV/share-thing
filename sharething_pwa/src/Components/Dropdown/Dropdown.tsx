@@ -16,7 +16,7 @@ const DropdownComponent: React.FC<DropDownProps> = (props) => {
         <div className="dropdown">
             <button className="dropbtn">
                 <Typography style={{ fontSize: '20pt' }}>
-                    <span style={{ fontSize: '20px', marginLeft: '2px', marginRight: '2px' }}>&#x25bc;</span>
+                    <span style={{ fontSize: '20px', marginLeft: '10px', marginRight: '15px' }}>&#x25bc;</span>
                     {props.selectionItems.get(location.pathname)}
                 </Typography>
             </button>
