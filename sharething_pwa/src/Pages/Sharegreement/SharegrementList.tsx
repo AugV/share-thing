@@ -7,14 +7,20 @@ import {
   Col,
 } from 'react-bootstrap';
 import { SharegResponse } from '../../Entities/Interfaces';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import * as ROUTES from '../../Constants/Routes';
+import i18n from 'i18next';
 
 interface Props {
     sharegreements: SharegResponse[];
 }
 
 const SharegreementList: React.FC<Props> = (props) => {
+    const history = useHistory();
+
+    const onClick = (id: string) => {
+        // history.push(`${ROUTES.SHAREGREEMENT}/${id}`);
+    };
 
     return(
         <Accordion>
@@ -22,9 +28,9 @@ const SharegreementList: React.FC<Props> = (props) => {
         <Card key={shareg.id}>
             <Card.Header>
             <Container>
-                <Row key={index}>
+                <Row key={index} onClick={() => {onClick(shareg.id); }}>
                 <Col>{shareg.itemName}</Col>
-                <Link to={`${ROUTES.SHAREGREEMENT}/${shareg.id}`}>Go to sharegreement</Link>
+                <Link to={`${ROUTES.SHAREGREEMENT}/${shareg.id}`}>{i18n.t('goToSharegreement')}</Link>
                 </Row>
             </Container>
             </Card.Header>

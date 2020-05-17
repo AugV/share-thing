@@ -1,0 +1,16 @@
+[class*="chat-input"] {
+    width: 95%;
+    position: fixed;
+    bottom: 0; 
+    margin-top: 10px; 
+  }
+
+@media only screen and (min-width: 768px) {
+    .chat-input{
+        width: 740px;
+        max-width: 740px; 
+        position: fixed;
+        bottom: 0; 
+        margin-top: 10px; 
+    }
+}

@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { SubPageHeader } from '../../Components/Headers/SubPageHeader';
 import { SharegResponse } from '../../Entities/Interfaces';
 import { useParams } from 'react-router-dom';
-import { Spin } from 'antd';
-import { Tabs, Tab } from 'react-bootstrap';
+import { Spin, Tabs } from 'antd';
+
 import { Chat } from './Chat';
 import { SharegreementDetails } from './SharegreementDetails';
+import i18n from 'i18next';
+
+const { TabPane } = Tabs;
 
 interface SharegDetailsProps {
     fetchData: (id: string, listener: (sharegreement: SharegResponse) => void) => () => void;
@@ -28,19 +31,21 @@ const Sharegreement: React.FC<SharegDetailsProps> = (props) => {
         <React.Fragment>
             {
                 !sharegreement
-                ? <Spin/>
+                ? <Spin style={{ position: 'fixed', top: '50%', left: '50%' }}/>
                 : (
                     <>
                     <SubPageHeader title={sharegreement.itemName}/>
-                    <Tabs defaultActiveKey="details" id="uncontrolled-tab-example">
-                        <Tab eventKey="details" title="Details" >
+                    <div style={{ margin: '10px' }}>
+                    <Tabs defaultActiveKey="details" animated={false}>
+                        <TabPane key="details" tab={i18n.t('sharegreementDetails')} >
                             <SharegreementDetails sharegData={sharegreement}/>
-                        </Tab>
+                        </TabPane>
 
-                        <Tab eventKey="chat" title="Chat">
+                        <TabPane key="chat" tab={i18n.t('chat')}>
                             <Chat details={sharegreement}/>
-                        </Tab>
+                        </TabPane>
                     </Tabs>
+                    </div>
                     </>
                 )
             }

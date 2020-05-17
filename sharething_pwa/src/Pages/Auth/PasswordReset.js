@@ -5,10 +5,12 @@ import { Button } from 'antd';
 
 import { withFirebase } from '../../Firebase';
 import * as ROUTES from '../../Constants/Routes';
+import { withTranslation, useTranslation } from 'react-i18next';
+import i18n from 'i18next';
 
 const PasswordResetScreen = () => (
   <div>
-    <h1>Reset Password</h1>
+    <h1>{i18n.t('resetPassword')}</h1>
     <PasswordResetForm />
   </div>
 );
@@ -52,11 +54,11 @@ class PasswordResetFormBase extends Component {
       <Form onSubmit={this.onSubmit}>
         
         <Form.Group controlId="email">
-          <Form.Control name="email" type="email" placeholder="Email Address" onChange={this.onChange} value={this.state.email} />
+          <Form.Control name="email" type="email" placeholder={this.props.t('enterEmail')} onChange={this.onChange} value={this.state.email} />
         </Form.Group>
 
         <Button disabled={isInvalid} type="primary" htmlType='submit'>
-          Reset
+        {this.props.t('reset')}
         </Button>
         {error && <p>{error.message}</p>}
       </Form>
@@ -64,14 +66,17 @@ class PasswordResetFormBase extends Component {
   }
 }
 
-const PasswordResetLink = () => (
+const PasswordResetLink = () => {
+  const { t, i18n } = useTranslation();
+  return(
   <p>
-    <Link to={ROUTES.PASSWORD_RESET}>Forgot Password?</Link>
+    <Link to={ROUTES.PASSWORD_RESET}>{t('forgotPassword')}</Link>
   </p>
 );
+}
 
 export default PasswordResetScreen;
 
-const PasswordResetForm = withFirebase(PasswordResetFormBase);
+const PasswordResetForm = withTranslation()(withFirebase(PasswordResetFormBase));
 
 export { PasswordResetForm, PasswordResetLink };

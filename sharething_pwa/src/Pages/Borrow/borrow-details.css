@@ -6,3 +6,8 @@
 .description {
     word-wrap: break-word;
 }
+
+.details-image{
+    object-fit: contain;
+    height: 500px;
+}

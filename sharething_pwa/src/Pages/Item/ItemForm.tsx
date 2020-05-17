@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { ItemModel, ItemModelSend } from '../../Entities/Interfaces';
-import Spinner from 'react-bootstrap/Spinner';
 import { SubPageHeader } from '../../Components/Headers/SubPageHeader';
 import { ImageInput } from '../../Components/ImageUpload/Input';
 import { AddGroupBox } from '../../Components/AddGroupBox/AddGroupBox';
-import { Input, Button } from 'antd';
+import { Input, Button, Spin, Typography, Row, Col } from 'antd';
 import { ImagePack } from '../../Entities/Types';
 import { MdDeleteForever } from 'react-icons/md';
+import i18n from 'i18next';
+
 const { TextArea } = Input;
 
 interface ItemFormProps {
@@ -107,7 +108,7 @@ const ItemFormPage: React.FC<ItemFormProps> = (props) => {
     return(
         <>
             {
-                !textFormData ? <Spinner style={{ position: 'fixed', top: '50%', left: '50%' }} animation="grow"/>
+                !textFormData ? <Spin style={{ position: 'fixed', top: '50%', left: '50%' }} />
                 :
 
                 (
@@ -115,36 +116,63 @@ const ItemFormPage: React.FC<ItemFormProps> = (props) => {
                     <SubPageHeader title={pageTitle} action={deleteButton()}/>
                     <div className="container" style={{ paddingBottom: '50px' }}>
 
-                        <h3>Images</h3>
-                        <div>
-                            {imageBoxPosition.map((position, index) => (
-                                <ImageInput
-                                    key={index}
-                                    position={position}
-                                    onChange={handleImageChange}
-                                    onDelete={handleImageDelete}
-                                    preview={(preview && preview[index]) || ''}
+                    <Row>
+                        <Col span={24}>
+                            <Typography.Title style={{ marginBottom: '0px', marginTop: '5px' }} level={4}>
+                                {i18n.t('images')}
+                            </Typography.Title>
+                            <div>
+                                {imageBoxPosition.map((position, index) => (
+                                    <ImageInput
+                                        key={index}
+                                        position={position}
+                                        onChange={handleImageChange}
+                                        onDelete={handleImageDelete}
+                                        preview={(preview && preview[index]) || ''}
+                                    />
+                                ))}
+                            </div>
+
+                        </Col>
+                    </Row>
+
+                        <Row>
+                            <Col span={24}>
+                                <Typography.Title style={{ marginBottom: '0px', marginTop: '5px' }} level={4}>
+                                    {i18n.t('groups')}
+                                </Typography.Title>
+                                <AddGroupBox itemGroups={groups} handleChange={handleGroupChange}/>
+                            </Col>
+                        </Row>
+
+                        <Row>
+                            <Col span={24}>
+                                <Typography.Title style={{ marginBottom: '0px', marginTop: '5px' }} level={4}>
+                                    {i18n.t('itemName')}
+                                </Typography.Title>
+                                <Input name="itemName" value={textFormData.itemName} onChange={onTextChange} placeholder={i18n.t('enterItemName')} />
+                            </Col>
+                        </Row>
+
+                        <Row>
+                            <Col span={24}>
+                                <Typography.Title style={{ marginBottom: '0px', marginTop: '5px' }} level={4}>
+                                    {i18n.t('itemDescription')}
+                                </Typography.Title>
+                                <TextArea
+                                    autoSize={true}
+                                    name="itemDescription"
+                                    value={textFormData.itemDescription}
+                                    onChange={onTextChange}
+                                    placeholder={i18n.t('enterItemDescription')}
                                 />
-                            ))}
-                        </div>
-
-                        <h3>Groups</h3>
-                        <AddGroupBox itemGroups={groups} handleChange={handleGroupChange}/>
-
-                        <h3>Name</h3>
-                        <Input name="itemName" value={textFormData.itemName} onChange={onTextChange} placeholder="Basic usage" />
-                        <h3>Description</h3>
-                        <TextArea
-                            autoSize={true}
-                            name="itemDescription"
-                            value={textFormData.itemDescription}
-                            onChange={onTextChange}
-                        />
+                            </Col>
+                        </Row>
 
                     </div>
 
                     <Button
-                        style={{ position: 'fixed', bottom: '0', marginTop: '10px' }}
+                        style={{ maxWidth: '750px', position: 'fixed', bottom: '0', marginTop: '10px' }}
                         size="large"
                         type="primary"
                         block={true}

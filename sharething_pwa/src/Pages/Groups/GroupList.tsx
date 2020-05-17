@@ -7,6 +7,7 @@ import { Header } from '../../Components/Headers/Header';
 import { NewButton } from '../../Components/NewButton/NewButton';
 import { useHistory } from 'react-router-dom';
 import * as ROUTES from '../../Constants/Routes';
+import i18n from 'i18next';
 
 interface OwnProps {
     userGroups: GroupNameAndId[];
@@ -26,20 +27,23 @@ const GroupListComponent: React.FC<OwnProps> = (props) => {
 
     return(
         <React.Fragment>
-            <Header title="Groups"/>
-            <NewButton title="New Group" onClick={createNewGroup} />
+
+            <Header title={i18n.t('groups')}/>
+            <NewButton title={i18n.t('createGroup')} onClick={createNewGroup} />
+
             <List
                 size="large"
                 dataSource={userGroups}
                 renderItem={group => (
                     <List.Item style={{ background: 'whitesmoke' }} onClick={() => {openGroupDetails(group.id); }}>
-                        <h2>{group.name}</h2>
+                        <h2 style={{ marginLeft: '10px' }}>{group.name}</h2>
                     </List.Item>
                     )
                 }
             />
 
             <MainNavBar activeIcon="groups"/>
+
         </React.Fragment>
     );
 };

@@ -86,7 +86,7 @@ class Firebase {
         return docRef.update({ borrowed_items: app.firestore.FieldValue.arrayUnion({
             id: sharegreement.id,
             name: sharegreement.itemName,
-            imageUrl: sharegreement.itemImg,
+            image_url: sharegreement.itemImg,
             end_date: sharegreement.endDate,
         }),
         });
@@ -99,7 +99,7 @@ class Firebase {
         return docRef.update({ lent_items: app.firestore.FieldValue.arrayUnion({
             id: sharegreement.id,
             name: sharegreement.itemName,
-            imageUrl: sharegreement.itemImg,
+            image_url: sharegreement.itemImg,
             end_date: sharegreement.endDate,
         }),
         });
@@ -155,9 +155,11 @@ class Firebase {
 
         const queryResult = await dbQuery.get();
 
-        const items = queryResult.docs.map((doc) => {
-            return toItemPreview(doc);
-        });
+        const userId = this.auth.currentUser?.uid;
+
+        const items = queryResult.docs
+            .filter(doc => doc.data().owner !== userId)
+            .map((doc) => toItemPreview(doc));
 
         return items;
     };
@@ -289,7 +291,7 @@ class Firebase {
             );
         }
 
-        return docRef.update({ members: app.firestore.FieldValue.arrayUnion(newMembers) });
+        return docRef.update({ members: app.firestore.FieldValue.arrayUnion(...newMembers) });
     }
 
     public async getUserName(userId: string): Promise<string> {

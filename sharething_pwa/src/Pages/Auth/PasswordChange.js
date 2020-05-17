@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form } from 'react-bootstrap';
 import { Button } from 'antd';
 import { withFirebase } from '../../Firebase';
+import i18n from 'i18next';
 
 const INITIAL_STATE = {
   passwordOne: '',
@@ -44,15 +45,15 @@ class PasswordChangeForm extends Component {
     return (
       <Form onSubmit={this.onSubmit}>
         <Form.Group controlId="passwordOne">
-          <Form.Control name="passwordOne" type="password" placeholder="New Password" onChange={this.onChange} value={passwordOne} />
+          <Form.Control name="passwordOne" type="password" placeholder={i18n.t('enterNewPassword')} onChange={this.onChange} value={passwordOne} />
         </Form.Group>
 
         <Form.Group controlId="passwordTwo">
-          <Form.Control name="passwordTwo" type="password" placeholder="Confirm New Password" onChange={this.onChange} value={passwordTwo} />
+          <Form.Control name="passwordTwo" type="password" placeholder={i18n.t('repeatNewPassword')} onChange={this.onChange} value={passwordTwo} />
         </Form.Group>
 
         <Button disabled={isInvalid} type="primary" htmlType='submit'>
-          Change
+         {i18n.t('change')}
         </Button>
         {error && <p>{error.message}</p>}
       </Form>

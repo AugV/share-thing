@@ -3,6 +3,7 @@ import 'antd/dist/antd.css';
 import { Select, Spin, Skeleton } from 'antd';
 import { withUserGroups } from '../../Context/withUserGroup';
 import { GroupNameAndId } from '../../Entities/Interfaces';
+import i18n from 'i18next';
 
 const { Option } = Select;
 
@@ -25,7 +26,7 @@ const AddGroupBoxComponent: React.FC<AddGroupBoxProps> = (props) => {
             mode="multiple"
             size="large"
             style={{ width: '100%' }}
-            placeholder="Select groups"
+            placeholder={i18n.t('selectGroup')}
             defaultValue={itemGroups}
             onChange={handleChange}
             optionLabelProp="label"

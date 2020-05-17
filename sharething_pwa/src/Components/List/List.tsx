@@ -4,9 +4,8 @@ import { ListItem } from './ListItem';
 import Spinner from 'react-bootstrap/Spinner';
 import './list-item.css';
 import { Typography } from 'antd';
-import {
-    ExclamationOutlined,
-  } from '@ant-design/icons';
+import { ExclamationOutlined } from '@ant-design/icons';
+import i18n from 'i18next';
 
 interface ListProps {
     itemList: ItemPreview[];
@@ -26,7 +25,7 @@ const ListComponent: React.FC<ListProps> = (props) => {
                     <div className="no-item-message">
                         <ExclamationOutlined />
                         <Typography>
-                            No items to display
+                            {i18n.t('noData')}
                         </Typography>
                     </div>
                 )

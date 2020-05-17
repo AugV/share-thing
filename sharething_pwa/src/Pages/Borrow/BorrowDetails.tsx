@@ -7,12 +7,13 @@ import './borrow-details.css';
 
 import Title from 'antd/lib/typography/Title';
 import Paragraph from 'antd/lib/typography/Paragraph';
-import { DateModal } from '../Sharegreement/DateModal';
+import { DateModal } from '../../Components/DatePicker/DateModal';
 import { DateRange } from '../../Entities/Types';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
 import { withFirebase } from '../../Firebase';
 import { toSharegCreateReq } from '../../Entities/Mappers';
 import * as NAMES from '../../Constants/Routes';
+import i18n from 'i18next';
 
 interface BorrowDetailsProps {
     getItemData: (id: string) => Promise<ItemModel>;
@@ -53,16 +54,16 @@ const BorrowDetailsPage: React.FC<BorrowDetailsProps & FirebaseProps> = (props) 
     return(
         <div>
         {!itemData ?
-            <Spin/> :
+            <Spin style={{ position: 'fixed', top: '50%', left: '50%' }} /> :
             (
                 <React.Fragment>
-                    <SubPageHeader title="Item Details"/>
+                    <SubPageHeader title={i18n.t('itemDetails')}/>
 
-                    <Carousel>
-                        {itemData.images.map(image => (
-                            <img key={image} src={image} alt="N/A"/>
-                        ))}
-                    </Carousel>
+                        <Carousel style={{ backgroundColor: 'lightgrey' }}>
+                            {itemData.images.map(image => (
+                                <img className="details-image" key={image} src={image} alt="N/A"/>
+                            ))}
+                        </Carousel>
 
                     <div className="details">
                         <Title level={1}>{itemData.name}</Title>
@@ -71,17 +72,17 @@ const BorrowDetailsPage: React.FC<BorrowDetailsProps & FirebaseProps> = (props) 
                         <Paragraph ellipsis={{ expandable: true }} >{itemData.description}</Paragraph>
                         </div>
 
-                        {ownerName && <Title level={4}>owned by: {ownerName}</Title>}
+                        {ownerName && <Title level={4}>{i18n.t('ownedBy')}: {ownerName}</Title>}
                     </div>
 
                     <Button
-                            style={{ position: 'fixed', bottom: '0', marginTop: '10px' }}
-                            size="large"
-                            type="primary"
-                            block={true}
-                            onClick={() => {setModalVisible(true); }}
+                        style={{ maxWidth: '750px', position: 'fixed', bottom: '0', marginTop: '10px' }}
+                        size="large"
+                        type="primary"
+                        block={true}
+                        onClick={() => {setModalVisible(true); }}
                     >
-                        Request Item
+                        {i18n.t('requestItem')}
                     </Button>
 
                 </React.Fragment>

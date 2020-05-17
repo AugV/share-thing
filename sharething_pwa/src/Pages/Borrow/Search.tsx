@@ -9,6 +9,7 @@ import { ItemQuery, ItemPreview } from '../../Entities/Interfaces';
 import { List } from '../../Components/List/List';
 import { MainNavBar } from '../../Components/NavBar/BottomNavBar';
 import { Header } from '../../Components/Headers/Header';
+import i18n from 'i18next';
 
 interface SearchListProps {
     items: ItemPreview[] | undefined;
@@ -39,9 +40,9 @@ const SearchPage: React.FC<SearchListProps> = (props) => {
 
     return(
         <div>
-            <Header title="Borrow"/>
+            <Header title={i18n.t('borrow')}/>
             <Search
-                placeholder="input search text"
+                placeholder={i18n.t('enterItemName')}
                 onSearch={search}
                 style={{ width: '100%' }}
                 size="large"

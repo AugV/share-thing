@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Firebase, { withFirebase } from '../../Firebase';
-import {
-  Spinner,
-  Tabs,
-  Tab,
-} from 'react-bootstrap';
 import { SharegResponse } from '../../Entities/Interfaces';
 
 import { MainNavBar } from '../../Components/NavBar/BottomNavBar';
 import { SharegreementList } from './SharegrementList';
 import { Header } from '../../Components/Headers/Header';
+import { Spin, Tabs } from 'antd';
+import i18n from 'i18next';
+
+const { TabPane } = Tabs;
 
 interface Props {
     firebase: Firebase;
@@ -36,22 +35,24 @@ const SharegreementListViewComp = (props: Props) => {
 
     return(
       <div>
-          <Header title="Sharegreements"/>
-          {loading && <Spinner animation="border" />}
-          <Tabs defaultActiveKey="asOwner" id="uncontrolled-tab-example">
+      <Header title={i18n.t('sharegreements')}/>
+      <div style={{ margin: '5px' }}>
+          {loading && <Spin style={{ position: 'fixed', top: '50%', left: '50%' }}/>}
+          <Tabs defaultActiveKey="asOwner">
             {asOwnerConversations && (
-              <Tab eventKey="asOwner" title="As Owner" >
+              <TabPane key="asOwner" tab={i18n.t('asOwner')} >
                   <SharegreementList sharegreements={asOwnerConversations}/>
-              </Tab>
+              </TabPane>
             )}
             {asSeekerConversations && (
-              <Tab eventKey="asSeeker" title="As Seeker">
+              <TabPane key="asSeeker" tab={i18n.t('asBorrower')}>
                   <SharegreementList sharegreements={asSeekerConversations}/>
-              </Tab>
+              </TabPane>
             )}
           </Tabs>
-          <MainNavBar activeIcon="shareg"/>
-        </div>
+      </div>
+      <MainNavBar activeIcon="shareg"/>
+      </div>
     );
 };
 

@@ -5,7 +5,9 @@ import { Messages } from '../../Components/Messages';
 import { MessageInput } from '../../Components/MessageInput';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
 import { useParams } from 'react-router-dom';
-import { Spin } from 'antd';
+import { Typography } from 'antd';
+import i18n from 'i18next';
+import './chat-input.css';
 
 interface ChatProps {
     details: SharegResponse;
@@ -38,22 +40,25 @@ const ChatPage: React.FC<Props> = (props) => {
 
     return(
         <div>
-            <div className="sticky-top" >
-                <h2>{details && details.itemName}</h2>
-            </div>
             {
-            !messages
-            ? <Spin/>
-            : (
-                <div style={messageList}>
-                    <Messages messages={messages}/>
-                </div>
-            )
+                !messages
+                ?  (
+                    <div className="no-item-message">
+                        <Typography>
+                            {i18n.t('noData')}
+                        </Typography>
+                    </div>
+                    )
+                : (
+                    <div style={messageList}>
+                        <Messages messages={messages}/>
+                    </div>
+                )
             }
 
             <div ref={scrollBottomDummy}/>
 
-            <div className="fixed-bottom">
+            <div className="chat-input">
                 <MessageInput submit={sendMessage}/>
             </div>
         </div>

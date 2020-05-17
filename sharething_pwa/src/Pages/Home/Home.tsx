@@ -10,8 +10,8 @@ import { BorrowedItemsPage } from './BorrowedItems';
 import { withUserItems } from '../../Context/withUserItems';
 import { BsFillGearFill } from 'react-icons/bs';
 import { Dropdown, Menu, Button } from 'antd';
-
 import { ClickParam } from 'antd/lib/menu';
+import i18n from 'i18next';
 
 interface UserItems {
     userItems: UserItemsDocument;
@@ -22,19 +22,21 @@ const HomeRoutes: React.FC<UserItems> = (props) => {
 
     const subPages: Map<string, string> = function getMapForDropdown(): Map<string, string> {
         const map = new Map();
-        map.set(ROUTES.MY_ITEMS, 'Owned');
-        map.set(ROUTES.LENT_ITEMS, 'Lent');
-        map.set(ROUTES.BORROWED_ITEMS, 'Borrowed');
+        map.set(ROUTES.MY_ITEMS, i18n.t('owned'));
+        map.set(ROUTES.LENT_ITEMS, i18n.t('lent'));
+        map.set(ROUTES.BORROWED_ITEMS, i18n.t('borrowed'));
         return map;
     }();
 
     const settingsMenuDropDown = () => (
       <React.Fragment>
+
         <Dropdown overlay={menu} trigger={['click']}>
           <Button style={{ background: 'lightgrey', height: '50px' }} >
             <BsFillGearFill size={30} />
           </Button>
         </Dropdown>
+
       </React.Fragment>
     );
 
@@ -54,13 +56,17 @@ const HomeRoutes: React.FC<UserItems> = (props) => {
 
     const menu = (
       <Menu onClick={handleSettingsMenuClick}>
+
         <Menu.Item key="1" style={{ fontSize: '20pt', marginBottom: '5px' }}>
-          Account
+          {i18n.t('account')}
         </Menu.Item>
+
         <Menu.Divider/>
+
         <Menu.Item key="2" style={{ fontSize: '20pt', marginBottom: '5px' }}>
-          Sign out
+          {i18n.t('signOut')}
         </Menu.Item>
+
       </Menu>
     );
 

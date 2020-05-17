@@ -14,10 +14,7 @@ const LentItemsPageComp: React.FC<LentItemsProps & FirebaseProps> = (props) => {
 
     const history = useHistory();
 
-    // TODO: paklaust kodėl taip neveikia
-    // const renderUntilDate = (date: Date ) => (
     const renderUntilDate = (date: Date | string) => (
-        // <> {`until ${date ? date.toDateString() : ''}`} </>
         <> {`until ${date ? date.toString() : '*no date set*'}`} </>
     );
 

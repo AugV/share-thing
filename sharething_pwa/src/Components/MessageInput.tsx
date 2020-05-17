@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import 'react-chat-elements/dist/main.css';
 import { Input, Button } from 'react-chat-elements';
+import i18n from 'i18next';
 
 interface Props {
     submit: (text: string) => void;
@@ -19,12 +20,12 @@ const MessageInputComponent = (props: Props) => {
     return (
         <Input
             ref={inputRef}
-            placeholder="Type here..."
+            placeholder={i18n.t('typeMessage')}
             multiline={true}
             rightButtons={
                 (
                 <Button
-                    text={'send'}
+                    text={i18n.t('send')}
                     onClick={onButtonClick}
                 />
                 )
