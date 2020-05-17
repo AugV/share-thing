@@ -59,11 +59,11 @@ const BorrowDetailsPage: React.FC<BorrowDetailsProps & FirebaseProps> = (props) 
                 <React.Fragment>
                     <SubPageHeader title={i18n.t('itemDetails')}/>
 
-                    <Carousel>
-                        {itemData.images.map(image => (
-                            <img key={image} src={image} alt="N/A"/>
-                        ))}
-                    </Carousel>
+                        <Carousel style={{ backgroundColor: 'grey' }}>
+                            {itemData.images.map(image => (
+                                <img className="details-image" key={image} src={image} alt="N/A"/>
+                            ))}
+                        </Carousel>
 
                     <div className="details">
                         <Title level={1}>{itemData.name}</Title>

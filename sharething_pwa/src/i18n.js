@@ -93,6 +93,12 @@ const resources = {
         "itemReturned": "Item returned",
         "waitingOwnerToConfirmItemReturned": "Waiting for the owner to confirm that item was returned.",
         "ownerConfirmedItemReturned": "Owner confirmed that item was returned and Sharegreement is finished.",
+
+        "groupDescription": "Group description",
+        "host": "Host",
+        "addMembers": "Add members",
+        "groupMemberList": "Group member list",
+        "addGroupMembers": "Add group members",
     }
   },
   lt: {
@@ -183,6 +189,12 @@ const resources = {
         "itemReturned": "Daiktas grąžintas savininkui",
         "waitingOwnerToConfirmItemReturned": "Laukiama savininko patvirtinimo, kad daiktas grąžintas.",
         "ownerConfirmedItemReturned": "Savininkas patvirtino, kad daiktas grąžintas. Dalinimasis užbaigtas.",
+
+        "groupDescription": "Grupės aprašymas",
+        "host": "Šeimininkas",
+        "addMembers": "Pridėti narius",
+        "groupMemberList": "Grupės narių sąrašas",
+        "addGroupMembers": "Pridėti grupės narius",
     }
   }
 };

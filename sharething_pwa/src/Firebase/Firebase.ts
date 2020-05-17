@@ -291,7 +291,7 @@ class Firebase {
             );
         }
 
-        return docRef.update({ members: app.firestore.FieldValue.arrayUnion(newMembers) });
+        return docRef.update({ members: app.firestore.FieldValue.arrayUnion(...newMembers) });
     }
 
     public async getUserName(userId: string): Promise<string> {
