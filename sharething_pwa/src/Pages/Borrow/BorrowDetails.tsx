@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ItemModel } from '../../Entities/Interfaces';
 import { useParams, useHistory } from 'react-router-dom';
-import { Spin, Carousel, Button } from 'antd';
+import { Spin, Carousel, Button, Typography } from 'antd';
 import { SubPageHeader } from '../../Components/Headers/SubPageHeader';
 import './borrow-details.css';
 
@@ -66,13 +66,13 @@ const BorrowDetailsPage: React.FC<BorrowDetailsProps & FirebaseProps> = (props) 
                         </Carousel>
 
                     <div className="details">
-                        <Title level={1}>{itemData.name}</Title>
+                        <Title level={2}>{itemData.name}</Title>
 
                         <div className="description">
                         <Paragraph ellipsis={{ expandable: true }} >{itemData.description}</Paragraph>
                         </div>
 
-                        {ownerName && <Title level={4}>{i18n.t('ownedBy')}: {ownerName}</Title>}
+                        {ownerName && <Typography >{i18n.t('ownedBy')}: {ownerName}</Typography>}
                     </div>
 
                     <Button

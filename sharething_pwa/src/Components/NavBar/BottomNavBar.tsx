@@ -1,9 +1,10 @@
 import React from 'react';
-import { BsHouse, BsSearch, BsPeople, BsDocument } from 'react-icons/bs';
+import { BsHouse, BsSearch, BsPeople, BsChat } from 'react-icons/bs';
 import * as ROUTES from '../../Constants/Routes';
 import { withFirebase } from '../../Firebase';
 import { FirebaseProps } from '../../Entities/PropsInterfaces';
 import { useHistory } from 'react-router-dom';
+
 import './BottomNavBar.css';
 
 interface ActiveIconProp {
@@ -31,7 +32,7 @@ const BottomNavBarComponent: React.FC<BottomNavProps> = (props) => {
         <BsHouse className={isActive.home} size={50} onClick={() => history.push(ROUTES.MY_ITEMS)}/>
         <BsSearch className={isActive.search} size={45} onClick={() => history.push(ROUTES.SEARCH)}/>
         <BsPeople className={isActive.groups} size={50} onClick={() => history.push(ROUTES.GROUP_LIST)}/>
-        <BsDocument className={isActive.shareg} size={50} onClick={() => history.push(ROUTES.SHAREGREEMENT_LIST)}/>
+        <BsChat className={isActive.shareg} size={50} onClick={() => history.push(ROUTES.SHAREGREEMENT_LIST)}/>
       </div>
     )
     : null
