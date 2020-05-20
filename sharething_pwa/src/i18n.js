@@ -56,7 +56,6 @@ const resources = {
 
         "images": "Images",
         "itemName": "Item name",
-        "enterItemName": "Enter item name",
         "itemDescription": "Item description",
         "enterItemDescription": "Enter item description",
 
@@ -94,7 +93,6 @@ const resources = {
         "waitingOwnerToConfirmItemReturned": "Waiting for the owner to confirm that item was returned.",
         "ownerConfirmedItemReturned": "Owner confirmed that item was returned and Sharegreement is finished.",
 
-        "groupDescription": "Group description",
         "host": "Host",
         "addMembers": "Add members",
         "groupMemberList": "Group member list",
@@ -112,6 +110,8 @@ const resources = {
         "today": "Today",
         "yesterday": "Yesterday",
         "last7Days": "Last 7 days",
+
+        "save": "Save"
   }
   },
   lt: {
@@ -165,7 +165,6 @@ const resources = {
 
         "images": "Paveikslėliai",
         "itemName": "Daikto pavadinimas",
-        "enterItemName": "Įveskite daikto pavadinimą",
         "itemDescription": "Daikto aprašymas",
         "enterItemDescription": "Įveskite daikto aprašymą",
 
@@ -203,7 +202,6 @@ const resources = {
         "waitingOwnerToConfirmItemReturned": "Laukiama savininko patvirtinimo, kad daiktas grąžintas.",
         "ownerConfirmedItemReturned": "Savininkas patvirtino, kad daiktas grąžintas. Dalinimasis užbaigtas.",
 
-        "groupDescription": "Grupės aprašymas",
         "host": "Šeimininkas",
         "addMembers": "Pridėti narius",
         "groupMemberList": "Grupės narių sąrašas",
@@ -221,6 +219,8 @@ const resources = {
         "today": "Šiandien",
         "yesterday": "Vakar",
         "last7Days": "Paskutinios 7 dienos",
+
+        "save": "Saugoti"
     }
   }
 };

@@ -178,7 +178,7 @@ const ItemFormPage: React.FC<ItemFormProps> = (props) => {
                         block={true}
                         onClick={saveItem}
                     >
-                        Save
+                       {i18n.t('save')}
                     </Button>
 
                 </div>

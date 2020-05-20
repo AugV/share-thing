@@ -87,7 +87,7 @@ const CreateGroup: React.FC<CreateGroupProps> = (props) => {
                 block={true}
                 onClick={saveGroup}
             >
-                Save
+                {i18n.t('save')}
             </Button>
         </React.Fragment>
     );
